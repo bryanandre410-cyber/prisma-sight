@@ -14,6 +14,7 @@ import { Route as AlertasRouteImport } from './routes/alertas'
 import { Route as AuditoriaIaRouteImport } from './routes/auditoria-ia'
 import { Route as ConformidadeRouteImport } from './routes/conformidade'
 import { Route as MonitoramentoRouteImport } from './routes/monitoramento'
+import { Route as PoliticasRouteImport } from './routes/politicas'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +41,11 @@ const MonitoramentoRoute = MonitoramentoRouteImport.update({
   path: '/monitoramento',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PoliticasRoute = PoliticasRouteImport.update({
+  id: '/politicas',
+  path: '/politicas',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/auditoria-ia': typeof AuditoriaIaRoute
   '/conformidade': typeof ConformidadeRoute
   '/monitoramento': typeof MonitoramentoRoute
+  '/politicas': typeof PoliticasRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/auditoria-ia': typeof AuditoriaIaRoute
   '/conformidade': typeof ConformidadeRoute
   '/monitoramento': typeof MonitoramentoRoute
+  '/politicas': typeof PoliticasRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +70,25 @@ export interface FileRoutesById {
   '/auditoria-ia': typeof AuditoriaIaRoute
   '/conformidade': typeof ConformidadeRoute
   '/monitoramento': typeof MonitoramentoRoute
+  '/politicas': typeof PoliticasRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/alertas' | '/auditoria-ia' | '/conformidade' | '/monitoramento'
+    | '/'
+    | '/alertas'
+    | '/auditoria-ia'
+    | '/conformidade'
+    | '/monitoramento'
+    | '/politicas'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/alertas' | '/auditoria-ia' | '/conformidade' | '/monitoramento'
+  to:
+    | '/'
+    | '/alertas'
+    | '/auditoria-ia'
+    | '/conformidade'
+    | '/monitoramento'
+    | '/politicas'
   id:
     | '__root__'
     | '/'
@@ -76,6 +96,7 @@ export interface FileRouteTypes {
     | '/auditoria-ia'
     | '/conformidade'
     | '/monitoramento'
+    | '/politicas'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -84,6 +105,7 @@ export interface RootRouteChildren {
   AuditoriaIaRoute: typeof AuditoriaIaRoute
   ConformidadeRoute: typeof ConformidadeRoute
   MonitoramentoRoute: typeof MonitoramentoRoute
+  PoliticasRoute: typeof PoliticasRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -123,6 +145,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MonitoramentoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/politicas': {
+      id: '/politicas'
+      path: '/politicas'
+      fullPath: '/politicas'
+      preLoaderRoute: typeof PoliticasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -132,6 +161,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuditoriaIaRoute: AuditoriaIaRoute,
   ConformidadeRoute: ConformidadeRoute,
   MonitoramentoRoute: MonitoramentoRoute,
+  PoliticasRoute: PoliticasRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
