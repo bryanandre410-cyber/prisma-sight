@@ -50,7 +50,7 @@ function Index() {
         <div className="space-y-5">
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {overviewMetrics.map((m, i) => {
-              const Icon = icons[i];
+              const Icon = icons[i] ?? Database;
               return (
                 <Panel key={m.key} className="text-center">
                   <p className="text-xs text-muted-foreground">{m.label}</p>
