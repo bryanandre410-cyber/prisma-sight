@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuditoriaIaRouteImport } from './routes/auditoria-ia'
 import { Route as ConformidadeRouteImport } from './routes/conformidade'
 import { Route as MonitoramentoRouteImport } from './routes/monitoramento'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuditoriaIaRoute = AuditoriaIaRouteImport.update({
+  id: '/auditoria-ia',
+  path: '/auditoria-ia',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConformidadeRoute = ConformidadeRouteImport.update({
@@ -31,30 +37,34 @@ const MonitoramentoRoute = MonitoramentoRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auditoria-ia': typeof AuditoriaIaRoute
   '/conformidade': typeof ConformidadeRoute
   '/monitoramento': typeof MonitoramentoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auditoria-ia': typeof AuditoriaIaRoute
   '/conformidade': typeof ConformidadeRoute
   '/monitoramento': typeof MonitoramentoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auditoria-ia': typeof AuditoriaIaRoute
   '/conformidade': typeof ConformidadeRoute
   '/monitoramento': typeof MonitoramentoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/conformidade' | '/monitoramento'
+  fullPaths: '/' | '/auditoria-ia' | '/conformidade' | '/monitoramento'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/conformidade' | '/monitoramento'
-  id: '__root__' | '/' | '/conformidade' | '/monitoramento'
+  to: '/' | '/auditoria-ia' | '/conformidade' | '/monitoramento'
+  id: '__root__' | '/' | '/auditoria-ia' | '/conformidade' | '/monitoramento'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuditoriaIaRoute: typeof AuditoriaIaRoute
   ConformidadeRoute: typeof ConformidadeRoute
   MonitoramentoRoute: typeof MonitoramentoRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auditoria-ia': {
+      id: '/auditoria-ia'
+      path: '/auditoria-ia'
+      fullPath: '/auditoria-ia'
+      preLoaderRoute: typeof AuditoriaIaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/conformidade': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuditoriaIaRoute: AuditoriaIaRoute,
   ConformidadeRoute: ConformidadeRoute,
   MonitoramentoRoute: MonitoramentoRoute,
 }
