@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ConformidadeRouteImport } from './routes/conformidade'
 import { Route as MonitoramentoRouteImport } from './routes/monitoramento'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConformidadeRoute = ConformidadeRouteImport.update({
+  id: '/conformidade',
+  path: '/conformidade',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MonitoramentoRoute = MonitoramentoRouteImport.update({
@@ -25,27 +31,31 @@ const MonitoramentoRoute = MonitoramentoRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/conformidade': typeof ConformidadeRoute
   '/monitoramento': typeof MonitoramentoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/conformidade': typeof ConformidadeRoute
   '/monitoramento': typeof MonitoramentoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/conformidade': typeof ConformidadeRoute
   '/monitoramento': typeof MonitoramentoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/monitoramento'
+  fullPaths: '/' | '/conformidade' | '/monitoramento'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/monitoramento'
-  id: '__root__' | '/' | '/monitoramento'
+  to: '/' | '/conformidade' | '/monitoramento'
+  id: '__root__' | '/' | '/conformidade' | '/monitoramento'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ConformidadeRoute: typeof ConformidadeRoute
   MonitoramentoRoute: typeof MonitoramentoRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/conformidade': {
+      id: '/conformidade'
+      path: '/conformidade'
+      fullPath: '/conformidade'
+      preLoaderRoute: typeof ConformidadeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/monitoramento': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ConformidadeRoute: ConformidadeRoute,
   MonitoramentoRoute: MonitoramentoRoute,
 }
 export const routeTree = rootRouteImport
