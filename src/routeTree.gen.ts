@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AlertasRouteImport } from './routes/alertas'
 import { Route as AuditoriaIaRouteImport } from './routes/auditoria-ia'
+import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
 import { Route as ConformidadeRouteImport } from './routes/conformidade'
 import { Route as MonitoramentoRouteImport } from './routes/monitoramento'
 import { Route as PoliticasRouteImport } from './routes/politicas'
@@ -30,6 +31,11 @@ const AlertasRoute = AlertasRouteImport.update({
 const AuditoriaIaRoute = AuditoriaIaRouteImport.update({
   id: '/auditoria-ia',
   path: '/auditoria-ia',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
+  id: '/configuracoes',
+  path: '/configuracoes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConformidadeRoute = ConformidadeRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/alertas': typeof AlertasRoute
   '/auditoria-ia': typeof AuditoriaIaRoute
+  '/configuracoes': typeof ConfiguracoesRoute
   '/conformidade': typeof ConformidadeRoute
   '/monitoramento': typeof MonitoramentoRoute
   '/politicas': typeof PoliticasRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/alertas': typeof AlertasRoute
   '/auditoria-ia': typeof AuditoriaIaRoute
+  '/configuracoes': typeof ConfiguracoesRoute
   '/conformidade': typeof ConformidadeRoute
   '/monitoramento': typeof MonitoramentoRoute
   '/politicas': typeof PoliticasRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/alertas': typeof AlertasRoute
   '/auditoria-ia': typeof AuditoriaIaRoute
+  '/configuracoes': typeof ConfiguracoesRoute
   '/conformidade': typeof ConformidadeRoute
   '/monitoramento': typeof MonitoramentoRoute
   '/politicas': typeof PoliticasRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/alertas'
     | '/auditoria-ia'
+    | '/configuracoes'
     | '/conformidade'
     | '/monitoramento'
     | '/politicas'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/alertas'
     | '/auditoria-ia'
+    | '/configuracoes'
     | '/conformidade'
     | '/monitoramento'
     | '/politicas'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/alertas'
     | '/auditoria-ia'
+    | '/configuracoes'
     | '/conformidade'
     | '/monitoramento'
     | '/politicas'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AlertasRoute: typeof AlertasRoute
   AuditoriaIaRoute: typeof AuditoriaIaRoute
+  ConfiguracoesRoute: typeof ConfiguracoesRoute
   ConformidadeRoute: typeof ConformidadeRoute
   MonitoramentoRoute: typeof MonitoramentoRoute
   PoliticasRoute: typeof PoliticasRoute
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/auditoria-ia'
       fullPath: '/auditoria-ia'
       preLoaderRoute: typeof AuditoriaIaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/configuracoes': {
+      id: '/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof ConfiguracoesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/conformidade': {
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AlertasRoute: AlertasRoute,
   AuditoriaIaRoute: AuditoriaIaRoute,
+  ConfiguracoesRoute: ConfiguracoesRoute,
   ConformidadeRoute: ConformidadeRoute,
   MonitoramentoRoute: MonitoramentoRoute,
   PoliticasRoute: PoliticasRoute,
