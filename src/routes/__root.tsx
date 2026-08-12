@@ -11,6 +11,9 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { AppSidebar } from "@/components/prisma/AppSidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Bell, HelpCircle } from "lucide-react";
 
 function NotFoundComponent() {
   return (
@@ -77,11 +80,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Prisma One — Privacidade e IA sob controle" },
+      {
+        name: "description",
+        content:
+          "Centro de controle de privacidade, conformidade LGPD e auditoria de Inteligência Artificial.",
+      },
+      { name: "author", content: "Prisma One" },
+      { property: "og:title", content: "Prisma One" },
+      {
+        property: "og:description",
+        content: "Centro de controle de privacidade e segurança de dados na era da IA.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
@@ -119,8 +129,41 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <SidebarProvider>
+        <div className="flex min-h-screen w-full bg-background">
+          <AppSidebar />
+          <div className="flex min-w-0 flex-1 flex-col">
+            <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-3 border-b border-border bg-background/80 px-4 backdrop-blur">
+              <SidebarTrigger />
+              <div className="flex items-center gap-4">
+                <button className="relative text-muted-foreground transition-colors hover:text-foreground">
+                  <Bell className="size-5" />
+                  <span className="absolute -right-0.5 -top-0.5 size-2 rounded-full bg-primary-glow" />
+                </button>
+                <HelpCircle className="size-5 text-muted-foreground" />
+                <div className="flex items-center gap-2">
+                  <div
+                    className="flex size-8 items-center justify-center rounded-full text-xs font-semibold text-primary-foreground"
+                    style={{ backgroundImage: "var(--gradient-primary)" }}
+                  >
+                    AD
+                  </div>
+                  <div className="hidden leading-tight sm:block">
+                    <p className="text-sm font-medium">Administrador</p>
+                    <p className="text-[11px] text-muted-foreground">
+                      Responsável pela Privacidade
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </header>
+            <main className="flex-1">
+              {/* Required: nested routes render here. */}
+              <Outlet />
+            </main>
+          </div>
+        </div>
+      </SidebarProvider>
     </QueryClientProvider>
   );
 }

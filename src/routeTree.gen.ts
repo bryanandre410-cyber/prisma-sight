@@ -10,33 +10,128 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AlertasRouteImport } from './routes/alertas'
+import { Route as AuditoriaIaRouteImport } from './routes/auditoria-ia'
+import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
+import { Route as ConformidadeRouteImport } from './routes/conformidade'
+import { Route as MonitoramentoRouteImport } from './routes/monitoramento'
+import { Route as PoliticasRouteImport } from './routes/politicas'
+import { Route as RelatoriosRouteImport } from './routes/relatorios'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AlertasRoute = AlertasRouteImport.update({
+  id: '/alertas',
+  path: '/alertas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuditoriaIaRoute = AuditoriaIaRouteImport.update({
+  id: '/auditoria-ia',
+  path: '/auditoria-ia',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
+  id: '/configuracoes',
+  path: '/configuracoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConformidadeRoute = ConformidadeRouteImport.update({
+  id: '/conformidade',
+  path: '/conformidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MonitoramentoRoute = MonitoramentoRouteImport.update({
+  id: '/monitoramento',
+  path: '/monitoramento',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoliticasRoute = PoliticasRouteImport.update({
+  id: '/politicas',
+  path: '/politicas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RelatoriosRoute = RelatoriosRouteImport.update({
+  id: '/relatorios',
+  path: '/relatorios',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/alertas': typeof AlertasRoute
+  '/auditoria-ia': typeof AuditoriaIaRoute
+  '/configuracoes': typeof ConfiguracoesRoute
+  '/conformidade': typeof ConformidadeRoute
+  '/monitoramento': typeof MonitoramentoRoute
+  '/politicas': typeof PoliticasRoute
+  '/relatorios': typeof RelatoriosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/alertas': typeof AlertasRoute
+  '/auditoria-ia': typeof AuditoriaIaRoute
+  '/configuracoes': typeof ConfiguracoesRoute
+  '/conformidade': typeof ConformidadeRoute
+  '/monitoramento': typeof MonitoramentoRoute
+  '/politicas': typeof PoliticasRoute
+  '/relatorios': typeof RelatoriosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/alertas': typeof AlertasRoute
+  '/auditoria-ia': typeof AuditoriaIaRoute
+  '/configuracoes': typeof ConfiguracoesRoute
+  '/conformidade': typeof ConformidadeRoute
+  '/monitoramento': typeof MonitoramentoRoute
+  '/politicas': typeof PoliticasRoute
+  '/relatorios': typeof RelatoriosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/alertas'
+    | '/auditoria-ia'
+    | '/configuracoes'
+    | '/conformidade'
+    | '/monitoramento'
+    | '/politicas'
+    | '/relatorios'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/alertas'
+    | '/auditoria-ia'
+    | '/configuracoes'
+    | '/conformidade'
+    | '/monitoramento'
+    | '/politicas'
+    | '/relatorios'
+  id:
+    | '__root__'
+    | '/'
+    | '/alertas'
+    | '/auditoria-ia'
+    | '/configuracoes'
+    | '/conformidade'
+    | '/monitoramento'
+    | '/politicas'
+    | '/relatorios'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AlertasRoute: typeof AlertasRoute
+  AuditoriaIaRoute: typeof AuditoriaIaRoute
+  ConfiguracoesRoute: typeof ConfiguracoesRoute
+  ConformidadeRoute: typeof ConformidadeRoute
+  MonitoramentoRoute: typeof MonitoramentoRoute
+  PoliticasRoute: typeof PoliticasRoute
+  RelatoriosRoute: typeof RelatoriosRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +143,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/alertas': {
+      id: '/alertas'
+      path: '/alertas'
+      fullPath: '/alertas'
+      preLoaderRoute: typeof AlertasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auditoria-ia': {
+      id: '/auditoria-ia'
+      path: '/auditoria-ia'
+      fullPath: '/auditoria-ia'
+      preLoaderRoute: typeof AuditoriaIaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/configuracoes': {
+      id: '/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof ConfiguracoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/conformidade': {
+      id: '/conformidade'
+      path: '/conformidade'
+      fullPath: '/conformidade'
+      preLoaderRoute: typeof ConformidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/monitoramento': {
+      id: '/monitoramento'
+      path: '/monitoramento'
+      fullPath: '/monitoramento'
+      preLoaderRoute: typeof MonitoramentoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/politicas': {
+      id: '/politicas'
+      path: '/politicas'
+      fullPath: '/politicas'
+      preLoaderRoute: typeof PoliticasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/relatorios': {
+      id: '/relatorios'
+      path: '/relatorios'
+      fullPath: '/relatorios'
+      preLoaderRoute: typeof RelatoriosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AlertasRoute: AlertasRoute,
+  AuditoriaIaRoute: AuditoriaIaRoute,
+  ConfiguracoesRoute: ConfiguracoesRoute,
+  ConformidadeRoute: ConformidadeRoute,
+  MonitoramentoRoute: MonitoramentoRoute,
+  PoliticasRoute: PoliticasRoute,
+  RelatoriosRoute: RelatoriosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
