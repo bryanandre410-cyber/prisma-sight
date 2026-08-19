@@ -51,6 +51,7 @@ export const alerts: {
   time: string;
   severity: Severity;
   action: string;
+  status: "pendente" | "resolvido" | "reconhecido";
 }[] = [
   {
     id: "AL-1042",
@@ -59,6 +60,7 @@ export const alerts: {
     time: "15:24",
     severity: "alto",
     action: "Revogar sessão e revisar permissões do usuário.",
+    status: "pendente",
   },
   {
     id: "AL-1041",
@@ -67,6 +69,7 @@ export const alerts: {
     time: "14:08",
     severity: "medio",
     action: "Aplicar pseudonimização antes do próximo treino.",
+    status: "pendente",
   },
   {
     id: "AL-1040",
@@ -75,6 +78,7 @@ export const alerts: {
     time: "13:47",
     severity: "baixo",
     action: "Confirmar base legal do compartilhamento.",
+    status: "pendente",
   },
   {
     id: "AL-1039",
@@ -83,6 +87,7 @@ export const alerts: {
     time: "11:12",
     severity: "alto",
     action: "Bloquear IP e abrir incidente de segurança.",
+    status: "pendente",
   },
   {
     id: "AL-1038",
@@ -91,6 +96,7 @@ export const alerts: {
     time: "09:30",
     severity: "medio",
     action: "Executar rotina de descarte automático.",
+    status: "pendente",
   },
 ];
 

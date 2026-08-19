@@ -9,6 +9,7 @@ import {
   ScrollText,
   ShieldCheck,
   Settings,
+  Users,
 } from "lucide-react";
 
 import {
@@ -32,6 +33,7 @@ const items = [
   { title: "Alertas e Riscos", url: "/alertas", icon: Bell },
   { title: "Políticas de Privacidade", url: "/politicas", icon: ScrollText },
   { title: "Relatórios", url: "/relatorios", icon: FileText },
+  { title: "Administração", url: "/administracao", icon: Users },
   { title: "Configurações", url: "/configuracoes", icon: Settings },
 ] as const;
 
