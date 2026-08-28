@@ -14,7 +14,72 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      analyses: {
+        Row: {
+          compliance_score: number
+          created_at: string
+          findings: Json
+          id: string
+          records_scanned: number
+          risks_found: number
+          scope: string
+          source: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          compliance_score?: number
+          created_at?: string
+          findings?: Json
+          id?: string
+          records_scanned?: number
+          risks_found?: number
+          scope?: string
+          source: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          compliance_score?: number
+          created_at?: string
+          findings?: Json
+          id?: string
+          records_scanned?: number
+          risks_found?: number
+          scope?: string
+          source?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          cnpj: string | null
+          company_name: string
+          created_at: string
+          id: string
+          sector: string | null
+          updated_at: string
+        }
+        Insert: {
+          cnpj?: string | null
+          company_name?: string
+          created_at?: string
+          id: string
+          sector?: string | null
+          updated_at?: string
+        }
+        Update: {
+          cnpj?: string | null
+          company_name?: string
+          created_at?: string
+          id?: string
+          sector?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
