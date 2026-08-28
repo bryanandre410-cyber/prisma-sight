@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedAdministracaoRouteImport } from './routes/_authenticated/administracao'
 import { Route as AuthenticatedAlertasRouteImport } from './routes/_authenticated/alertas'
+import { Route as AuthenticatedAnaliseRouteImport } from './routes/_authenticated/analise'
 import { Route as AuthenticatedAuditoriaIaRouteImport } from './routes/_authenticated/auditoria-ia'
 import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
 import { Route as AuthenticatedConformidadeRouteImport } from './routes/_authenticated/conformidade'
@@ -45,6 +46,11 @@ const AuthenticatedAdministracaoRoute =
 const AuthenticatedAlertasRoute = AuthenticatedAlertasRouteImport.update({
   id: '/alertas',
   path: '/alertas',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAnaliseRoute = AuthenticatedAnaliseRouteImport.update({
+  id: '/analise',
+  path: '/analise',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedAuditoriaIaRoute =
@@ -92,6 +98,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/administracao': typeof AuthenticatedAdministracaoRoute
   '/alertas': typeof AuthenticatedAlertasRoute
+  '/analise': typeof AuthenticatedAnaliseRoute
   '/auditoria-ia': typeof AuthenticatedAuditoriaIaRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/conformidade': typeof AuthenticatedConformidadeRoute
@@ -105,6 +112,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/administracao': typeof AuthenticatedAdministracaoRoute
   '/alertas': typeof AuthenticatedAlertasRoute
+  '/analise': typeof AuthenticatedAnaliseRoute
   '/auditoria-ia': typeof AuthenticatedAuditoriaIaRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/conformidade': typeof AuthenticatedConformidadeRoute
@@ -120,6 +128,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/administracao': typeof AuthenticatedAdministracaoRoute
   '/_authenticated/alertas': typeof AuthenticatedAlertasRoute
+  '/_authenticated/analise': typeof AuthenticatedAnaliseRoute
   '/_authenticated/auditoria-ia': typeof AuthenticatedAuditoriaIaRoute
   '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/_authenticated/conformidade': typeof AuthenticatedConformidadeRoute
@@ -135,6 +144,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/administracao'
     | '/alertas'
+    | '/analise'
     | '/auditoria-ia'
     | '/configuracoes'
     | '/conformidade'
@@ -148,6 +158,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/administracao'
     | '/alertas'
+    | '/analise'
     | '/auditoria-ia'
     | '/configuracoes'
     | '/conformidade'
@@ -162,6 +173,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/administracao'
     | '/_authenticated/alertas'
+    | '/_authenticated/analise'
     | '/_authenticated/auditoria-ia'
     | '/_authenticated/configuracoes'
     | '/_authenticated/conformidade'
@@ -212,6 +224,13 @@ declare module '@tanstack/react-router' {
       path: '/alertas'
       fullPath: '/alertas'
       preLoaderRoute: typeof AuthenticatedAlertasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/analise': {
+      id: '/_authenticated/analise'
+      path: '/analise'
+      fullPath: '/analise'
+      preLoaderRoute: typeof AuthenticatedAnaliseRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/auditoria-ia': {
@@ -269,6 +288,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdministracaoRoute: typeof AuthenticatedAdministracaoRoute
   AuthenticatedAlertasRoute: typeof AuthenticatedAlertasRoute
+  AuthenticatedAnaliseRoute: typeof AuthenticatedAnaliseRoute
   AuthenticatedAuditoriaIaRoute: typeof AuthenticatedAuditoriaIaRoute
   AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRoute
   AuthenticatedConformidadeRoute: typeof AuthenticatedConformidadeRoute
@@ -281,6 +301,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdministracaoRoute: AuthenticatedAdministracaoRoute,
   AuthenticatedAlertasRoute: AuthenticatedAlertasRoute,
+  AuthenticatedAnaliseRoute: AuthenticatedAnaliseRoute,
   AuthenticatedAuditoriaIaRoute: AuthenticatedAuditoriaIaRoute,
   AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRoute,
   AuthenticatedConformidadeRoute: AuthenticatedConformidadeRoute,
