@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { complianceControls } from "@/lib/prisma-data";
 
-export const Route = createFileRoute("/conformidade")({
+export const Route = createFileRoute("/_authenticated/conformidade")({
   head: () => ({
     meta: [
       { title: "Conformidade LGPD — Prisma One" },

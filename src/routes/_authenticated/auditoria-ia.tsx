@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { aiModels } from "@/lib/prisma-data";
 
-export const Route = createFileRoute("/auditoria-ia")({
+export const Route = createFileRoute("/_authenticated/auditoria-ia")({
   head: () => ({
     meta: [
       { title: "Auditoria de IA — Prisma One" },

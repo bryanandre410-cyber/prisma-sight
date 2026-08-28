@@ -7,13 +7,14 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AppSidebar } from "@/components/prisma/AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Bell, HelpCircle } from "lucide-react";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -126,6 +127,42 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("isAuthenticated") === "true";
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    const pathname = router.state.location.pathname;
+    if (!isAuthenticated && pathname !== "/login") {
+      router.navigate({ to: "/login" });
+    }
+  }, [isAuthenticated, router]);
+
+  if (!isAuthenticated) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <Outlet />
+        <Toaster />
+      </QueryClientProvider>
+    );
+  }
+
+  const userCompany = typeof window !== "undefined" ? localStorage.getItem("userCompany") || "Empresa" : "Empresa";
+  const userEmail = typeof window !== "undefined" ? localStorage.getItem("userEmail") || "admin@empresa.com" : "admin@empresa.com";
+
+  const handleLogout = () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("isAuthenticated");
+      localStorage.removeItem("userCompany");
+      localStorage.removeItem("userEmail");
+    }
+    setIsAuthenticated(false);
+    router.navigate({ to: "/login" });
+  };
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -146,14 +183,18 @@ function RootComponent() {
                     className="flex size-8 items-center justify-center rounded-full text-xs font-semibold text-primary-foreground"
                     style={{ backgroundImage: "var(--gradient-primary)" }}
                   >
-                    AD
+                    {userEmail.substring(0, 2).toUpperCase()}
                   </div>
                   <div className="hidden leading-tight sm:block">
-                    <p className="text-sm font-medium">Administrador</p>
-                    <p className="text-[11px] text-muted-foreground">
-                      Responsável pela Privacidade
-                    </p>
+                    <p className="text-sm font-medium">{userCompany}</p>
+                    <p className="text-[11px] text-muted-foreground">{userEmail}</p>
                   </div>
+                  <button
+                    onClick={handleLogout}
+                    className="ml-2 text-xs text-muted-foreground hover:text-foreground"
+                  >
+                    Sair
+                  </button>
                 </div>
               </div>
             </header>
@@ -163,6 +204,7 @@ function RootComponent() {
             </main>
           </div>
         </div>
+        <Toaster />
       </SidebarProvider>
     </QueryClientProvider>
   );

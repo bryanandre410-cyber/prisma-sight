@@ -1,10 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { Check } from "lucide-react";
 
 import { PageShell, Panel } from "@/components/prisma/PageShell";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
-export const Route = createFileRoute("/configuracoes")({
+export const Route = createFileRoute("/_authenticated/configuracoes")({
   head: () => ({
     meta: [
       { title: "Configurações — Prisma One" },
@@ -37,6 +41,29 @@ const preferences = [
 ];
 
 function ConfiguracoesPage() {
+  const [preferencesState, setPreferencesState] = useState<Record<string, boolean>>({
+    "tempo-real": true,
+    "ia": true,
+    "email": true,
+    "retencao": false,
+  });
+
+  const handlePreferenceChange = (id: string, checked: boolean) => {
+    setPreferencesState((prev) => ({ ...prev, [id]: checked }));
+    
+    const pref = preferences.find((p) => p.id === id);
+    if (pref) {
+      toast.success(
+        <div className="flex items-center gap-2">
+          <Check className="size-4" />
+          <span>
+            {pref.label} {checked ? "ativado" : "desativado"}
+          </span>
+        </div>
+      );
+    }
+  };
+
   return (
     <PageShell
       title="Configurações"
@@ -62,7 +89,7 @@ function ConfiguracoesPage() {
 
         <Panel title="Preferências de monitoramento">
           <ul className="space-y-4">
-            {preferences.map((p, i) => (
+            {preferences.map((p) => (
               <li key={p.id} className="flex items-start justify-between gap-4">
                 <div>
                   <Label htmlFor={p.id} className="text-sm font-medium">
@@ -70,7 +97,11 @@ function ConfiguracoesPage() {
                   </Label>
                   <p className="mt-1 text-xs text-muted-foreground">{p.desc}</p>
                 </div>
-                <Switch id={p.id} defaultChecked={i !== 3} />
+                <Switch
+                  id={p.id}
+                  checked={preferencesState[p.id]}
+                  onCheckedChange={(checked) => handlePreferenceChange(p.id, checked)}
+                />
               </li>
             ))}
           </ul>
