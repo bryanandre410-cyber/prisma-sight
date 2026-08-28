@@ -1,204 +1,108 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Activity, Database, ShieldCheck, ShieldAlert } from "lucide-react";
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
-
-import { PageShell, Panel, SeverityPill } from "@/components/prisma/PageShell";
-import { alerts, overviewMetrics, policies, trafficSeries } from "@/lib/prisma-data";
+import { Activity, BarChart3, Bot, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Prisma One — Centro de controle de privacidade e IA" },
+      { title: "Prisma One — Privacidade e IA sob controle" },
       {
         name: "description",
         content:
-          "Visibilidade completa da privacidade e segurança dos seus dados e IA: monitoramento contínuo, LGPD e alertas.",
+          "Centro de controle de privacidade, conformidade LGPD e auditoria de IA para empresas. Acesse com a conta da sua empresa.",
       },
       { property: "og:title", content: "Prisma One — Privacidade e IA sob controle" },
       {
         property: "og:description",
-        content: "Monitoramento contínuo, conformidade LGPD e auditoria de IA em um só painel.",
+        content: "Monitoramento contínuo, LGPD e auditoria de IA em um único painel corporativo.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: Index,
+  component: Landing,
 });
 
-const icons = [Database, Activity, ShieldAlert, ShieldCheck];
-const tones: Record<string, string> = {
-  primary: "text-primary-glow border-primary/40 bg-primary/15",
-  glow: "text-primary-glow border-primary-glow/40 bg-primary-glow/15",
-  danger: "text-destructive border-destructive/40 bg-destructive/15",
-  success: "text-success border-success/40 bg-success/15",
-};
+const highlights = [
+  {
+    icon: Activity,
+    title: "Monitoramento contínuo",
+    text: "Acompanhe 24h o fluxo de dados, acessos e compartilhamentos suspeitos.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Conformidade LGPD",
+    text: "Veja o nível de adequação da empresa e o que ainda precisa ser ajustado.",
+  },
+  {
+    icon: Bot,
+    title: "Auditoria de IA",
+    text: "Avalie viés, vazamento e uso indevido de dados pelos modelos de IA.",
+  },
+];
 
-function Index() {
+function Landing() {
   return (
-    <PageShell
-      title="Visão Geral"
-      subtitle="Visibilidade completa da privacidade e segurança dos seus dados e IA."
-    >
-      <div className="grid gap-5 xl:grid-cols-[1fr_360px]">
-        <div className="space-y-5">
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {overviewMetrics.map((m, i) => {
-              const Icon = icons[i] ?? Database;
-              return (
-                <Panel key={m.key} className="text-center">
-                  <p className="text-xs text-muted-foreground">{m.label}</p>
-                  <p className="mt-2 text-3xl font-semibold">
-                    {m.value}
-                    {m.unit && <span className="ml-1 text-lg">{m.unit}</span>}
-                  </p>
-                  <p
-                    className={`mt-1 text-xs ${
-                      m.tone === "danger"
-                        ? "text-destructive"
-                        : m.tone === "success"
-                          ? "text-success"
-                          : "text-muted-foreground"
-                    }`}
-                  >
-                    {m.delta}
-                  </p>
-                  <div
-                    className={`mx-auto mt-4 flex size-12 items-center justify-center rounded-full border ${tones[m.tone]}`}
-                  >
-                    <Icon className="size-5" />
-                  </div>
-                </Panel>
-              );
-            })}
+    <div className="min-h-screen bg-background">
+      <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-6">
+        <div className="flex items-center gap-3">
+          <div
+            className="flex size-10 items-center justify-center rounded-xl"
+            style={{ backgroundImage: "var(--gradient-primary)", boxShadow: "var(--shadow-glow)" }}
+          >
+            <BarChart3 className="size-5 text-primary-foreground" />
           </div>
-
-          <Panel
-            title="Monitoramento Contínuo de Dados"
-            description="Análise contínua do fluxo e uso de dados na sua organização."
-            action={
-              <span className="rounded-lg border border-border px-3 py-1.5 text-xs text-muted-foreground">
-                Últimas 24 horas
-              </span>
-            }
-          >
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={trafficSeries}>
-                  <defs>
-                    <linearGradient id="overview" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="var(--color-primary)" stopOpacity={0.5} />
-                      <stop offset="100%" stopColor="var(--color-primary)" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid stroke="var(--color-border)" vertical={false} />
-                  <XAxis
-                    dataKey="hora"
-                    stroke="var(--color-muted-foreground)"
-                    fontSize={11}
-                    interval={2}
-                  />
-                  <YAxis
-                    stroke="var(--color-muted-foreground)"
-                    fontSize={11}
-                    unit=" TB"
-                    width={56}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      background: "var(--color-popover)",
-                      border: "1px solid var(--color-border)",
-                      borderRadius: 12,
-                      color: "var(--color-foreground)",
-                    }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="volume"
-                    stroke="var(--color-primary-glow)"
-                    strokeWidth={2}
-                    fill="url(#overview)"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-          </Panel>
+          <p className="text-lg font-semibold tracking-tight">Prisma one</p>
         </div>
+        <Link
+          to="/auth"
+          className="rounded-md border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-accent"
+        >
+          Entrar
+        </Link>
+      </header>
 
-        <div className="space-y-5">
-          <Panel
-            title="Alertas Recentes"
-            action={
-              <Link to="/alertas" className="text-xs text-primary-glow hover:underline">
-                Ver todos
-              </Link>
-            }
-          >
-            <ul className="space-y-3">
-              {alerts.slice(0, 3).map((a) => (
-                <li key={a.id} className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-sm font-medium leading-snug">{a.title}</p>
-                    <p className="text-xs text-muted-foreground">{a.context}</p>
-                  </div>
-                  <div className="shrink-0 text-right">
-                    <p className="text-xs text-muted-foreground">{a.time}</p>
-                    <div className="mt-1">
-                      <SeverityPill severity={a.severity} />
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </Panel>
+      <main className="mx-auto w-full max-w-6xl px-5 pb-20">
+        <section className="py-16 text-center md:py-24">
+          <p className="text-xs uppercase tracking-[0.2em] text-primary-glow">
+            Privacidade inteligente para um futuro seguro
+          </p>
+          <h1 className="mx-auto mt-4 max-w-3xl text-4xl font-semibold tracking-tight md:text-6xl">
+            O centro de controle de privacidade da sua empresa na era da IA
+          </h1>
+          <p className="mx-auto mt-5 max-w-2xl text-base text-muted-foreground">
+            Monitore dados, identifique riscos, comprove conformidade com a LGPD e audite seus
+            modelos de Inteligência Artificial — tudo em um só lugar.
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Link
+              to="/auth"
+              className="rounded-md px-5 py-2.5 text-sm font-medium text-primary-foreground"
+              style={{
+                backgroundImage: "var(--gradient-primary)",
+                boxShadow: "var(--shadow-glow)",
+              }}
+            >
+              Acessar com a empresa
+            </Link>
+            <Link
+              to="/auth"
+              className="rounded-md border border-border px-5 py-2.5 text-sm font-medium transition-colors hover:bg-accent"
+            >
+              Cadastrar empresa
+            </Link>
+          </div>
+        </section>
 
-          <Panel
-            title="Políticas de Privacidade"
-            action={
-              <Link to="/politicas" className="text-xs text-primary-glow hover:underline">
-                Ver todas
-              </Link>
-            }
-          >
-            <ul className="space-y-3">
-              {policies.map((p) => (
-                <li key={p.name} className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-sm font-medium leading-snug">{p.name}</p>
-                    <p className="text-xs text-muted-foreground">Atualizada em {p.updated}</p>
-                  </div>
-                  <span
-                    className={`shrink-0 text-xs ${
-                      p.status === "Vigente" ? "text-success" : "text-warning"
-                    }`}
-                  >
-                    • {p.status}
-                  </span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-4 border-t border-border pt-3 text-xs text-muted-foreground">
-              4 políticas ativas · 100% alinhadas à LGPD
-            </p>
-          </Panel>
-        </div>
-      </div>
-
-      <div
-        className="mt-5 rounded-2xl border border-primary/30 p-6 text-center"
-        style={{ backgroundImage: "var(--gradient-surface)", boxShadow: "var(--shadow-glow)" }}
-      >
-        <p className="text-lg font-semibold">IA e Privacidade. Juntos por um futuro seguro.</p>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Prisma One protege seus dados, garante conformidade e fortalece a confiança.
-        </p>
-      </div>
-    </PageShell>
+        <section className="grid gap-4 md:grid-cols-3">
+          {highlights.map((item) => (
+            <article key={item.title} className="surface-card rounded-2xl border border-border p-6">
+              <item.icon className="size-6 text-primary-glow" />
+              <h2 className="mt-4 text-base font-semibold">{item.title}</h2>
+              <p className="mt-2 text-sm text-muted-foreground">{item.text}</p>
+            </article>
+          ))}
+        </section>
+      </main>
+    </div>
   );
 }

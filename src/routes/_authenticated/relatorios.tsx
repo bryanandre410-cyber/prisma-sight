@@ -5,7 +5,7 @@ import { PageShell, Panel } from "@/components/prisma/PageShell";
 import { Button } from "@/components/ui/button";
 import { reports } from "@/lib/prisma-data";
 
-export const Route = createFileRoute("/relatorios")({
+export const Route = createFileRoute("/_authenticated/relatorios")({
   head: () => ({
     meta: [
       { title: "Relatórios — Prisma One" },

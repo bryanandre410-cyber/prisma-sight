@@ -14,7 +14,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-export const Route = createFileRoute("/alertas")({
+export const Route = createFileRoute("/_authenticated/alertas")({
   head: () => ({
     meta: [
       { title: "Alertas e Riscos — Prisma One" },

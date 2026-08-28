@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export const Route = createFileRoute("/politicas")({
+export const Route = createFileRoute("/_authenticated/politicas")({
   head: () => ({
     meta: [
       { title: "Políticas de Privacidade — Prisma One" },
