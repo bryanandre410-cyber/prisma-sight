@@ -12,7 +12,7 @@ import {
 import { PageShell, Panel, SeverityPill } from "@/components/prisma/PageShell";
 import { alerts, dataFlows, trafficSeries } from "@/lib/prisma-data";
 
-export const Route = createFileRoute("/monitoramento")({
+export const Route = createFileRoute("/_authenticated/monitoramento")({
   head: () => ({
     meta: [
       { title: "Monitoramento Contínuo — Prisma One" },

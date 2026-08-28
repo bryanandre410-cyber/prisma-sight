@@ -5,7 +5,7 @@ import { PageShell, Panel } from "@/components/prisma/PageShell";
 import { Button } from "@/components/ui/button";
 import { policies } from "@/lib/prisma-data";
 
-export const Route = createFileRoute("/politicas")({
+export const Route = createFileRoute("/_authenticated/politicas")({
   head: () => ({
     meta: [
       { title: "Políticas de Privacidade — Prisma One" },
