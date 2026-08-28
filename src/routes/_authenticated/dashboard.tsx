@@ -13,7 +13,7 @@ import {
 import { PageShell, Panel, SeverityPill } from "@/components/prisma/PageShell";
 import { alerts, overviewMetrics, policies, trafficSeries } from "@/lib/prisma-data";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
       { title: "Prisma One — Centro de controle de privacidade e IA" },

@@ -86,7 +86,7 @@ const defaultUsers: User[] = [
   },
 ];
 
-export const Route = createFileRoute("/administracao")({
+export const Route = createFileRoute("/_authenticated/administracao")({
   head: () => ({
     meta: [
       { title: "Administração — Prisma One" },
