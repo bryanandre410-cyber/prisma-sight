@@ -15,9 +15,11 @@ import { Route as AlertasRouteImport } from './routes/alertas'
 import { Route as AuditoriaIaRouteImport } from './routes/auditoria-ia'
 import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
 import { Route as ConformidadeRouteImport } from './routes/conformidade'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as MonitoramentoRouteImport } from './routes/monitoramento'
 import { Route as PoliticasRouteImport } from './routes/politicas'
 import { Route as RelatoriosRouteImport } from './routes/relatorios'
+import { Route as SimulacaoRouteImport } from './routes/simulacao'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -49,6 +51,11 @@ const ConformidadeRoute = ConformidadeRouteImport.update({
   path: '/conformidade',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MonitoramentoRoute = MonitoramentoRouteImport.update({
   id: '/monitoramento',
   path: '/monitoramento',
@@ -64,6 +71,11 @@ const RelatoriosRoute = RelatoriosRouteImport.update({
   path: '/relatorios',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SimulacaoRoute = SimulacaoRouteImport.update({
+  id: '/simulacao',
+  path: '/simulacao',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -72,9 +84,11 @@ export interface FileRoutesByFullPath {
   '/auditoria-ia': typeof AuditoriaIaRoute
   '/configuracoes': typeof ConfiguracoesRoute
   '/conformidade': typeof ConformidadeRoute
+  '/login': typeof LoginRoute
   '/monitoramento': typeof MonitoramentoRoute
   '/politicas': typeof PoliticasRoute
   '/relatorios': typeof RelatoriosRoute
+  '/simulacao': typeof SimulacaoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -83,9 +97,11 @@ export interface FileRoutesByTo {
   '/auditoria-ia': typeof AuditoriaIaRoute
   '/configuracoes': typeof ConfiguracoesRoute
   '/conformidade': typeof ConformidadeRoute
+  '/login': typeof LoginRoute
   '/monitoramento': typeof MonitoramentoRoute
   '/politicas': typeof PoliticasRoute
   '/relatorios': typeof RelatoriosRoute
+  '/simulacao': typeof SimulacaoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -95,9 +111,11 @@ export interface FileRoutesById {
   '/auditoria-ia': typeof AuditoriaIaRoute
   '/configuracoes': typeof ConfiguracoesRoute
   '/conformidade': typeof ConformidadeRoute
+  '/login': typeof LoginRoute
   '/monitoramento': typeof MonitoramentoRoute
   '/politicas': typeof PoliticasRoute
   '/relatorios': typeof RelatoriosRoute
+  '/simulacao': typeof SimulacaoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -108,9 +126,11 @@ export interface FileRouteTypes {
     | '/auditoria-ia'
     | '/configuracoes'
     | '/conformidade'
+    | '/login'
     | '/monitoramento'
     | '/politicas'
     | '/relatorios'
+    | '/simulacao'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -119,9 +139,11 @@ export interface FileRouteTypes {
     | '/auditoria-ia'
     | '/configuracoes'
     | '/conformidade'
+    | '/login'
     | '/monitoramento'
     | '/politicas'
     | '/relatorios'
+    | '/simulacao'
   id:
     | '__root__'
     | '/'
@@ -130,9 +152,11 @@ export interface FileRouteTypes {
     | '/auditoria-ia'
     | '/configuracoes'
     | '/conformidade'
+    | '/login'
     | '/monitoramento'
     | '/politicas'
     | '/relatorios'
+    | '/simulacao'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -142,9 +166,11 @@ export interface RootRouteChildren {
   AuditoriaIaRoute: typeof AuditoriaIaRoute
   ConfiguracoesRoute: typeof ConfiguracoesRoute
   ConformidadeRoute: typeof ConformidadeRoute
+  LoginRoute: typeof LoginRoute
   MonitoramentoRoute: typeof MonitoramentoRoute
   PoliticasRoute: typeof PoliticasRoute
   RelatoriosRoute: typeof RelatoriosRoute
+  SimulacaoRoute: typeof SimulacaoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -191,6 +217,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConformidadeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/monitoramento': {
       id: '/monitoramento'
       path: '/monitoramento'
@@ -212,6 +245,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RelatoriosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/simulacao': {
+      id: '/simulacao'
+      path: '/simulacao'
+      fullPath: '/simulacao'
+      preLoaderRoute: typeof SimulacaoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -222,9 +262,11 @@ const rootRouteChildren: RootRouteChildren = {
   AuditoriaIaRoute: AuditoriaIaRoute,
   ConfiguracoesRoute: ConfiguracoesRoute,
   ConformidadeRoute: ConformidadeRoute,
+  LoginRoute: LoginRoute,
   MonitoramentoRoute: MonitoramentoRoute,
   PoliticasRoute: PoliticasRoute,
   RelatoriosRoute: RelatoriosRoute,
+  SimulacaoRoute: SimulacaoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
