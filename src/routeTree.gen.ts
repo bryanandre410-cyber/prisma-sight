@@ -10,17 +10,26 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdministradorRouteImport } from './routes/administrador'
 import { Route as AlertasRouteImport } from './routes/alertas'
 import { Route as AuditoriaIaRouteImport } from './routes/auditoria-ia'
 import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
 import { Route as ConformidadeRouteImport } from './routes/conformidade'
+import { Route as EmpresasRouteImport } from './routes/empresas'
 import { Route as MonitoramentoRouteImport } from './routes/monitoramento'
+import { Route as NovaEmpresaRouteImport } from './routes/nova-empresa'
 import { Route as PoliticasRouteImport } from './routes/politicas'
 import { Route as RelatoriosRouteImport } from './routes/relatorios'
+import { Route as SimulacaoRouteImport } from './routes/simulacao'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdministradorRoute = AdministradorRouteImport.update({
+  id: '/administrador',
+  path: '/administrador',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AlertasRoute = AlertasRouteImport.update({
@@ -43,9 +52,19 @@ const ConformidadeRoute = ConformidadeRouteImport.update({
   path: '/conformidade',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EmpresasRoute = EmpresasRouteImport.update({
+  id: '/empresas',
+  path: '/empresas',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MonitoramentoRoute = MonitoramentoRouteImport.update({
   id: '/monitoramento',
   path: '/monitoramento',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NovaEmpresaRoute = NovaEmpresaRouteImport.update({
+  id: '/nova-empresa',
+  path: '/nova-empresa',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PoliticasRoute = PoliticasRouteImport.update({
@@ -58,80 +77,113 @@ const RelatoriosRoute = RelatoriosRouteImport.update({
   path: '/relatorios',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SimulacaoRoute = SimulacaoRouteImport.update({
+  id: '/simulacao',
+  path: '/simulacao',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/administrador': typeof AdministradorRoute
   '/alertas': typeof AlertasRoute
   '/auditoria-ia': typeof AuditoriaIaRoute
   '/configuracoes': typeof ConfiguracoesRoute
   '/conformidade': typeof ConformidadeRoute
+  '/empresas': typeof EmpresasRoute
   '/monitoramento': typeof MonitoramentoRoute
+  '/nova-empresa': typeof NovaEmpresaRoute
   '/politicas': typeof PoliticasRoute
   '/relatorios': typeof RelatoriosRoute
+  '/simulacao': typeof SimulacaoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/administrador': typeof AdministradorRoute
   '/alertas': typeof AlertasRoute
   '/auditoria-ia': typeof AuditoriaIaRoute
   '/configuracoes': typeof ConfiguracoesRoute
   '/conformidade': typeof ConformidadeRoute
+  '/empresas': typeof EmpresasRoute
   '/monitoramento': typeof MonitoramentoRoute
+  '/nova-empresa': typeof NovaEmpresaRoute
   '/politicas': typeof PoliticasRoute
   '/relatorios': typeof RelatoriosRoute
+  '/simulacao': typeof SimulacaoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/administrador': typeof AdministradorRoute
   '/alertas': typeof AlertasRoute
   '/auditoria-ia': typeof AuditoriaIaRoute
   '/configuracoes': typeof ConfiguracoesRoute
   '/conformidade': typeof ConformidadeRoute
+  '/empresas': typeof EmpresasRoute
   '/monitoramento': typeof MonitoramentoRoute
+  '/nova-empresa': typeof NovaEmpresaRoute
   '/politicas': typeof PoliticasRoute
   '/relatorios': typeof RelatoriosRoute
+  '/simulacao': typeof SimulacaoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/administrador'
     | '/alertas'
     | '/auditoria-ia'
     | '/configuracoes'
     | '/conformidade'
+    | '/empresas'
     | '/monitoramento'
+    | '/nova-empresa'
     | '/politicas'
     | '/relatorios'
+    | '/simulacao'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/administrador'
     | '/alertas'
     | '/auditoria-ia'
     | '/configuracoes'
     | '/conformidade'
+    | '/empresas'
     | '/monitoramento'
+    | '/nova-empresa'
     | '/politicas'
     | '/relatorios'
+    | '/simulacao'
   id:
     | '__root__'
     | '/'
+    | '/administrador'
     | '/alertas'
     | '/auditoria-ia'
     | '/configuracoes'
     | '/conformidade'
+    | '/empresas'
     | '/monitoramento'
+    | '/nova-empresa'
     | '/politicas'
     | '/relatorios'
+    | '/simulacao'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdministradorRoute: typeof AdministradorRoute
   AlertasRoute: typeof AlertasRoute
   AuditoriaIaRoute: typeof AuditoriaIaRoute
   ConfiguracoesRoute: typeof ConfiguracoesRoute
   ConformidadeRoute: typeof ConformidadeRoute
+  EmpresasRoute: typeof EmpresasRoute
   MonitoramentoRoute: typeof MonitoramentoRoute
+  NovaEmpresaRoute: typeof NovaEmpresaRoute
   PoliticasRoute: typeof PoliticasRoute
   RelatoriosRoute: typeof RelatoriosRoute
+  SimulacaoRoute: typeof SimulacaoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -141,6 +193,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/administrador': {
+      id: '/administrador'
+      path: '/administrador'
+      fullPath: '/administrador'
+      preLoaderRoute: typeof AdministradorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/alertas': {
@@ -171,11 +230,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConformidadeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/empresas': {
+      id: '/empresas'
+      path: '/empresas'
+      fullPath: '/empresas'
+      preLoaderRoute: typeof EmpresasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/monitoramento': {
       id: '/monitoramento'
       path: '/monitoramento'
       fullPath: '/monitoramento'
       preLoaderRoute: typeof MonitoramentoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nova-empresa': {
+      id: '/nova-empresa'
+      path: '/nova-empresa'
+      fullPath: '/nova-empresa'
+      preLoaderRoute: typeof NovaEmpresaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/politicas': {
@@ -192,18 +265,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RelatoriosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/simulacao': {
+      id: '/simulacao'
+      path: '/simulacao'
+      fullPath: '/simulacao'
+      preLoaderRoute: typeof SimulacaoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdministradorRoute: AdministradorRoute,
   AlertasRoute: AlertasRoute,
   AuditoriaIaRoute: AuditoriaIaRoute,
   ConfiguracoesRoute: ConfiguracoesRoute,
   ConformidadeRoute: ConformidadeRoute,
+  EmpresasRoute: EmpresasRoute,
   MonitoramentoRoute: MonitoramentoRoute,
+  NovaEmpresaRoute: NovaEmpresaRoute,
   PoliticasRoute: PoliticasRoute,
   RelatoriosRoute: RelatoriosRoute,
+  SimulacaoRoute: SimulacaoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
