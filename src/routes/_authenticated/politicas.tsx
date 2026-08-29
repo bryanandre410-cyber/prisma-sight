@@ -64,7 +64,7 @@ const versionsData: Record<string, { version: string; date: string; changes: str
 };
 
 function PoliticasPage() {
-  const [policyList, setPolicyList] = useState<Policy[]>(policies);
+  const [policyList, setPolicyList] = useState<Policy[]>(policies as Policy[]);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isVersionsDialogOpen, setIsVersionsDialogOpen] = useState(false);

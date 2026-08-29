@@ -22,7 +22,7 @@ function AuthenticatedLayout() {
   const queryClient = useQueryClient();
 
   const company =
-    (user?.user_metadata?.company_name as string | undefined) || user?.email || "Empresa";
+    (user?.user_metadata?.['company_name'] as string | undefined) || user?.email || "Empresa";
   const initials = company.slice(0, 2).toUpperCase();
 
   async function handleSignOut() {
