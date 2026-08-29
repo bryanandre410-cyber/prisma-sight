@@ -4,7 +4,6 @@ import { BarChart3, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -40,12 +39,12 @@ function AuthPage() {
   const [cnpj, setCnpj] = useState("");
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/dashboard", replace: true });
+    supabase.auth.getSession().then(({ data: sessionData }: any) => {
+      if (sessionData?.session) navigate({ to: "/administracao", replace: true });
     });
-    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: sub } = supabase.auth.onAuthStateChange((event: any, session: any) => {
       if (session && (event === "SIGNED_IN" || event === "INITIAL_SESSION")) {
-        navigate({ to: "/dashboard", replace: true });
+        navigate({ to: "/administracao", replace: true });
       }
     });
     return () => sub.subscription.unsubscribe();
@@ -59,7 +58,7 @@ function AuthPage() {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         toast.success("Acesso liberado");
-        navigate({ to: "/dashboard", replace: true });
+        navigate({ to: "/administracao", replace: true });
       } else {
         const { data, error } = await supabase.auth.signUp({
           email,
@@ -71,7 +70,7 @@ function AuthPage() {
         });
         if (error) throw error;
         if (data.session) {
-          navigate({ to: "/dashboard", replace: true });
+          navigate({ to: "/administracao", replace: true });
         } else {
           toast.success("Confira seu e-mail para confirmar o cadastro da empresa.");
         }
@@ -81,20 +80,6 @@ function AuthPage() {
     } finally {
       setLoading(false);
     }
-  }
-
-  async function handleGoogle() {
-    setLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
-    if (result.error) {
-      setLoading(false);
-      toast.error("Não foi possível entrar com o Google");
-      return;
-    }
-    if (result.redirected) return;
-    navigate({ to: "/dashboard", replace: true });
   }
 
   return (
@@ -175,16 +160,6 @@ function AuthPage() {
               {mode === "login" ? "Entrar" : "Criar acesso"}
             </Button>
           </form>
-
-          <div className="my-5 flex items-center gap-3 text-[11px] uppercase tracking-wide text-muted-foreground">
-            <span className="h-px flex-1 bg-border" />
-            ou
-            <span className="h-px flex-1 bg-border" />
-          </div>
-
-          <Button variant="outline" className="w-full" onClick={handleGoogle} disabled={loading}>
-            Continuar com Google
-          </Button>
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
             {mode === "login" ? "Ainda não tem acesso?" : "Já possui uma conta?"}{" "}

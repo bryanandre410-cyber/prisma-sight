@@ -10,15 +10,11 @@ import {
   ScrollText,
   ShieldCheck,
   Settings,
-<<<<<<< HEAD
   UserCog,
   Building2,
   Plus,
   ChevronRight,
   ChevronDown,
-=======
-  Users,
->>>>>>> f07ab04b69915504b7b225002961bf5a2022b50f
 } from "lucide-react";
 
 import {
@@ -51,7 +47,6 @@ const mainItems = [
   { title: "Alertas e Riscos", url: "/alertas", icon: Bell },
   { title: "Políticas de Privacidade", url: "/politicas", icon: ScrollText },
   { title: "Relatórios", url: "/relatorios", icon: FileText },
-<<<<<<< HEAD
 ] as const;
 
 const integrationItems = [
@@ -62,9 +57,6 @@ const integrationItems = [
 
 const adminItems = [
   { title: "Administrador", url: "/administrador", icon: UserCog },
-=======
-  { title: "Administração", url: "/administracao", icon: Users },
->>>>>>> f07ab04b69915504b7b225002961bf5a2022b50f
   { title: "Configurações", url: "/configuracoes", icon: Settings },
 ] as const;
 
