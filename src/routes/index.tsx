@@ -1,5 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Activity, BarChart3, Bot, ShieldCheck } from "lucide-react";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -12,15 +13,29 @@ export const Route = createFileRoute("/")({
       },
       { property: "og:title", content: "Prisma One — Privacidade e IA sob controle" },
       {
-        property: "og:description",
-        content: "Monitoramento contínuo, LGPD e auditoria de IA em um único painel corporativo.",
-      },
+        property: "og:description", content: "Monitoramento contínuo, LGPD e auditoria de IA em um único painel corporativo." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: Landing,
+  component: RootComponent,
 });
+
+function RootComponent() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+      if (isAuthenticated) {
+        // Redirect to dashboard if authenticated
+        window.location.href = "/_authenticated/dashboard";
+      }
+    }
+  }, [navigate]);
+
+  return <Landing />;
+}
 
 const highlights = [
   {

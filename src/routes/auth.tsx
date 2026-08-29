@@ -1,9 +1,9 @@
+
 import { useEffect, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { BarChart3, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -39,47 +39,31 @@ function AuthPage() {
   const [cnpj, setCnpj] = useState("");
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: sessionData }: any) => {
-      if (sessionData?.session) navigate({ to: "/administracao", replace: true });
-    });
-    const { data: sub } = supabase.auth.onAuthStateChange((event: any, session: any) => {
-      if (session && (event === "SIGNED_IN" || event === "INITIAL_SESSION")) {
-        navigate({ to: "/administracao", replace: true });
-      }
-    });
-    return () => sub.subscription.unsubscribe();
-  }, [navigate]);
+    if (typeof window !== "undefined") {
+      const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+      if (isAuthenticated) window.location.href = "/analise";
+    }
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    try {
-      if (mode === "login") {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        toast.success("Acesso liberado");
-        navigate({ to: "/administracao", replace: true });
-      } else {
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: window.location.origin,
-            data: { company_name: companyName, cnpj },
-          },
-        });
-        if (error) throw error;
-        if (data.session) {
-          navigate({ to: "/administracao", replace: true });
-        } else {
-          toast.success("Confira seu e-mail para confirmar o cadastro da empresa.");
+
+    // Simulação de autenticação
+    setTimeout(() => {
+      if (email && password && (mode === "login" || companyName)) {
+        if (typeof window !== "undefined") {
+          localStorage.setItem("isAuthenticated", "true");
+          localStorage.setItem("userCompany", companyName || "Empresa");
+          localStorage.setItem("userEmail", email);
         }
+        toast.success("Acesso liberado");
+        window.location.href = "/analise";
+      } else {
+        toast.error("Por favor, preencha todos os campos.");
       }
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Não foi possível continuar");
-    } finally {
       setLoading(false);
-    }
+    }, 1000);
   }
 
   return (

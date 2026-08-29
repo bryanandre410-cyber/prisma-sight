@@ -1,35 +1,35 @@
-import { createFileRoute, Outlet, redirect, useNavigate } from "@tanstack/react-router";
-import { useQueryClient } from "@tanstack/react-query";
+import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { Bell, HelpCircle, LogOut } from "lucide-react";
 
-import { supabase } from "@/integrations/supabase/client";
 import { AppSidebar } from "@/components/prisma/AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
-  beforeLoad: async () => {
-    const { data, error } = await supabase.auth.getUser();
-    if (error || !data.user) throw redirect({ to: "/login" });
-    return { user: data.user };
-  },
   component: AuthenticatedLayout,
 });
 
 function AuthenticatedLayout() {
-  const { user } = Route.useRouteContext();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
-  const company =
-    (user?.user_metadata?.company_name as string | undefined) || user?.email || "Empresa";
-  const initials = company.slice(0, 2).toUpperCase();
+  const userCompany = typeof window !== "undefined" ? localStorage.getItem("userCompany") || "Empresa" : "Empresa";
+  const initials = userCompany.slice(0, 2).toUpperCase();
 
-  async function handleSignOut() {
-    await queryClient.cancelQueries();
-    queryClient.clear();
-    await supabase.auth.signOut();
-    navigate({ to: "/auth", replace: true });
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+      if (!isAuthenticated) navigate({ to: "/auth" as any, replace: true });
+    }
+  }, [navigate]);
+
+  function handleSignOut() {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("isAuthenticated");
+      localStorage.removeItem("userCompany");
+      localStorage.removeItem("userEmail");
+    }
+    navigate({ to: "/auth" as any, replace: true });
   }
 
   return (
@@ -53,7 +53,7 @@ function AuthenticatedLayout() {
                   {initials}
                 </div>
                 <div className="hidden leading-tight sm:block">
-                  <p className="max-w-[180px] truncate text-sm font-medium">{company}</p>
+                  <p className="max-w-[180px] truncate text-sm font-medium">{userCompany}</p>
                   <p className="text-[11px] text-muted-foreground">
                     Responsável pela Privacidade
                   </p>

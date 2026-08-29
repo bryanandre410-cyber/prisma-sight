@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AdministradorRouteImport } from './routes/administrador'
+import { Route as AnaliseRouteImport } from './routes/analise'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as EmpresasRouteImport } from './routes/empresas'
 import { Route as LoginRouteImport } from './routes/login'
@@ -20,7 +21,6 @@ import { Route as PoliticasRouteImport } from './routes/politicas'
 import { Route as SimulacaoRouteImport } from './routes/simulacao'
 import { Route as AuthenticatedAdministracaoRouteImport } from './routes/_authenticated/administracao'
 import { Route as AuthenticatedAlertasRouteImport } from './routes/_authenticated/alertas'
-import { Route as AuthenticatedAnaliseRouteImport } from './routes/_authenticated/analise'
 import { Route as AuthenticatedAuditoriaIaRouteImport } from './routes/_authenticated/auditoria-ia'
 import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
 import { Route as AuthenticatedConformidadeRouteImport } from './routes/_authenticated/conformidade'
@@ -40,6 +40,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AdministradorRoute = AdministradorRouteImport.update({
   id: '/administrador',
   path: '/administrador',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnaliseRoute = AnaliseRouteImport.update({
+  id: '/analise',
+  path: '/analise',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -83,11 +88,6 @@ const AuthenticatedAlertasRoute = AuthenticatedAlertasRouteImport.update({
   path: '/alertas',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedAnaliseRoute = AuthenticatedAnaliseRouteImport.update({
-  id: '/analise',
-  path: '/analise',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedAuditoriaIaRoute =
   AuthenticatedAuditoriaIaRouteImport.update({
     id: '/auditoria-ia',
@@ -126,6 +126,7 @@ const AuthenticatedRelatoriosRoute = AuthenticatedRelatoriosRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/administrador': typeof AdministradorRoute
+  '/analise': typeof AnaliseRoute
   '/auth': typeof AuthRoute
   '/empresas': typeof EmpresasRoute
   '/login': typeof LoginRoute
@@ -134,7 +135,6 @@ export interface FileRoutesByFullPath {
   '/simulacao': typeof SimulacaoRoute
   '/administracao': typeof AuthenticatedAdministracaoRoute
   '/alertas': typeof AuthenticatedAlertasRoute
-  '/analise': typeof AuthenticatedAnaliseRoute
   '/auditoria-ia': typeof AuthenticatedAuditoriaIaRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/conformidade': typeof AuthenticatedConformidadeRoute
@@ -145,6 +145,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/administrador': typeof AdministradorRoute
+  '/analise': typeof AnaliseRoute
   '/auth': typeof AuthRoute
   '/empresas': typeof EmpresasRoute
   '/login': typeof LoginRoute
@@ -153,7 +154,6 @@ export interface FileRoutesByTo {
   '/simulacao': typeof SimulacaoRoute
   '/administracao': typeof AuthenticatedAdministracaoRoute
   '/alertas': typeof AuthenticatedAlertasRoute
-  '/analise': typeof AuthenticatedAnaliseRoute
   '/auditoria-ia': typeof AuthenticatedAuditoriaIaRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/conformidade': typeof AuthenticatedConformidadeRoute
@@ -166,6 +166,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/administrador': typeof AdministradorRoute
+  '/analise': typeof AnaliseRoute
   '/auth': typeof AuthRoute
   '/empresas': typeof EmpresasRoute
   '/login': typeof LoginRoute
@@ -174,7 +175,6 @@ export interface FileRoutesById {
   '/simulacao': typeof SimulacaoRoute
   '/_authenticated/administracao': typeof AuthenticatedAdministracaoRoute
   '/_authenticated/alertas': typeof AuthenticatedAlertasRoute
-  '/_authenticated/analise': typeof AuthenticatedAnaliseRoute
   '/_authenticated/auditoria-ia': typeof AuthenticatedAuditoriaIaRoute
   '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/_authenticated/conformidade': typeof AuthenticatedConformidadeRoute
@@ -187,6 +187,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/administrador'
+    | '/analise'
     | '/auth'
     | '/empresas'
     | '/login'
@@ -195,7 +196,6 @@ export interface FileRouteTypes {
     | '/simulacao'
     | '/administracao'
     | '/alertas'
-    | '/analise'
     | '/auditoria-ia'
     | '/configuracoes'
     | '/conformidade'
@@ -206,6 +206,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/administrador'
+    | '/analise'
     | '/auth'
     | '/empresas'
     | '/login'
@@ -214,7 +215,6 @@ export interface FileRouteTypes {
     | '/simulacao'
     | '/administracao'
     | '/alertas'
-    | '/analise'
     | '/auditoria-ia'
     | '/configuracoes'
     | '/conformidade'
@@ -226,6 +226,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/administrador'
+    | '/analise'
     | '/auth'
     | '/empresas'
     | '/login'
@@ -234,7 +235,6 @@ export interface FileRouteTypes {
     | '/simulacao'
     | '/_authenticated/administracao'
     | '/_authenticated/alertas'
-    | '/_authenticated/analise'
     | '/_authenticated/auditoria-ia'
     | '/_authenticated/configuracoes'
     | '/_authenticated/conformidade'
@@ -247,6 +247,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AdministradorRoute: typeof AdministradorRoute
+  AnaliseRoute: typeof AnaliseRoute
   AuthRoute: typeof AuthRoute
   EmpresasRoute: typeof EmpresasRoute
   LoginRoute: typeof LoginRoute
@@ -276,6 +277,13 @@ declare module '@tanstack/react-router' {
       path: '/administrador'
       fullPath: '/administrador'
       preLoaderRoute: typeof AdministradorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/analise': {
+      id: '/analise'
+      path: '/analise'
+      fullPath: '/analise'
+      preLoaderRoute: typeof AnaliseRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -334,13 +342,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAlertasRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/analise': {
-      id: '/_authenticated/analise'
-      path: '/analise'
-      fullPath: '/analise'
-      preLoaderRoute: typeof AuthenticatedAnaliseRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/auditoria-ia': {
       id: '/_authenticated/auditoria-ia'
       path: '/auditoria-ia'
@@ -389,7 +390,6 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdministracaoRoute: typeof AuthenticatedAdministracaoRoute
   AuthenticatedAlertasRoute: typeof AuthenticatedAlertasRoute
-  AuthenticatedAnaliseRoute: typeof AuthenticatedAnaliseRoute
   AuthenticatedAuditoriaIaRoute: typeof AuthenticatedAuditoriaIaRoute
   AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRoute
   AuthenticatedConformidadeRoute: typeof AuthenticatedConformidadeRoute
@@ -401,7 +401,6 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdministracaoRoute: AuthenticatedAdministracaoRoute,
   AuthenticatedAlertasRoute: AuthenticatedAlertasRoute,
-  AuthenticatedAnaliseRoute: AuthenticatedAnaliseRoute,
   AuthenticatedAuditoriaIaRoute: AuthenticatedAuditoriaIaRoute,
   AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRoute,
   AuthenticatedConformidadeRoute: AuthenticatedConformidadeRoute,
@@ -417,6 +416,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AdministradorRoute: AdministradorRoute,
+  AnaliseRoute: AnaliseRoute,
   AuthRoute: AuthRoute,
   EmpresasRoute: EmpresasRoute,
   LoginRoute: LoginRoute,
