@@ -165,7 +165,7 @@ function AlertasPage() {
               <span
                 className={`text-[10px] rounded border px-2 py-0.5 font-medium ${getStatusBadge(selectedAlert?.status || "pendente")}`}
               >
-                {selectedAlert?.status.charAt(0).toUpperCase() + selectedAlert?.status?.slice(1)}
+                {(selectedAlert?.status ?? "pendente").charAt(0).toUpperCase() + (selectedAlert?.status ?? "pendente").slice(1)}
               </span>
             </div>
             <div className="rounded-lg bg-muted/50 p-4">

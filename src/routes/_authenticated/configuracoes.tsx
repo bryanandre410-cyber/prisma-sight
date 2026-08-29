@@ -99,7 +99,7 @@ function ConfiguracoesPage() {
                 </div>
                 <Switch
                   id={p.id}
-                  checked={preferencesState[p.id]}
+                  checked={preferencesState[p.id] ?? false}
                   onCheckedChange={(checked) => handlePreferenceChange(p.id, checked)}
                 />
               </li>

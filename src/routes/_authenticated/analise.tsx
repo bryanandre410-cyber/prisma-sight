@@ -64,7 +64,7 @@ type AnalysisRow = {
 
 function AnalisePage() {
   const queryClient = useQueryClient();
-  const [source, setSource] = useState(sources[0]);
+  const [source, setSource] = useState(sources[0] ?? "");
   const [scope, setScope] = useState("completo");
   const [progress, setProgress] = useState(0);
   const [step, setStep] = useState(0);

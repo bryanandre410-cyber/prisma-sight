@@ -10,20 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-<<<<<<< HEAD
-import { Route as AdministracaoRouteImport } from './routes/administracao'
-import { Route as AlertasRouteImport } from './routes/alertas'
-import { Route as AuditoriaIaRouteImport } from './routes/auditoria-ia'
-import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
-import { Route as ConformidadeRouteImport } from './routes/conformidade'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as MonitoramentoRouteImport } from './routes/monitoramento'
-import { Route as PoliticasRouteImport } from './routes/politicas'
-import { Route as RelatoriosRouteImport } from './routes/relatorios'
-import { Route as SimulacaoRouteImport } from './routes/simulacao'
-=======
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as SimulacaoRouteImport } from './routes/simulacao'
 import { Route as AuthenticatedAdministracaoRouteImport } from './routes/_authenticated/administracao'
 import { Route as AuthenticatedAlertasRouteImport } from './routes/_authenticated/alertas'
 import { Route as AuthenticatedAnaliseRouteImport } from './routes/_authenticated/analise'
@@ -34,7 +24,6 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedMonitoramentoRouteImport } from './routes/_authenticated/monitoramento'
 import { Route as AuthenticatedPoliticasRouteImport } from './routes/_authenticated/politicas'
 import { Route as AuthenticatedRelatoriosRouteImport } from './routes/_authenticated/relatorios'
->>>>>>> bdcc283be2bd08ac2c144de4e712415dd4bdd19e
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -48,6 +37,16 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SimulacaoRoute = SimulacaoRouteImport.update({
+  id: '/simulacao',
+  path: '/simulacao',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdministracaoRoute =
@@ -89,24 +88,6 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-<<<<<<< HEAD
-const ConformidadeRoute = ConformidadeRouteImport.update({
-  id: '/conformidade',
-  path: '/conformidade',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MonitoramentoRoute = MonitoramentoRouteImport.update({
-  id: '/monitoramento',
-  path: '/monitoramento',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PoliticasRoute = PoliticasRouteImport.update({
-=======
 const AuthenticatedMonitoramentoRoute =
   AuthenticatedMonitoramentoRouteImport.update({
     id: '/monitoramento',
@@ -114,7 +95,6 @@ const AuthenticatedMonitoramentoRoute =
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedPoliticasRoute = AuthenticatedPoliticasRouteImport.update({
->>>>>>> bdcc283be2bd08ac2c144de4e712415dd4bdd19e
   id: '/politicas',
   path: '/politicas',
   getParentRoute: () => AuthenticatedRouteRoute,
@@ -124,40 +104,12 @@ const AuthenticatedRelatoriosRoute = AuthenticatedRelatoriosRouteImport.update({
   path: '/relatorios',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const SimulacaoRoute = SimulacaoRouteImport.update({
-  id: '/simulacao',
-  path: '/simulacao',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-<<<<<<< HEAD
-  '/administracao': typeof AdministracaoRoute
-  '/alertas': typeof AlertasRoute
-  '/auditoria-ia': typeof AuditoriaIaRoute
-  '/configuracoes': typeof ConfiguracoesRoute
-  '/conformidade': typeof ConformidadeRoute
-  '/login': typeof LoginRoute
-  '/monitoramento': typeof MonitoramentoRoute
-  '/politicas': typeof PoliticasRoute
-  '/relatorios': typeof RelatoriosRoute
-  '/simulacao': typeof SimulacaoRoute
-}
-export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/administracao': typeof AdministracaoRoute
-  '/alertas': typeof AlertasRoute
-  '/auditoria-ia': typeof AuditoriaIaRoute
-  '/configuracoes': typeof ConfiguracoesRoute
-  '/conformidade': typeof ConformidadeRoute
-  '/login': typeof LoginRoute
-  '/monitoramento': typeof MonitoramentoRoute
-  '/politicas': typeof PoliticasRoute
-  '/relatorios': typeof RelatoriosRoute
-  '/simulacao': typeof SimulacaoRoute
-=======
   '/auth': typeof AuthRoute
+  '/login': typeof LoginRoute
+  '/simulacao': typeof SimulacaoRoute
   '/administracao': typeof AuthenticatedAdministracaoRoute
   '/alertas': typeof AuthenticatedAlertasRoute
   '/analise': typeof AuthenticatedAnaliseRoute
@@ -172,6 +124,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/login': typeof LoginRoute
+  '/simulacao': typeof SimulacaoRoute
   '/administracao': typeof AuthenticatedAdministracaoRoute
   '/alertas': typeof AuthenticatedAlertasRoute
   '/analise': typeof AuthenticatedAnaliseRoute
@@ -182,25 +136,14 @@ export interface FileRoutesByTo {
   '/monitoramento': typeof AuthenticatedMonitoramentoRoute
   '/politicas': typeof AuthenticatedPoliticasRoute
   '/relatorios': typeof AuthenticatedRelatoriosRoute
->>>>>>> bdcc283be2bd08ac2c144de4e712415dd4bdd19e
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-<<<<<<< HEAD
-  '/administracao': typeof AdministracaoRoute
-  '/alertas': typeof AlertasRoute
-  '/auditoria-ia': typeof AuditoriaIaRoute
-  '/configuracoes': typeof ConfiguracoesRoute
-  '/conformidade': typeof ConformidadeRoute
-  '/login': typeof LoginRoute
-  '/monitoramento': typeof MonitoramentoRoute
-  '/politicas': typeof PoliticasRoute
-  '/relatorios': typeof RelatoriosRoute
-  '/simulacao': typeof SimulacaoRoute
-=======
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/login': typeof LoginRoute
+  '/simulacao': typeof SimulacaoRoute
   '/_authenticated/administracao': typeof AuthenticatedAdministracaoRoute
   '/_authenticated/alertas': typeof AuthenticatedAlertasRoute
   '/_authenticated/analise': typeof AuthenticatedAnaliseRoute
@@ -211,64 +154,47 @@ export interface FileRoutesById {
   '/_authenticated/monitoramento': typeof AuthenticatedMonitoramentoRoute
   '/_authenticated/politicas': typeof AuthenticatedPoliticasRoute
   '/_authenticated/relatorios': typeof AuthenticatedRelatoriosRoute
->>>>>>> bdcc283be2bd08ac2c144de4e712415dd4bdd19e
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/auth'
+    | '/login'
+    | '/simulacao'
     | '/administracao'
     | '/alertas'
     | '/analise'
     | '/auditoria-ia'
     | '/configuracoes'
     | '/conformidade'
-<<<<<<< HEAD
-    | '/login'
-=======
     | '/dashboard'
->>>>>>> bdcc283be2bd08ac2c144de4e712415dd4bdd19e
     | '/monitoramento'
     | '/politicas'
     | '/relatorios'
-    | '/simulacao'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
+    | '/login'
+    | '/simulacao'
     | '/administracao'
     | '/alertas'
     | '/analise'
     | '/auditoria-ia'
     | '/configuracoes'
     | '/conformidade'
-<<<<<<< HEAD
-    | '/login'
-=======
     | '/dashboard'
->>>>>>> bdcc283be2bd08ac2c144de4e712415dd4bdd19e
     | '/monitoramento'
     | '/politicas'
     | '/relatorios'
-    | '/simulacao'
   id:
     | '__root__'
     | '/'
-<<<<<<< HEAD
-    | '/administracao'
-    | '/alertas'
-    | '/auditoria-ia'
-    | '/configuracoes'
-    | '/conformidade'
-    | '/login'
-    | '/monitoramento'
-    | '/politicas'
-    | '/relatorios'
-    | '/simulacao'
-=======
     | '/_authenticated'
     | '/auth'
+    | '/login'
+    | '/simulacao'
     | '/_authenticated/administracao'
     | '/_authenticated/alertas'
     | '/_authenticated/analise'
@@ -279,26 +205,14 @@ export interface FileRouteTypes {
     | '/_authenticated/monitoramento'
     | '/_authenticated/politicas'
     | '/_authenticated/relatorios'
->>>>>>> bdcc283be2bd08ac2c144de4e712415dd4bdd19e
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-<<<<<<< HEAD
-  AdministracaoRoute: typeof AdministracaoRoute
-  AlertasRoute: typeof AlertasRoute
-  AuditoriaIaRoute: typeof AuditoriaIaRoute
-  ConfiguracoesRoute: typeof ConfiguracoesRoute
-  ConformidadeRoute: typeof ConformidadeRoute
-  LoginRoute: typeof LoginRoute
-  MonitoramentoRoute: typeof MonitoramentoRoute
-  PoliticasRoute: typeof PoliticasRoute
-  RelatoriosRoute: typeof RelatoriosRoute
-  SimulacaoRoute: typeof SimulacaoRoute
-=======
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
->>>>>>> bdcc283be2bd08ac2c144de4e712415dd4bdd19e
+  LoginRoute: typeof LoginRoute
+  SimulacaoRoute: typeof SimulacaoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -322,6 +236,20 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/simulacao': {
+      id: '/simulacao'
+      path: '/simulacao'
+      fullPath: '/simulacao'
+      preLoaderRoute: typeof SimulacaoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/administracao': {
@@ -366,17 +294,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedConformidadeRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-<<<<<<< HEAD
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/monitoramento': {
-      id: '/monitoramento'
-=======
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -386,7 +303,6 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/monitoramento': {
       id: '/_authenticated/monitoramento'
->>>>>>> bdcc283be2bd08ac2c144de4e712415dd4bdd19e
       path: '/monitoramento'
       fullPath: '/monitoramento'
       preLoaderRoute: typeof AuthenticatedMonitoramentoRouteImport
@@ -405,13 +321,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/relatorios'
       preLoaderRoute: typeof AuthenticatedRelatoriosRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/simulacao': {
-      id: '/simulacao'
-      path: '/simulacao'
-      fullPath: '/simulacao'
-      preLoaderRoute: typeof SimulacaoRouteImport
-      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -447,21 +356,10 @@ const AuthenticatedRouteRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-<<<<<<< HEAD
-  AdministracaoRoute: AdministracaoRoute,
-  AlertasRoute: AlertasRoute,
-  AuditoriaIaRoute: AuditoriaIaRoute,
-  ConfiguracoesRoute: ConfiguracoesRoute,
-  ConformidadeRoute: ConformidadeRoute,
-  LoginRoute: LoginRoute,
-  MonitoramentoRoute: MonitoramentoRoute,
-  PoliticasRoute: PoliticasRoute,
-  RelatoriosRoute: RelatoriosRoute,
-  SimulacaoRoute: SimulacaoRoute,
-=======
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
->>>>>>> bdcc283be2bd08ac2c144de4e712415dd4bdd19e
+  LoginRoute: LoginRoute,
+  SimulacaoRoute: SimulacaoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
