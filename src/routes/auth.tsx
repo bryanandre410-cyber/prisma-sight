@@ -185,16 +185,20 @@ function AuthPage() {
 
       if (data.user) {
         // Garantir que a tabela profiles tenha as informações atualizadas
-        await supabase
-          .from("profiles")
-          .upsert({
-            id: data.user.id,
-            company_name: companyName.trim(),
-            cnpj: cnpj.trim() || null,
-            sector,
-            updated_at: new Date().toISOString(),
-          })
-          .catch(() => null);
+        try {
+          await supabase
+            .from("profiles")
+            .upsert({
+              id: data.user.id,
+              company_name: companyName.trim(),
+              cnpj: cnpj.trim() || null,
+              sector,
+              updated_at: new Date().toISOString(),
+            });
+        } catch (err) {
+          // Silently fail on profile update
+          console.error("Erro ao atualizar perfil:", err);
+        }
       }
 
       if (data.session) {

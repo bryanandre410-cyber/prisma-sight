@@ -12,24 +12,21 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AdministradorRouteImport } from './routes/administrador'
-import { Route as AnaliseRouteImport } from './routes/analise'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as EmpresasRouteImport } from './routes/empresas'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as NovaEmpresaRouteImport } from './routes/nova-empresa'
-import { Route as PoliticasRouteImport } from './routes/politicas'
 import { Route as SimulacaoRouteImport } from './routes/simulacao'
 import { Route as AuthenticatedAdministracaoRouteImport } from './routes/_authenticated/administracao'
 import { Route as AuthenticatedAlertasRouteImport } from './routes/_authenticated/alertas'
+import { Route as AuthenticatedAnaliseRouteImport } from './routes/_authenticated/analise'
 import { Route as AuthenticatedAuditoriaIaRouteImport } from './routes/_authenticated/auditoria-ia'
 import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
 import { Route as AuthenticatedConformidadeRouteImport } from './routes/_authenticated/conformidade'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedMonitoramentoRouteImport } from './routes/_authenticated/monitoramento'
+import { Route as AuthenticatedPoliticasRouteImport } from './routes/_authenticated/politicas'
 import { Route as AuthenticatedRelatoriosRouteImport } from './routes/_authenticated/relatorios'
-import { Route as AuthenticatedAnaliseRouteImport } from './routes/_authenticated/analise'
-import { Route as AuthenticatedInventarioRouteImport } from './routes/_authenticated/inventario'
-import { Route as AuthenticatedPlanoAcaoRouteImport } from './routes/_authenticated/plano-acao'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -43,11 +40,6 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AdministradorRoute = AdministradorRouteImport.update({
   id: '/administrador',
   path: '/administrador',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AnaliseRoute = AnaliseRouteImport.update({
-  id: '/analise',
-  path: '/analise',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -70,11 +62,6 @@ const NovaEmpresaRoute = NovaEmpresaRouteImport.update({
   path: '/nova-empresa',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PoliticasRoute = PoliticasRouteImport.update({
-  id: '/politicas',
-  path: '/politicas',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SimulacaoRoute = SimulacaoRouteImport.update({
   id: '/simulacao',
   path: '/simulacao',
@@ -89,6 +76,11 @@ const AuthenticatedAdministracaoRoute =
 const AuthenticatedAlertasRoute = AuthenticatedAlertasRouteImport.update({
   id: '/alertas',
   path: '/alertas',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAnaliseRoute = AuthenticatedAnaliseRouteImport.update({
+  id: '/analise',
+  path: '/analise',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedAuditoriaIaRoute =
@@ -120,171 +112,145 @@ const AuthenticatedMonitoramentoRoute =
     path: '/monitoramento',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedPoliticasRoute = AuthenticatedPoliticasRouteImport.update({
+  id: '/politicas',
+  path: '/politicas',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedRelatoriosRoute = AuthenticatedRelatoriosRouteImport.update({
   id: '/relatorios',
   path: '/relatorios',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedAnaliseRoute = AuthenticatedAnaliseRouteImport.update({
-  id: '/analise',
-  path: '/analise',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedInventarioRoute = AuthenticatedInventarioRouteImport.update({
-  id: '/inventario',
-  path: '/inventario',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedPlanoAcaoRoute = AuthenticatedPlanoAcaoRouteImport.update({
-  id: '/plano-acao',
-  path: '/plano-acao',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/administrador': typeof AdministradorRoute
-  '/analise': typeof AnaliseRoute
   '/auth': typeof AuthRoute
   '/empresas': typeof EmpresasRoute
   '/login': typeof LoginRoute
   '/nova-empresa': typeof NovaEmpresaRoute
-  '/politicas': typeof PoliticasRoute
   '/simulacao': typeof SimulacaoRoute
   '/administracao': typeof AuthenticatedAdministracaoRoute
   '/alertas': typeof AuthenticatedAlertasRoute
+  '/analise': typeof AuthenticatedAnaliseRoute
   '/auditoria-ia': typeof AuthenticatedAuditoriaIaRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/conformidade': typeof AuthenticatedConformidadeRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/monitoramento': typeof AuthenticatedMonitoramentoRoute
+  '/politicas': typeof AuthenticatedPoliticasRoute
   '/relatorios': typeof AuthenticatedRelatoriosRoute
-  '/inventario': typeof AuthenticatedInventarioRoute
-  '/plano-acao': typeof AuthenticatedPlanoAcaoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/administrador': typeof AdministradorRoute
-  '/analise': typeof AuthenticatedAnaliseRoute
   '/auth': typeof AuthRoute
   '/empresas': typeof EmpresasRoute
   '/login': typeof LoginRoute
   '/nova-empresa': typeof NovaEmpresaRoute
-  '/politicas': typeof PoliticasRoute
   '/simulacao': typeof SimulacaoRoute
   '/administracao': typeof AuthenticatedAdministracaoRoute
   '/alertas': typeof AuthenticatedAlertasRoute
+  '/analise': typeof AuthenticatedAnaliseRoute
   '/auditoria-ia': typeof AuthenticatedAuditoriaIaRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/conformidade': typeof AuthenticatedConformidadeRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/monitoramento': typeof AuthenticatedMonitoramentoRoute
+  '/politicas': typeof AuthenticatedPoliticasRoute
   '/relatorios': typeof AuthenticatedRelatoriosRoute
-  '/inventario': typeof AuthenticatedInventarioRoute
-  '/plano-acao': typeof AuthenticatedPlanoAcaoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/administrador': typeof AdministradorRoute
-  '/analise': typeof AnaliseRoute
   '/auth': typeof AuthRoute
   '/empresas': typeof EmpresasRoute
   '/login': typeof LoginRoute
   '/nova-empresa': typeof NovaEmpresaRoute
-  '/politicas': typeof PoliticasRoute
   '/simulacao': typeof SimulacaoRoute
   '/_authenticated/administracao': typeof AuthenticatedAdministracaoRoute
   '/_authenticated/alertas': typeof AuthenticatedAlertasRoute
+  '/_authenticated/analise': typeof AuthenticatedAnaliseRoute
   '/_authenticated/auditoria-ia': typeof AuthenticatedAuditoriaIaRoute
   '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/_authenticated/conformidade': typeof AuthenticatedConformidadeRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/monitoramento': typeof AuthenticatedMonitoramentoRoute
+  '/_authenticated/politicas': typeof AuthenticatedPoliticasRoute
   '/_authenticated/relatorios': typeof AuthenticatedRelatoriosRoute
-  '/_authenticated/analise': typeof AuthenticatedAnaliseRoute
-  '/_authenticated/inventario': typeof AuthenticatedInventarioRoute
-  '/_authenticated/plano-acao': typeof AuthenticatedPlanoAcaoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/administrador'
-    | '/analise'
     | '/auth'
     | '/empresas'
     | '/login'
     | '/nova-empresa'
-    | '/politicas'
     | '/simulacao'
     | '/administracao'
     | '/alertas'
+    | '/analise'
     | '/auditoria-ia'
     | '/configuracoes'
     | '/conformidade'
     | '/dashboard'
     | '/monitoramento'
+    | '/politicas'
     | '/relatorios'
-    | '/inventario'
-    | '/plano-acao'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/administrador'
-    | '/analise'
     | '/auth'
     | '/empresas'
     | '/login'
     | '/nova-empresa'
-    | '/politicas'
     | '/simulacao'
     | '/administracao'
     | '/alertas'
+    | '/analise'
     | '/auditoria-ia'
     | '/configuracoes'
     | '/conformidade'
     | '/dashboard'
     | '/monitoramento'
+    | '/politicas'
     | '/relatorios'
-    | '/inventario'
-    | '/plano-acao'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/administrador'
-    | '/analise'
     | '/auth'
     | '/empresas'
     | '/login'
     | '/nova-empresa'
-    | '/politicas'
     | '/simulacao'
     | '/_authenticated/administracao'
     | '/_authenticated/alertas'
+    | '/_authenticated/analise'
     | '/_authenticated/auditoria-ia'
     | '/_authenticated/configuracoes'
     | '/_authenticated/conformidade'
     | '/_authenticated/dashboard'
     | '/_authenticated/monitoramento'
+    | '/_authenticated/politicas'
     | '/_authenticated/relatorios'
-    | '/_authenticated/analise'
-    | '/_authenticated/inventario'
-    | '/_authenticated/plano-acao'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AdministradorRoute: typeof AdministradorRoute
-  AnaliseRoute: typeof AnaliseRoute
   AuthRoute: typeof AuthRoute
   EmpresasRoute: typeof EmpresasRoute
   LoginRoute: typeof LoginRoute
   NovaEmpresaRoute: typeof NovaEmpresaRoute
-  PoliticasRoute: typeof PoliticasRoute
   SimulacaoRoute: typeof SimulacaoRoute
 }
 
@@ -309,13 +275,6 @@ declare module '@tanstack/react-router' {
       path: '/administrador'
       fullPath: '/administrador'
       preLoaderRoute: typeof AdministradorRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/analise': {
-      id: '/analise'
-      path: '/analise'
-      fullPath: '/analise'
-      preLoaderRoute: typeof AnaliseRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -346,13 +305,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NovaEmpresaRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/politicas': {
-      id: '/politicas'
-      path: '/politicas'
-      fullPath: '/politicas'
-      preLoaderRoute: typeof PoliticasRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/simulacao': {
       id: '/simulacao'
       path: '/simulacao'
@@ -372,6 +324,13 @@ declare module '@tanstack/react-router' {
       path: '/alertas'
       fullPath: '/alertas'
       preLoaderRoute: typeof AuthenticatedAlertasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/analise': {
+      id: '/_authenticated/analise'
+      path: '/analise'
+      fullPath: '/analise'
+      preLoaderRoute: typeof AuthenticatedAnaliseRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/auditoria-ia': {
@@ -409,32 +368,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMonitoramentoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/politicas': {
+      id: '/_authenticated/politicas'
+      path: '/politicas'
+      fullPath: '/politicas'
+      preLoaderRoute: typeof AuthenticatedPoliticasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/relatorios': {
       id: '/_authenticated/relatorios'
       path: '/relatorios'
       fullPath: '/relatorios'
       preLoaderRoute: typeof AuthenticatedRelatoriosRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/analise': {
-      id: '/_authenticated/analise'
-      path: '/analise'
-      fullPath: '/analise'
-      preLoaderRoute: typeof AuthenticatedAnaliseRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/inventario': {
-      id: '/_authenticated/inventario'
-      path: '/inventario'
-      fullPath: '/inventario'
-      preLoaderRoute: typeof AuthenticatedInventarioRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/plano-acao': {
-      id: '/_authenticated/plano-acao'
-      path: '/plano-acao'
-      fullPath: '/plano-acao'
-      preLoaderRoute: typeof AuthenticatedPlanoAcaoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
   }
@@ -443,29 +388,27 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdministracaoRoute: typeof AuthenticatedAdministracaoRoute
   AuthenticatedAlertasRoute: typeof AuthenticatedAlertasRoute
+  AuthenticatedAnaliseRoute: typeof AuthenticatedAnaliseRoute
   AuthenticatedAuditoriaIaRoute: typeof AuthenticatedAuditoriaIaRoute
   AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRoute
   AuthenticatedConformidadeRoute: typeof AuthenticatedConformidadeRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedMonitoramentoRoute: typeof AuthenticatedMonitoramentoRoute
+  AuthenticatedPoliticasRoute: typeof AuthenticatedPoliticasRoute
   AuthenticatedRelatoriosRoute: typeof AuthenticatedRelatoriosRoute
-  AuthenticatedAnaliseRoute: typeof AuthenticatedAnaliseRoute
-  AuthenticatedInventarioRoute: typeof AuthenticatedInventarioRoute
-  AuthenticatedPlanoAcaoRoute: typeof AuthenticatedPlanoAcaoRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdministracaoRoute: AuthenticatedAdministracaoRoute,
   AuthenticatedAlertasRoute: AuthenticatedAlertasRoute,
+  AuthenticatedAnaliseRoute: AuthenticatedAnaliseRoute,
   AuthenticatedAuditoriaIaRoute: AuthenticatedAuditoriaIaRoute,
   AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRoute,
   AuthenticatedConformidadeRoute: AuthenticatedConformidadeRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedMonitoramentoRoute: AuthenticatedMonitoramentoRoute,
+  AuthenticatedPoliticasRoute: AuthenticatedPoliticasRoute,
   AuthenticatedRelatoriosRoute: AuthenticatedRelatoriosRoute,
-  AuthenticatedAnaliseRoute: AuthenticatedAnaliseRoute,
-  AuthenticatedInventarioRoute: AuthenticatedInventarioRoute,
-  AuthenticatedPlanoAcaoRoute: AuthenticatedPlanoAcaoRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -475,12 +418,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AdministradorRoute: AdministradorRoute,
-  AnaliseRoute: AnaliseRoute,
   AuthRoute: AuthRoute,
   EmpresasRoute: EmpresasRoute,
   LoginRoute: LoginRoute,
   NovaEmpresaRoute: NovaEmpresaRoute,
-  PoliticasRoute: PoliticasRoute,
   SimulacaoRoute: SimulacaoRoute,
 }
 export const routeTree = rootRouteImport

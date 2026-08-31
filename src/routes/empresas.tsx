@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Building2, Users, Database, Shield, MoreVertical, Edit, Trash2, Eye } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { PageShell, Panel } from "@/components/prisma/PageShell";
 import { Button } from "@/components/ui/button";
@@ -79,6 +79,15 @@ export const Route = createFileRoute("/empresas")({
 
 function EmpresasPage() {
   const [companies, setCompanies] = useState(initialCompanies);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedCompanies = localStorage.getItem("companies");
+      if (savedCompanies) {
+        setCompanies(JSON.parse(savedCompanies));
+      }
+    }
+  }, []);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingCompany, setEditingCompany] = useState<any>(null);
   const [isEditMode, setIsEditMode] = useState(false);

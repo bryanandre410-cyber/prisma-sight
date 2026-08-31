@@ -104,8 +104,26 @@ function NovaEmpresa() {
   };
 
   const handleCompleteIntegration = () => {
+    // Salvar nova empresa no localStorage
+    if (typeof window !== "undefined") {
+      const existingCompanies = JSON.parse(localStorage.getItem("companies") || "[]");
+      const newCompany = {
+        id: existingCompanies.length + 1,
+        name: companyData.name,
+        cnpj: companyData.cnpj,
+        industry: companyData.industry,
+        employees: companyData.employees,
+        dataVolume: companyData.dataVolume,
+        complianceScore: "0%",
+        status: "Integrando",
+        systems: selectedSystems,
+        createdAt: new Date().toLocaleDateString("pt-BR"),
+        lastSync: "-",
+      };
+      localStorage.setItem("companies", JSON.stringify([...existingCompanies, newCompany]));
+    }
     alert("Integração iniciada com sucesso! Redirecionando para a lista de empresas...");
-    navigate({ to: "/empresas" });
+    navigate({ to: "/empresas" as any, replace: true });
   };
 
   return (
