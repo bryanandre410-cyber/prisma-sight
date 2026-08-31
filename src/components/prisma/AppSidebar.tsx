@@ -12,10 +12,10 @@ import {
   ShieldCheck,
   Settings,
   UserCog,
-  Building2,
-  Plus,
   ChevronRight,
-  ChevronDown,
+  Database,
+  ClipboardList,
+  Monitor,
 } from "lucide-react";
 
 import {
@@ -40,66 +40,58 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 
-<<<<<<< HEAD
-const items = [
-  { title: "Visão Geral", url: "/dashboard", icon: Home },
-=======
-const mainItems = [
-  { title: "Visão Geral", url: "/", icon: Home },
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
-  { title: "Monitoramento Contínuo", url: "/monitoramento", icon: Activity },
-  { title: "Varredura & Simulação", url: "/analise", icon: ScanSearch },
-  { title: "Conformidade LGPD", url: "/conformidade", icon: ShieldCheck },
-  { title: "Auditoria de IA", url: "/auditoria-ia", icon: Bot },
-  { title: "Alertas e Riscos", url: "/alertas", icon: Bell },
-  { title: "Políticas de Privacidade", url: "/politicas", icon: ScrollText },
-  { title: "Relatórios", url: "/relatorios", icon: FileText },
-] as const;
+type NavItem = {
+  title: string;
+  url: string;
+  icon: React.ComponentType<{ className?: string }>;
+};
 
-const integrationItems = [
-  { title: "Empresas", url: "/empresas", icon: Building2 },
-  { title: "Simulação de Integração", url: "/simulacao", icon: Building2 },
-  { title: "Nova Empresa", url: "/nova-empresa", icon: Plus },
-] as const;
+const mainItems: NavItem[] = [
+  { title: "Visão Geral", url: "/_authenticated/dashboard", icon: Home },
+  { title: "Monitoramento", url: "/_authenticated/monitoramento", icon: Monitor },
+  { title: "Alertas e Riscos", url: "/_authenticated/alertas", icon: Bell },
+];
 
-const adminItems = [
-  { title: "Administrador", url: "/administrador", icon: UserCog },
-  { title: "Configurações", url: "/configuracoes", icon: Settings },
-] as const;
+const complianceItems: NavItem[] = [
+  { title: "Conformidade LGPD", url: "/_authenticated/conformidade", icon: ShieldCheck },
+  { title: "Inventário de Dados", url: "/_authenticated/inventario", icon: Database },
+  { title: "Políticas de Privacidade", url: "/_authenticated/politicas", icon: ScrollText },
+  { title: "Plano de Ação", url: "/_authenticated/plano-acao", icon: ClipboardList },
+];
+
+const aiItems: NavItem[] = [
+  { title: "Auditoria de IA", url: "/_authenticated/auditoria-ia", icon: Bot },
+  { title: "Varredura & Análise", url: "/_authenticated/analise", icon: ScanSearch },
+];
+
+const adminItems: NavItem[] = [
+  { title: "Relatórios", url: "/_authenticated/relatorios", icon: FileText },
+  { title: "Administração", url: "/_authenticated/administracao", icon: UserCog },
+  { title: "Configurações", url: "/_authenticated/configuracoes", icon: Settings },
+];
+
+function isActive(pathname: string, url: string): boolean {
+  return pathname === url || pathname.startsWith(url + "/");
+}
 
 export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const [integrationsOpen, setIntegrationsOpen] = useState(true);
+  const [complianceOpen, setComplianceOpen] = useState(true);
+  const [aiOpen, setAiOpen] = useState(true);
+  const [adminOpen, setAdminOpen] = useState(false);
 
   return (
     <Sidebar collapsible="icon" className="border-sidebar-border bg-sidebar">
       <SidebarHeader className="px-3 py-5">
-<<<<<<< HEAD
-        <Link to="/dashboard" className="flex items-center gap-3">
+        <Link to="/_authenticated/dashboard" className="flex items-center gap-3">
           <div
             className="flex size-10 shrink-0 items-center justify-center rounded-xl shadow-sm"
             style={{
               backgroundImage: "var(--gradient-primary)",
               boxShadow: "var(--shadow-glow)",
             }}
-=======
-        <div className="flex items-center gap-3">
-          <img 
-            src="/prisma-logo.png" 
-            alt="Prisma One Logo" 
-            className="size-10 shrink-0 rounded-xl object-contain"
-            style={{ boxShadow: "var(--shadow-glow)" }}
-            onError={(e) => {
-              e.currentTarget.style.display = 'none';
-              e.currentTarget.nextElementSibling?.classList.remove('hidden');
-            }}
-          />
-          <div
-            className="hidden flex size-10 shrink-0 items-center justify-center rounded-xl"
-            style={{ backgroundImage: "var(--gradient-primary)", boxShadow: "var(--shadow-glow)" }}
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
           >
             <BarChart3 className="size-5 text-primary-foreground" />
           </div>
@@ -115,6 +107,7 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
+        {/* Main items */}
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -122,12 +115,12 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.url}>
                   <SidebarMenuButton
                     asChild
-                    isActive={pathname === item.url}
+                    isActive={isActive(pathname, item.url)}
                     tooltip={item.title}
-                    className="h-11 data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground"
+                    className="h-10 data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[active=true]:font-semibold transition-colors"
                   >
                     <Link to={item.url} className="flex items-center gap-3">
-                      <item.icon className="size-4" />
+                      <item.icon className="size-4 shrink-0" />
                       <span className="truncate">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -137,26 +130,32 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
+        {/* Compliance group */}
         <SidebarGroup>
-          <SidebarGroupLabel>Integrações</SidebarGroupLabel>
+          <SidebarGroupLabel>Privacidade & LGPD</SidebarGroupLabel>
           <SidebarGroupContent>
-            <Collapsible open={integrationsOpen} onOpenChange={setIntegrationsOpen}>
+            <Collapsible open={complianceOpen} onOpenChange={setComplianceOpen}>
               <SidebarMenu>
                 <SidebarMenuItem>
                   <CollapsibleTrigger asChild>
-                    <SidebarMenuButton tooltip="Integrações">
-                      <Building2 className="size-4" />
-                      <span className="truncate">Integrações</span>
-                      <ChevronRight className="ml-auto size-4 transition-transform duration-200 data-[state=open]:rotate-90" />
+                    <SidebarMenuButton tooltip="Privacidade & LGPD">
+                      <ShieldCheck className="size-4" />
+                      <span className="truncate">Conformidade</span>
+                      <ChevronRight
+                        className={`ml-auto size-4 transition-transform duration-200 ${complianceOpen ? "rotate-90" : ""}`}
+                      />
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
                   <CollapsibleContent>
                     <SidebarMenuSub>
-                      {integrationItems.map((item) => (
+                      {complianceItems.map((item) => (
                         <SidebarMenuSubItem key={item.url}>
-                          <SidebarMenuSubButton asChild isActive={pathname === item.url}>
+                          <SidebarMenuSubButton
+                            asChild
+                            isActive={isActive(pathname, item.url)}
+                          >
                             <Link to={item.url} className="flex items-center gap-3">
-                              <item.icon className="size-4" />
+                              <item.icon className="size-4 shrink-0" />
                               <span className="truncate">{item.title}</span>
                             </Link>
                           </SidebarMenuSubButton>
@@ -170,33 +169,88 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
+        {/* AI group */}
+        <SidebarGroup>
+          <SidebarGroupLabel>Inteligência Artificial</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <Collapsible open={aiOpen} onOpenChange={setAiOpen}>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton tooltip="Inteligência Artificial">
+                      <Bot className="size-4" />
+                      <span className="truncate">Governança de IA</span>
+                      <ChevronRight
+                        className={`ml-auto size-4 transition-transform duration-200 ${aiOpen ? "rotate-90" : ""}`}
+                      />
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      {aiItems.map((item) => (
+                        <SidebarMenuSubItem key={item.url}>
+                          <SidebarMenuSubButton
+                            asChild
+                            isActive={isActive(pathname, item.url)}
+                          >
+                            <Link to={item.url} className="flex items-center gap-3">
+                              <item.icon className="size-4 shrink-0" />
+                              <span className="truncate">{item.title}</span>
+                            </Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </Collapsible>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Admin group */}
         <SidebarGroup>
           <SidebarGroupLabel>Administração</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {adminItems.map((item) => (
-                <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname === item.url}
-                    tooltip={item.title}
-                    className="h-10 data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[active=true]:font-medium transition-colors"
-                  >
-                    <Link to={item.url} className="flex items-center gap-3">
-                      <item.icon className="size-4 shrink-0" />
-                      <span className="truncate">{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
+            <Collapsible open={adminOpen} onOpenChange={setAdminOpen}>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton tooltip="Administração">
+                      <UserCog className="size-4" />
+                      <span className="truncate">Administração</span>
+                      <ChevronRight
+                        className={`ml-auto size-4 transition-transform duration-200 ${adminOpen ? "rotate-90" : ""}`}
+                      />
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      {adminItems.map((item) => (
+                        <SidebarMenuSubItem key={item.url}>
+                          <SidebarMenuSubButton
+                            asChild
+                            isActive={isActive(pathname, item.url)}
+                          >
+                            <Link to={item.url} className="flex items-center gap-3">
+                              <item.icon className="size-4 shrink-0" />
+                              <span className="truncate">{item.title}</span>
+                            </Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
                 </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
+              </SidebarMenu>
+            </Collapsible>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
 
       <SidebarFooter className="px-3 py-4">
         <div className="flex items-center gap-3 rounded-xl border border-sidebar-border bg-background/50 p-3 shadow-xs">
-          <ShieldCheck className="size-5 text-success shrink-0" />
+          <ShieldCheck className="size-5 text-success shrink-0" aria-hidden="true" />
           {!collapsed && (
             <div className="leading-tight">
               <p className="text-xs font-semibold text-success">Proteção Ativa</p>

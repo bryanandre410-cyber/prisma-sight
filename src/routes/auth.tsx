@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
@@ -13,12 +12,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-<<<<<<< HEAD
 import { supabase } from "@/integrations/supabase/client";
 import { formatCnpj, isValidCnpj, translateAuthError } from "@/lib/utils";
-
-=======
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -79,28 +74,20 @@ function AuthPage() {
   const [recoverySent, setRecoverySent] = useState(false);
 
   useEffect(() => {
-<<<<<<< HEAD
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) {
-        navigate({ to: "/dashboard", replace: true });
+        navigate({ to: "/_authenticated/dashboard", replace: true });
       }
     });
 
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
       if (session && (event === "SIGNED_IN" || event === "INITIAL_SESSION")) {
-        navigate({ to: "/dashboard", replace: true });
+        navigate({ to: "/_authenticated/dashboard", replace: true });
       }
     });
 
     return () => sub.subscription.unsubscribe();
   }, [navigate]);
-=======
-    if (typeof window !== "undefined") {
-      const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
-      if (isAuthenticated) window.location.href = "/analise";
-    }
-  }, []);
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
 
   const handleCnpjChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatCnpj(e.target.value);
@@ -127,7 +114,6 @@ function AuthPage() {
     }
 
     setLoading(true);
-<<<<<<< HEAD
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email: loginEmail.trim(),
@@ -137,7 +123,7 @@ function AuthPage() {
       if (error) throw error;
 
       toast.success("Acesso autorizado ao PRISMA ONE.");
-      navigate({ to: "/dashboard", replace: true });
+      navigate({ to: "/_authenticated/dashboard", replace: true });
     } catch (error) {
       toast.error(translateAuthError(error));
     } finally {
@@ -186,7 +172,7 @@ function AuthPage() {
         email: signupEmail.trim(),
         password: signupPassword,
         options: {
-          emailRedirectTo: `${window.location.origin}/dashboard`,
+          emailRedirectTo: `${window.location.origin}/_authenticated/dashboard`,
           data: {
             company_name: companyName.trim(),
             cnpj: cnpj.trim() || null,
@@ -213,7 +199,7 @@ function AuthPage() {
 
       if (data.session) {
         toast.success("Empresa cadastrada com sucesso! Bem-vindo ao PRISMA ONE.");
-        navigate({ to: "/dashboard", replace: true });
+        navigate({ to: "/_authenticated/dashboard", replace: true });
       } else {
         toast.success(
           "Cadastro realizado! Enviamos um e-mail de confirmação para ativar sua conta.",
@@ -261,7 +247,7 @@ function AuthPage() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/dashboard`,
+          redirectTo: `${window.location.origin}/_authenticated/dashboard`,
         },
       });
       if (error) throw error;
@@ -269,24 +255,6 @@ function AuthPage() {
       toast.error(translateAuthError(error));
       setLoading(false);
     }
-=======
-
-    // Simulação de autenticação
-    setTimeout(() => {
-      if (email && password && (mode === "login" || companyName)) {
-        if (typeof window !== "undefined") {
-          localStorage.setItem("isAuthenticated", "true");
-          localStorage.setItem("userCompany", companyName || "Empresa");
-          localStorage.setItem("userEmail", email);
-        }
-        toast.success("Acesso liberado");
-        window.location.href = "/analise";
-      } else {
-        toast.error("Por favor, preencha todos os campos.");
-      }
-      setLoading(false);
-    }, 1000);
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
   }
 
   return (
@@ -379,7 +347,6 @@ function AuthPage() {
                   </div>
                 </div>
 
-<<<<<<< HEAD
                 <Button
                   type="submit"
                   className="w-full h-11 text-sm font-semibold"
@@ -408,8 +375,9 @@ function AuthPage() {
                 className="w-full h-11 border-border/80 hover:bg-secondary"
                 onClick={handleGoogle}
                 disabled={loading}
+                aria-label="Entrar com Google Workspace"
               >
-                <svg className="mr-2 size-4" viewBox="0 0 24 24">
+                <svg className="mr-2 size-4" viewBox="0 0 24 24" aria-hidden="true">
                   <path
                     fill="currentColor"
                     d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -472,7 +440,11 @@ function AuthPage() {
                       maxLength={18}
                       disabled={loading}
                     />
-                    {cnpjError && <p className="text-[11px] text-destructive">{cnpjError}</p>}
+                    {cnpjError && (
+                      <p className="text-[11px] text-destructive" role="alert">
+                        {cnpjError}
+                      </p>
+                    )}
                   </div>
 
                   <div className="space-y-1.5">
@@ -552,7 +524,9 @@ function AuthPage() {
                 </div>
 
                 {signupPassword && confirmPassword && signupPassword !== confirmPassword && (
-                  <p className="text-xs text-destructive">As senhas digitadas não coincidem.</p>
+                  <p className="text-xs text-destructive" role="alert">
+                    As senhas digitadas não coincidem.
+                  </p>
                 )}
 
                 <div className="rounded-lg bg-secondary/50 p-3 text-xs text-muted-foreground">
@@ -658,18 +632,6 @@ function AuthPage() {
               )}
             </TabsContent>
           </Tabs>
-=======
-          <p className="mt-6 text-center text-sm text-muted-foreground">
-            {mode === "login" ? "Ainda não tem acesso?" : "Já possui uma conta?"}{" "}
-            <button
-              type="button"
-              onClick={() => setMode(mode === "login" ? "signup" : "login")}
-              className="font-medium text-primary-glow hover:underline"
-            >
-              {mode === "login" ? "Cadastrar empresa" : "Entrar"}
-            </button>
-          </p>
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
         </div>
 
         {/* Footer info */}

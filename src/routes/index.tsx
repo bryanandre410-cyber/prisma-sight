@@ -1,87 +1,150 @@
-<<<<<<< HEAD
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Activity,
+  AlertTriangle,
   BarChart3,
   Bot,
-  ShieldCheck,
-  Lock,
-  FileText,
-  Eye,
-  AlertTriangle,
+  Check,
   CheckCircle2,
-  Menu,
-  X,
+  ChevronRight,
   Database,
+  Eye,
+  FileText,
+  Lock,
+  Menu,
+  ShieldCheck,
   TrendingUp,
   Users,
-  FileCheck,
-  ChevronRight,
-  Clock,
-  Shield,
-  Key,
+  X,
   ArrowRight,
-  Check,
   Zap,
+  Shield,
+  BarChart2,
+  FileCheck,
+  Brain,
+  Search,
+  Bell,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-=======
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Activity, BarChart3, Bot, ShieldCheck } from "lucide-react";
-import { useEffect } from "react";
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
+import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/")(({
   head: () => ({
     meta: [
-      { title: "PRISMA ONE — Centro de Controle de Privacidade, LGPD e Auditoria de IA" },
+      { title: "PRISMA ONE — Privacidade inteligente para um futuro seguro" },
       {
         name: "description",
         content:
-          "Plataforma SaaS corporativa para monitoramento contínuo de dados sensíveis, conformidade LGPD e auditoria de modelos de Inteligência Artificial.",
+          "Monitore dados, reduza riscos, comprove conformidade com a LGPD e tenha controle sobre o uso de Inteligência Artificial em toda a sua empresa.",
       },
       {
         property: "og:title",
         content: "PRISMA ONE — Privacidade, LGPD e Governança de IA",
       },
       {
-<<<<<<< HEAD
         property: "og:description",
         content:
-          "Monitoramento 24/7 de fluxos de dados, gestão de riscos, conformidade LGPD e auditoria ética de IA para empresas.",
+          "Monitore dados, reduza riscos, comprove conformidade com a LGPD e controle o uso de IA em toda a empresa.",
       },
-=======
-        property: "og:description", content: "Monitoramento contínuo, LGPD e auditoria de IA em um único painel corporativo." },
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: RootComponent,
-});
+} as any));
 
-<<<<<<< HEAD
-const features = [
-=======
 function RootComponent() {
-  const navigate = useNavigate();
-
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
-      if (isAuthenticated) {
-        // Redirect to dashboard if authenticated
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) {
         window.location.href = "/_authenticated/dashboard";
       }
-    }
-  }, [navigate]);
+    });
+  }, []);
 
   return <Landing />;
 }
 
-const highlights = [
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
+const problems = [
+  {
+    icon: Database,
+    title: "Dados pessoais espalhados",
+    desc: "Informações de clientes e funcionários dispersas em dezenas de sistemas sem visibilidade centralizada.",
+  },
+  {
+    icon: Eye,
+    title: "Falta de visibilidade sobre dados sensíveis",
+    desc: "Sem saber onde estão os dados sensíveis, é impossível protegê-los adequadamente.",
+  },
+  {
+    icon: AlertTriangle,
+    title: "Riscos de compartilhamento",
+    desc: "Transferências de dados entre fornecedores e parceiros sem controle ou base legal documentada.",
+  },
+  {
+    icon: FileText,
+    title: "Dificuldade para comprovar conformidade",
+    desc: "Sem evidências documentadas, a empresa não consegue demonstrar adequação à LGPD para auditores.",
+  },
+  {
+    icon: Brain,
+    title: "Falta de controle sobre ferramentas de IA",
+    desc: "Modelos e ferramentas de IA utilizando dados pessoais sem avaliação de riscos ou base legal.",
+  },
+  {
+    icon: Search,
+    title: "Ausência de trilhas de auditoria",
+    desc: "Sem histórico rastreável de acessos e alterações, é impossível investigar incidentes com precisão.",
+  },
+];
+
+const modules = [
+  {
+    category: "Privacidade",
+    color: "text-primary",
+    bg: "bg-primary/10",
+    icon: Shield,
+    items: [
+      "Inventário de dados",
+      "Dados pessoais e sensíveis",
+      "Fluxo de dados",
+      "Compartilhamentos",
+      "Sistemas e integrações",
+      "Bases legais",
+    ],
+  },
+  {
+    category: "LGPD",
+    color: "text-success",
+    bg: "bg-success/10",
+    icon: ShieldCheck,
+    items: [
+      "Diagnóstico de conformidade",
+      "Score de conformidade",
+      "Gap analysis",
+      "Plano de ação",
+      "Evidências",
+      "Histórico de auditorias",
+    ],
+  },
+  {
+    category: "Inteligência Artificial",
+    color: "text-warning",
+    bg: "bg-warning/10",
+    icon: Bot,
+    items: [
+      "Inventário de modelos e ferramentas",
+      "Avaliação de riscos",
+      "Detecção de possíveis vazamentos",
+      "Avaliação de viés",
+      "Uso indevido de dados",
+      "Histórico de avaliações",
+    ],
+  },
+];
+
+const features = [
   {
     icon: Activity,
     title: "Monitoramento Contínuo 24/7",
@@ -92,7 +155,7 @@ const highlights = [
     icon: ShieldCheck,
     title: "Conformidade LGPD Automatizada",
     description:
-      "Avaliação contínua dos 26 controles essenciais da LGPD com plano de ação imediato para lacunas encontradas.",
+      "Avaliação contínua dos controles essenciais da LGPD com plano de ação imediato para lacunas encontradas.",
   },
   {
     icon: Bot,
@@ -244,22 +307,22 @@ function Landing() {
           {/* Desktop Navigation */}
           <nav aria-label="Navegação Principal" className="hidden md:flex md:items-center md:gap-7">
             <a
-              href="#features"
+              href="#problema"
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
-              Recursos
+              O Problema
             </a>
             <a
-              href="#how-it-works"
+              href="#modulos"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Módulos
+            </a>
+            <a
+              href="#como-funciona"
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               Como Funciona
-            </a>
-            <a
-              href="#lgpd"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              LGPD & IA
             </a>
             <a
               href="#pricing"
@@ -280,7 +343,7 @@ function Landing() {
               <Link to="/auth">Entrar</Link>
             </Button>
             <Button asChild size="sm" className="font-semibold shadow-xs">
-              <Link to="/auth">Cadastrar Empresa</Link>
+              <Link to="/auth">Começar agora</Link>
             </Button>
           </div>
 
@@ -299,41 +362,24 @@ function Landing() {
         {mobileMenuOpen && (
           <div className="border-t border-border bg-background px-4 py-5 md:hidden space-y-3">
             <div className="flex flex-col gap-2.5">
-              <a
-                href="#features"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground py-1"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Recursos
-              </a>
-              <a
-                href="#how-it-works"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground py-1"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Como Funciona
-              </a>
-              <a
-                href="#lgpd"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground py-1"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                LGPD & IA
-              </a>
-              <a
-                href="#pricing"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground py-1"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Planos
-              </a>
-              <a
-                href="#faq"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground py-1"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Dúvidas
-              </a>
+              {["#problema", "#modulos", "#como-funciona", "#pricing", "#faq"].map((href) => (
+                <a
+                  key={href}
+                  href={href}
+                  className="text-sm font-medium text-muted-foreground hover:text-foreground py-1"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {href === "#problema"
+                    ? "O Problema"
+                    : href === "#modulos"
+                      ? "Módulos"
+                      : href === "#como-funciona"
+                        ? "Como Funciona"
+                        : href === "#pricing"
+                          ? "Planos"
+                          : "Dúvidas"}
+                </a>
+              ))}
             </div>
             <div className="pt-3 border-t border-border flex flex-col gap-2">
               <Button asChild variant="outline" className="w-full">
@@ -343,7 +389,7 @@ function Landing() {
               </Button>
               <Button asChild className="w-full font-semibold">
                 <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>
-                  Cadastrar Empresa
+                  Começar agora
                 </Link>
               </Button>
             </div>
@@ -353,38 +399,41 @@ function Landing() {
 
       <main>
         {/* HERO SECTION */}
-        <section className="relative overflow-hidden px-4 py-16 sm:px-6 lg:px-8 lg:py-24 grid-bg">
-          <div className="mx-auto max-w-7xl grid gap-12 lg:grid-cols-12 lg:gap-8 items-center">
-            <div className="lg:col-span-7 text-left space-y-6">
+        <section className="relative overflow-hidden px-4 py-20 sm:px-6 lg:px-8 lg:py-28 grid-bg">
+          <div className="mx-auto max-w-7xl grid gap-14 lg:grid-cols-12 lg:gap-8 items-center">
+            <div className="lg:col-span-7 text-left space-y-7">
               <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1 text-xs font-semibold text-primary">
                 <ShieldCheck className="size-3.5" />
-                SaaS Corporativo de Privacidade & IA
+                SaaS Corporativo · LGPD · Governança de IA
               </div>
 
-              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl text-foreground leading-[1.1]">
-                Privacidade, LGPD e Auditoria de IA sob{" "}
-                <span className="text-gradient">controle absoluto</span>.
-              </h1>
+              <div className="space-y-4">
+                <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl lg:text-7xl text-foreground leading-[1.05]">
+                  PRISMA ONE
+                </h1>
+                <p className="text-2xl font-semibold text-gradient sm:text-3xl">
+                  Privacidade inteligente para um futuro seguro.
+                </p>
+              </div>
 
-              <p className="text-lg text-muted-foreground max-w-2xl">
-                O <strong>PRISMA ONE</strong> é o centro de controle que conecta suas fontes de
-                dados e modelos de inteligência artificial, monitorando riscos, garantindo
-                conformidade legal e emitindo evidências para auditorias.
+              <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
+                Monitore dados, reduza riscos, comprove conformidade com a LGPD e tenha controle
+                sobre o uso de <strong>Inteligência Artificial</strong> em toda a sua empresa.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-3.5 pt-2">
-                <Button asChild size="lg" className="h-12 px-6 font-semibold gap-2 shadow-md">
+              <div className="flex flex-col sm:flex-row gap-4 pt-2">
+                <Button asChild size="lg" className="h-13 px-8 font-bold gap-2 shadow-md text-base">
                   <Link to="/auth">
-                    Acessar Plataforma
-                    <ArrowRight className="size-4" />
+                    Começar agora
+                    <ArrowRight className="size-5" />
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="h-12 px-6">
-                  <a href="#how-it-works">Ver como funciona</a>
+                <Button asChild variant="outline" size="lg" className="h-13 px-8 text-base">
+                  <Link to="/auth">Entrar</Link>
                 </Button>
               </div>
 
-              <div className="pt-4 flex items-center gap-6 text-xs text-muted-foreground">
+              <div className="pt-2 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
                 <span className="flex items-center gap-1.5">
                   <CheckCircle2 className="size-4 text-success" /> Multi-tenancy isolado
                 </span>
@@ -397,7 +446,7 @@ function Landing() {
               </div>
             </div>
 
-            {/* Dashboard Mockup Card */}
+            {/* Dashboard Preview Card */}
             <div className="lg:col-span-5">
               <div className="surface-card rounded-2xl border border-border/80 p-6 shadow-2xl space-y-5">
                 <div className="flex items-center justify-between border-b border-border/60 pb-3">
@@ -407,55 +456,41 @@ function Landing() {
                     <div className="size-3 rounded-full bg-success" />
                   </div>
                   <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                    PRISMA ONE Control Center
+                    PRISMA ONE · Painel Corporativo
                   </span>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3.5">
-                  <div className="rounded-xl border border-border bg-secondary/30 p-3.5">
-                    <p className="text-[11px] text-muted-foreground">Conformidade LGPD</p>
-                    <p className="text-2xl font-bold text-success mt-1">98%</p>
-                    <p className="text-[10px] text-success font-medium mt-0.5">
-                      24 de 26 Controles
-                    </p>
-                  </div>
-                  <div className="rounded-xl border border-border bg-secondary/30 p-3.5">
-                    <p className="text-[11px] text-muted-foreground">Riscos Críticos</p>
-                    <p className="text-2xl font-bold text-destructive mt-1">0</p>
-                    <p className="text-[10px] text-muted-foreground mt-0.5">Sob monitoramento</p>
-                  </div>
-                  <div className="rounded-xl border border-border bg-secondary/30 p-3.5">
-                    <p className="text-[11px] text-muted-foreground">Dados Monitorados</p>
-                    <p className="text-2xl font-bold text-foreground mt-1">2.45 TB</p>
-                    <p className="text-[10px] text-muted-foreground mt-0.5">24h contínuas</p>
-                  </div>
-                  <div className="rounded-xl border border-border bg-secondary/30 p-3.5">
-                    <p className="text-[11px] text-muted-foreground">Modelos de IA</p>
-                    <p className="text-2xl font-bold text-primary mt-1">12</p>
-                    <p className="text-[10px] text-primary font-medium mt-0.5">100% Auditados</p>
-                  </div>
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { label: "Score LGPD", value: "98%", sub: "24 de 26 controles", tone: "text-success" },
+                    { label: "Riscos Críticos", value: "0", sub: "Sob monitoramento", tone: "text-foreground" },
+                    { label: "Dados Monitorados", value: "2.45 TB", sub: "24h contínuas", tone: "text-foreground" },
+                    { label: "Modelos de IA", value: "12", sub: "100% auditados", tone: "text-primary" },
+                  ].map((kpi) => (
+                    <div key={kpi.label} className="rounded-xl border border-border bg-secondary/30 p-3.5">
+                      <p className="text-[11px] text-muted-foreground">{kpi.label}</p>
+                      <p className={`text-2xl font-bold mt-1 ${kpi.tone}`}>{kpi.value}</p>
+                      <p className="text-[10px] text-muted-foreground mt-0.5">{kpi.sub}</p>
+                    </div>
+                  ))}
                 </div>
 
                 <div className="rounded-xl border border-border/80 bg-background/50 p-4 space-y-2.5">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-semibold text-foreground">
-                      Alertas Recentes em Tempo Real
-                    </span>
-                    <span className="text-[10px] text-muted-foreground">Últimas 24h</span>
+                    <span className="font-semibold text-foreground">Prioridades de Hoje</span>
+                    <span className="text-[10px] text-muted-foreground">31/08/2026</span>
                   </div>
-                  <div className="space-y-2 text-xs">
-                    <div className="flex items-center justify-between rounded-lg bg-secondary/60 p-2">
-                      <span className="truncate max-w-[200px] text-foreground">
-                        Varredura de dados pessoais concluída
-                      </span>
-                      <span className="text-[10px] text-success font-semibold">Resolvido</span>
-                    </div>
-                    <div className="flex items-center justify-between rounded-lg bg-secondary/60 p-2">
-                      <span className="truncate max-w-[200px] text-foreground">
-                        Avaliação de viés em IA executada
-                      </span>
-                      <span className="text-[10px] text-primary font-semibold">Conforme</span>
-                    </div>
+                  <div className="space-y-1.5 text-xs">
+                    {[
+                      { label: "3 riscos críticos identificados", tone: "text-destructive" },
+                      { label: "4 evidências de conformidade pendentes", tone: "text-warning" },
+                      { label: "2 avaliações de IA aguardando revisão", tone: "text-primary" },
+                    ].map((item) => (
+                      <div key={item.label} className="flex items-center gap-2 rounded-lg bg-secondary/60 p-2">
+                        <Bell className="size-3 shrink-0 text-muted-foreground" />
+                        <span className={`truncate font-medium ${item.tone}`}>{item.label}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -463,127 +498,190 @@ function Landing() {
           </div>
         </section>
 
-        {/* FEATURES SECTION */}
-        <section id="features" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto space-y-3">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-primary">
-              Módulos Especializados
-            </h2>
-            <p className="text-3xl font-bold tracking-tight sm:text-4xl text-foreground">
-              Tudo o que sua organização precisa para governança de dados e IA
-            </p>
-            <p className="text-base text-muted-foreground">
-              Arquitetura corporativa robusta com recursos desenhados para DPOs, engenheiros de
-              segurança e gestores de tecnologia.
-            </p>
-          </div>
-
-          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {features.map((item) => (
-              <div
-                key={item.title}
-                className="surface-card rounded-2xl border border-border/80 p-6 transition-all hover:border-primary/50 hover:shadow-lg space-y-3 text-left"
-              >
-                <div className="flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                  <item.icon className="size-5" />
-                </div>
-                <h3 className="text-base font-semibold text-foreground">{item.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* HOW IT WORKS SECTION */}
-        <section id="how-it-works" className="border-t border-border/60 bg-secondary/20 py-20">
+        {/* PROBLEMA SECTION */}
+        <section id="problema" className="border-t border-border/60 bg-secondary/15 py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto space-y-3">
-              <h2 className="text-xs font-bold uppercase tracking-widest text-primary">
-                Metodologia
+            <div className="text-center max-w-3xl mx-auto space-y-3 mb-14">
+              <h2 className="text-xs font-bold uppercase tracking-widest text-destructive">
+                Os Desafios Reais das Empresas
               </h2>
               <p className="text-3xl font-bold tracking-tight sm:text-4xl text-foreground">
-                Como o PRISMA ONE protege sua operação
+                Sem visibilidade, não há proteção. Sem evidências, não há conformidade.
               </p>
               <p className="text-base text-muted-foreground">
-                Fluxo contínuo de 3 etapas para eliminar vulnerabilidades de dados e viés em IA.
+                Esses são os problemas que levam empresas a multas milionárias e crises de reputação.
               </p>
             </div>
 
-            <div className="mt-14 grid gap-8 md:grid-cols-3">
-              {howItWorks.map((step) => (
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {problems.map((p) => (
                 <div
-                  key={step.step}
-                  className="surface-card rounded-2xl border border-border p-6 relative text-left space-y-3"
+                  key={p.title}
+                  className="surface-card rounded-2xl border border-border/80 p-6 space-y-3 text-left hover:border-destructive/40 transition-colors"
                 >
-                  <span className="text-3xl font-extrabold text-primary/40 font-mono">
-                    {step.step}
-                  </span>
-                  <h3 className="text-lg font-semibold text-foreground">{step.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {step.description}
-                  </p>
+                  <div className="flex size-11 items-center justify-center rounded-xl bg-destructive/10 text-destructive">
+                    <p.icon className="size-5" />
+                  </div>
+                  <h3 className="text-sm font-bold text-foreground">{p.title}</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{p.desc}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* LGPD & IA HIGHLIGHT SECTION */}
-        <section id="lgpd" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="surface-card rounded-3xl border border-border/80 p-8 sm:p-12 shadow-xl grid gap-8 lg:grid-cols-2 items-center">
-            <div className="space-y-5 text-left">
-              <span className="inline-flex items-center gap-1.5 rounded-md bg-success/15 px-2.5 py-1 text-xs font-bold text-success">
-                <CheckCircle2 className="size-3.5" /> 100% Adequado à Legislação Brasileira
-              </span>
-              <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-                Conformidade LGPD & Governança Ética de Inteligência Artificial
+        {/* MÓDULOS SECTION */}
+        <section id="modulos" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto space-y-3 mb-14">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-primary">
+              Módulos da Plataforma
+            </h2>
+            <p className="text-3xl font-bold tracking-tight sm:text-4xl text-foreground">
+              Tudo o que sua organização precisa em um só lugar
+            </p>
+            <p className="text-base text-muted-foreground">
+              Três grandes pilares que cobrem desde o inventário de dados até a governança de IA.
+            </p>
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-3">
+            {modules.map((mod) => (
+              <div
+                key={mod.category}
+                className="surface-card rounded-2xl border border-border/80 p-7 space-y-5 text-left hover:border-primary/40 transition-all hover:shadow-lg"
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`flex size-12 items-center justify-center rounded-xl ${mod.bg} ${mod.color}`}>
+                    <mod.icon className="size-6" />
+                  </div>
+                  <h3 className={`text-lg font-bold ${mod.color}`}>{mod.category}</h3>
+                </div>
+                <ul className="space-y-2.5">
+                  {mod.items.map((item) => (
+                    <li key={item} className="flex items-center gap-2.5 text-sm text-muted-foreground">
+                      <Check className={`size-4 shrink-0 ${mod.color}`} />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* FEATURES SECTION */}
+        <section className="border-t border-border/60 bg-secondary/15 py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto space-y-3 mb-14">
+              <h2 className="text-xs font-bold uppercase tracking-widest text-primary">
+                Recursos Avançados
               </h2>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                A regulação de privacidade e o Marco Legal da IA exigem comprovação técnica de que
-                os dados de clientes e colaboradores são manipulados de forma legal, segura e não
-                discriminatória.
+              <p className="text-3xl font-bold tracking-tight sm:text-4xl text-foreground">
+                Arquitetura corporativa robusta
               </p>
-              <ul className="space-y-2.5 text-sm">
-                <li className="flex items-center gap-2.5">
-                  <Check className="size-4 text-success" />
-                  <span>Mapeamento automático de bases legais (Art. 7º e 11 da LGPD)</span>
-                </li>
-                <li className="flex items-center gap-2.5">
-                  <Check className="size-4 text-success" />
-                  <span>Testes de acurácia e equidade para detecção de viés algorítmico</span>
-                </li>
-                <li className="flex items-center gap-2.5">
-                  <Check className="size-4 text-success" />
-                  <span>
-                    Relatórios de Impacto à Proteção de Dados (RIPD/DPIA) pré-configurados
-                  </span>
-                </li>
-              </ul>
-              <Button asChild className="mt-2 font-semibold">
-                <Link to="/auth">Cadastre sua Empresa</Link>
-              </Button>
+              <p className="text-base text-muted-foreground">
+                Desenhado para DPOs, engenheiros de segurança e gestores de tecnologia.
+              </p>
             </div>
 
-            <div className="rounded-2xl border border-border bg-secondary/40 p-6 space-y-4">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">
-                Indicadores de Governança
-              </h3>
-              <div className="space-y-3 text-xs">
-                <div className="rounded-xl border border-border bg-card p-3 flex justify-between items-center">
-                  <span>Mapeamento de Dados Pessoais</span>
-                  <span className="font-bold text-success">100% Concluído</span>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {features.map((item) => (
+                <div
+                  key={item.title}
+                  className="surface-card rounded-2xl border border-border/80 p-6 transition-all hover:border-primary/50 hover:shadow-lg space-y-3 text-left"
+                >
+                  <div className="flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <item.icon className="size-5" />
+                  </div>
+                  <h3 className="text-base font-semibold text-foreground">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
                 </div>
-                <div className="rounded-xl border border-border bg-card p-3 flex justify-between items-center">
-                  <span>Base Legal Documentada</span>
-                  <span className="font-bold text-success">96% Validada</span>
-                </div>
-                <div className="rounded-xl border border-border bg-card p-3 flex justify-between items-center">
-                  <span>Auditoria de Viés em Modelos de IA</span>
-                  <span className="font-bold text-primary">Conforme</span>
-                </div>
-                <div className="rounded-xl border border-border bg-card p-3 flex justify-between items-center">
-                  <span>Plano de Resposta a Incidentes</span>
-                  <span className="font-bold text-warning">Vigente</span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* HOW IT WORKS SECTION */}
+        <section id="como-funciona" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto space-y-3 mb-14">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-primary">
+              Metodologia
+            </h2>
+            <p className="text-3xl font-bold tracking-tight sm:text-4xl text-foreground">
+              Como o PRISMA ONE protege sua operação
+            </p>
+            <p className="text-base text-muted-foreground">
+              Fluxo contínuo de 3 etapas para eliminar vulnerabilidades de dados e riscos de IA.
+            </p>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-3">
+            {howItWorks.map((step) => (
+              <div
+                key={step.step}
+                className="surface-card rounded-2xl border border-border p-6 relative text-left space-y-3"
+              >
+                <span className="text-3xl font-extrabold text-primary/40 font-mono">
+                  {step.step}
+                </span>
+                <h3 className="text-lg font-semibold text-foreground">{step.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* LGPD & IA HIGHLIGHT */}
+        <section className="border-t border-border/60 bg-secondary/15 py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="surface-card rounded-3xl border border-border/80 p-8 sm:p-12 shadow-xl grid gap-8 lg:grid-cols-2 items-center">
+              <div className="space-y-5 text-left">
+                <span className="inline-flex items-center gap-1.5 rounded-md bg-success/15 px-2.5 py-1 text-xs font-bold text-success">
+                  <CheckCircle2 className="size-3.5" /> 100% Adequado à Legislação Brasileira
+                </span>
+                <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                  Conformidade LGPD & Governança Ética de Inteligência Artificial
+                </h2>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  A regulação de privacidade e o Marco Legal da IA exigem comprovação técnica de que
+                  os dados de clientes e colaboradores são manipulados de forma legal, segura e não
+                  discriminatória.
+                </p>
+                <ul className="space-y-2.5 text-sm">
+                  <li className="flex items-center gap-2.5">
+                    <Check className="size-4 text-success" />
+                    <span>Mapeamento automático de bases legais (Art. 7º e 11 da LGPD)</span>
+                  </li>
+                  <li className="flex items-center gap-2.5">
+                    <Check className="size-4 text-success" />
+                    <span>Testes de acurácia e equidade para detecção de viés algorítmico</span>
+                  </li>
+                  <li className="flex items-center gap-2.5">
+                    <Check className="size-4 text-success" />
+                    <span>Relatórios de Impacto à Proteção de Dados (RIPD/DPIA) pré-configurados</span>
+                  </li>
+                </ul>
+                <Button asChild className="mt-2 font-semibold">
+                  <Link to="/auth">Cadastre sua Empresa</Link>
+                </Button>
+              </div>
+
+              <div className="rounded-2xl border border-border bg-secondary/40 p-6 space-y-4">
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">
+                  Indicadores de Governança
+                </h3>
+                <div className="space-y-3 text-xs">
+                  {[
+                    { label: "Mapeamento de Dados Pessoais", value: "100% Concluído", tone: "text-success" },
+                    { label: "Base Legal Documentada", value: "96% Validada", tone: "text-success" },
+                    { label: "Auditoria de Viés em Modelos de IA", value: "Conforme", tone: "text-primary" },
+                    { label: "Plano de Resposta a Incidentes", value: "Vigente", tone: "text-warning" },
+                  ].map((ind) => (
+                    <div key={ind.label} className="rounded-xl border border-border bg-card p-3 flex justify-between items-center">
+                      <span>{ind.label}</span>
+                      <span className={`font-bold ${ind.tone}`}>{ind.value}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -591,114 +689,115 @@ function Landing() {
         </section>
 
         {/* PRICING SECTION */}
-        <section id="pricing" className="border-t border-border/60 bg-secondary/15 py-20">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto space-y-3">
+        <section id="pricing" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto space-y-3 mb-14">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-primary">
+              Planos e Preços
+            </h2>
+            <p className="text-3xl font-bold tracking-tight sm:text-4xl text-foreground">
+              Investimento sob medida para o tamanho da sua empresa
+            </p>
+            <p className="text-base text-muted-foreground">
+              Transparência total, sem custos ocultos e com suporte especializado para DPOs.
+            </p>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-3 items-stretch">
+            {pricingPlans.map((plan) => (
+              <div
+                key={plan.name}
+                className={`surface-card rounded-2xl border p-7 flex flex-col justify-between relative ${
+                  plan.popular
+                    ? "border-primary shadow-xl ring-2 ring-primary/20"
+                    : "border-border/80"
+                }`}
+              >
+                {plan.popular && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-0.5 text-[11px] font-bold text-primary-foreground uppercase tracking-wider">
+                    Mais Escolhido
+                  </span>
+                )}
+                <div className="space-y-4 text-left">
+                  <div>
+                    <h3 className="text-xl font-bold text-foreground">{plan.name}</h3>
+                    <p className="text-xs text-muted-foreground mt-1">{plan.desc}</p>
+                  </div>
+
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-3xl font-extrabold text-foreground">{plan.price}</span>
+                    <span className="text-xs text-muted-foreground">{plan.period}</span>
+                  </div>
+
+                  <hr className="border-border/60" />
+
+                  <ul className="space-y-2.5 text-xs text-muted-foreground">
+                    {plan.features.map((feat) => (
+                      <li key={feat} className="flex items-start gap-2">
+                        <Check className="size-4 text-success shrink-0 mt-0.5" />
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="pt-8">
+                  <Button
+                    asChild
+                    variant={plan.popular ? "default" : "outline"}
+                    className="w-full font-semibold"
+                  >
+                    <Link to="/auth">{plan.cta}</Link>
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* FAQ SECTION */}
+        <section id="faq" className="border-t border-border/60 bg-secondary/15 py-20">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center space-y-3 mb-12">
               <h2 className="text-xs font-bold uppercase tracking-widest text-primary">
-                Planos e Preços
+                Dúvidas Frequentes
               </h2>
-              <p className="text-3xl font-bold tracking-tight sm:text-4xl text-foreground">
-                Investimento sob medida para o tamanho da sua empresa
-              </p>
-              <p className="text-base text-muted-foreground">
-                Transparência total, sem custos ocultos e com suporte especializado para DPOs.
+              <p className="text-3xl font-bold tracking-tight text-foreground">
+                Perguntas e Respostas sobre o PRISMA ONE
               </p>
             </div>
 
-            <div className="mt-14 grid gap-8 md:grid-cols-3 items-stretch">
-              {pricingPlans.map((plan) => (
+            <div className="space-y-3 text-left">
+              {faqs.map((faq, index) => (
                 <div
-                  key={plan.name}
-                  className={`surface-card rounded-2xl border p-7 flex flex-col justify-between relative ${
-                    plan.popular
-                      ? "border-primary shadow-xl ring-2 ring-primary/20"
-                      : "border-border/80"
-                  }`}
+                  key={faq.question}
+                  className="surface-card rounded-xl border border-border overflow-hidden"
                 >
-                  {plan.popular && (
-                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-0.5 text-[11px] font-bold text-primary-foreground uppercase tracking-wider">
-                      Mais Escolhido
-                    </span>
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                    className="flex w-full items-center justify-between p-5 text-left font-semibold text-sm hover:bg-secondary/40 transition-colors"
+                    aria-expanded={openFaq === index}
+                  >
+                    <span>{faq.question}</span>
+                    <ChevronRight
+                      className={`size-4 text-muted-foreground transition-transform ${
+                        openFaq === index ? "rotate-90" : ""
+                      }`}
+                    />
+                  </button>
+                  {openFaq === index && (
+                    <div className="p-5 pt-0 text-sm text-muted-foreground leading-relaxed border-t border-border/40">
+                      {faq.answer}
+                    </div>
                   )}
-                  <div className="space-y-4 text-left">
-                    <div>
-                      <h3 className="text-xl font-bold text-foreground">{plan.name}</h3>
-                      <p className="text-xs text-muted-foreground mt-1">{plan.desc}</p>
-                    </div>
-
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-3xl font-extrabold text-foreground">{plan.price}</span>
-                      <span className="text-xs text-muted-foreground">{plan.period}</span>
-                    </div>
-
-                    <hr className="border-border/60" />
-
-                    <ul className="space-y-2.5 text-xs text-muted-foreground">
-                      {plan.features.map((feat) => (
-                        <li key={feat} className="flex items-start gap-2">
-                          <Check className="size-4 text-success shrink-0 mt-0.5" />
-                          <span>{feat}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="pt-8">
-                    <Button
-                      asChild
-                      variant={plan.popular ? "default" : "outline"}
-                      className="w-full font-semibold"
-                    >
-                      <Link to="/auth">{plan.cta}</Link>
-                    </Button>
-                  </div>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* FAQ SECTION */}
-        <section id="faq" className="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="text-center space-y-3 mb-12">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-primary">
-              Dúvidas Frequentes
-            </h2>
-            <p className="text-3xl font-bold tracking-tight text-foreground">
-              Perguntas e Respostas sobre o PRISMA ONE
-            </p>
-          </div>
-
-          <div className="space-y-3 text-left">
-            {faqs.map((faq, index) => (
-              <div
-                key={faq.question}
-                className="surface-card rounded-xl border border-border overflow-hidden"
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                  className="flex w-full items-center justify-between p-5 text-left font-semibold text-sm hover:bg-secondary/40 transition-colors"
-                >
-                  <span>{faq.question}</span>
-                  <ChevronRight
-                    className={`size-4 text-muted-foreground transition-transform ${
-                      openFaq === index ? "rotate-90" : ""
-                    }`}
-                  />
-                </button>
-                {openFaq === index && (
-                  <div className="p-5 pt-0 text-xs text-muted-foreground leading-relaxed border-t border-border/40">
-                    {faq.answer}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-
         {/* CTA BANNER */}
-        <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
+        <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
           <div
             className="rounded-3xl p-10 sm:p-14 text-center text-primary-foreground space-y-6 shadow-2xl relative overflow-hidden"
             style={{ backgroundImage: "var(--gradient-primary)" }}
@@ -710,14 +809,12 @@ function Landing() {
               Cadastre sua organização no <strong>PRISMA ONE</strong> e tenha visibilidade total de
               riscos, conformidade LGPD e governança de IA em minutos.
             </p>
-            <div className="flex flex-wrap justify-center gap-3.5">
-              <Button
-                asChild
-                size="lg"
-                variant="secondary"
-                className="h-12 px-7 font-bold shadow-md"
-              >
-                <Link to="/auth">Cadastrar Empresa Gratuitamente</Link>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button asChild size="lg" variant="secondary" className="h-12 px-8 font-bold shadow-md">
+                <Link to="/auth">Começar agora — É gratuito</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="h-12 px-8 font-bold bg-transparent border-white/30 text-white hover:bg-white/10">
+                <Link to="/auth">Entrar na plataforma</Link>
               </Button>
             </div>
           </div>
@@ -749,26 +846,10 @@ function Landing() {
                 Plataforma
               </h3>
               <ul className="space-y-2 text-xs text-muted-foreground">
-                <li>
-                  <a href="#features" className="hover:text-foreground">
-                    Monitoramento Contínuo
-                  </a>
-                </li>
-                <li>
-                  <a href="#lgpd" className="hover:text-foreground">
-                    Conformidade LGPD
-                  </a>
-                </li>
-                <li>
-                  <a href="#lgpd" className="hover:text-foreground">
-                    Auditoria de IA
-                  </a>
-                </li>
-                <li>
-                  <a href="#pricing" className="hover:text-foreground">
-                    Planos Corporativos
-                  </a>
-                </li>
+                <li><a href="#problema" className="hover:text-foreground">O Problema</a></li>
+                <li><a href="#modulos" className="hover:text-foreground">Módulos</a></li>
+                <li><a href="#como-funciona" className="hover:text-foreground">Como Funciona</a></li>
+                <li><a href="#pricing" className="hover:text-foreground">Planos</a></li>
               </ul>
             </div>
 
@@ -778,24 +859,20 @@ function Landing() {
               </h3>
               <ul className="space-y-2 text-xs text-muted-foreground">
                 <li>
-                  <Link to="/auth" className="hover:text-foreground">
+                  <Link to="/politicas" className="hover:text-foreground">
                     Política de Privacidade
                   </Link>
                 </li>
                 <li>
-                  <Link to="/auth" className="hover:text-foreground">
+                  <Link to="/politicas" className="hover:text-foreground">
                     Termos de Uso
                   </Link>
                 </li>
                 <li>
-                  <Link to="/auth" className="hover:text-foreground">
-                    Segurança e Criptografia
-                  </Link>
+                  <span className="text-muted-foreground/60">Segurança e Criptografia</span>
                 </li>
                 <li>
-                  <Link to="/auth" className="hover:text-foreground">
-                    Relatório de Transparência
-                  </Link>
+                  <span className="text-muted-foreground/60">Relatório de Transparência</span>
                 </li>
               </ul>
             </div>
@@ -807,12 +884,12 @@ function Landing() {
               <ul className="space-y-2 text-xs text-muted-foreground">
                 <li>
                   <Link to="/auth" className="hover:text-foreground font-semibold text-primary">
-                    Acessar Painel da Empresa
+                    Acessar Painel
                   </Link>
                 </li>
                 <li>
                   <Link to="/auth" className="hover:text-foreground">
-                    Cadastrar Nova Organização
+                    Cadastrar Empresa
                   </Link>
                 </li>
               </ul>

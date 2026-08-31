@@ -14,14 +14,10 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AdministradorRouteImport } from './routes/administrador'
 import { Route as AnaliseRouteImport } from './routes/analise'
 import { Route as AuthRouteImport } from './routes/auth'
-<<<<<<< HEAD
-import { Route as LoginRouteImport } from './routes/login'
-=======
 import { Route as EmpresasRouteImport } from './routes/empresas'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as NovaEmpresaRouteImport } from './routes/nova-empresa'
 import { Route as PoliticasRouteImport } from './routes/politicas'
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
 import { Route as SimulacaoRouteImport } from './routes/simulacao'
 import { Route as AuthenticatedAdministracaoRouteImport } from './routes/_authenticated/administracao'
 import { Route as AuthenticatedAlertasRouteImport } from './routes/_authenticated/alertas'
@@ -31,6 +27,9 @@ import { Route as AuthenticatedConformidadeRouteImport } from './routes/_authent
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedMonitoramentoRouteImport } from './routes/_authenticated/monitoramento'
 import { Route as AuthenticatedRelatoriosRouteImport } from './routes/_authenticated/relatorios'
+import { Route as AuthenticatedAnaliseRouteImport } from './routes/_authenticated/analise'
+import { Route as AuthenticatedInventarioRouteImport } from './routes/_authenticated/inventario'
+import { Route as AuthenticatedPlanoAcaoRouteImport } from './routes/_authenticated/plano-acao'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -56,21 +55,16 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-<<<<<<< HEAD
-=======
 const EmpresasRoute = EmpresasRouteImport.update({
   id: '/empresas',
   path: '/empresas',
   getParentRoute: () => rootRouteImport,
 } as any)
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-<<<<<<< HEAD
-=======
 const NovaEmpresaRoute = NovaEmpresaRouteImport.update({
   id: '/nova-empresa',
   path: '/nova-empresa',
@@ -81,7 +75,6 @@ const PoliticasRoute = PoliticasRouteImport.update({
   path: '/politicas',
   getParentRoute: () => rootRouteImport,
 } as any)
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
 const SimulacaoRoute = SimulacaoRouteImport.update({
   id: '/simulacao',
   path: '/simulacao',
@@ -127,26 +120,29 @@ const AuthenticatedMonitoramentoRoute =
     path: '/monitoramento',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-<<<<<<< HEAD
-const AuthenticatedPoliticasRoute = AuthenticatedPoliticasRouteImport.update({
-  id: '/politicas',
-  path: '/politicas',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-=======
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
 const AuthenticatedRelatoriosRoute = AuthenticatedRelatoriosRouteImport.update({
   id: '/relatorios',
   path: '/relatorios',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAnaliseRoute = AuthenticatedAnaliseRouteImport.update({
+  id: '/analise',
+  path: '/analise',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedInventarioRoute = AuthenticatedInventarioRouteImport.update({
+  id: '/inventario',
+  path: '/inventario',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPlanoAcaoRoute = AuthenticatedPlanoAcaoRouteImport.update({
+  id: '/plano-acao',
+  path: '/plano-acao',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-<<<<<<< HEAD
-  '/auth': typeof AuthRoute
-  '/login': typeof LoginRoute
-=======
   '/administrador': typeof AdministradorRoute
   '/analise': typeof AnaliseRoute
   '/auth': typeof AuthRoute
@@ -154,7 +150,6 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/nova-empresa': typeof NovaEmpresaRoute
   '/politicas': typeof PoliticasRoute
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
   '/simulacao': typeof SimulacaoRoute
   '/administracao': typeof AuthenticatedAdministracaoRoute
   '/alertas': typeof AuthenticatedAlertasRoute
@@ -164,20 +159,18 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/monitoramento': typeof AuthenticatedMonitoramentoRoute
   '/relatorios': typeof AuthenticatedRelatoriosRoute
+  '/inventario': typeof AuthenticatedInventarioRoute
+  '/plano-acao': typeof AuthenticatedPlanoAcaoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/administrador': typeof AdministradorRoute
-  '/analise': typeof AnaliseRoute
+  '/analise': typeof AuthenticatedAnaliseRoute
   '/auth': typeof AuthRoute
-<<<<<<< HEAD
-  '/login': typeof LoginRoute
-=======
   '/empresas': typeof EmpresasRoute
   '/login': typeof LoginRoute
   '/nova-empresa': typeof NovaEmpresaRoute
   '/politicas': typeof PoliticasRoute
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
   '/simulacao': typeof SimulacaoRoute
   '/administracao': typeof AuthenticatedAdministracaoRoute
   '/alertas': typeof AuthenticatedAlertasRoute
@@ -187,6 +180,8 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/monitoramento': typeof AuthenticatedMonitoramentoRoute
   '/relatorios': typeof AuthenticatedRelatoriosRoute
+  '/inventario': typeof AuthenticatedInventarioRoute
+  '/plano-acao': typeof AuthenticatedPlanoAcaoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -195,14 +190,10 @@ export interface FileRoutesById {
   '/administrador': typeof AdministradorRoute
   '/analise': typeof AnaliseRoute
   '/auth': typeof AuthRoute
-<<<<<<< HEAD
-  '/login': typeof LoginRoute
-=======
   '/empresas': typeof EmpresasRoute
   '/login': typeof LoginRoute
   '/nova-empresa': typeof NovaEmpresaRoute
   '/politicas': typeof PoliticasRoute
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
   '/simulacao': typeof SimulacaoRoute
   '/_authenticated/administracao': typeof AuthenticatedAdministracaoRoute
   '/_authenticated/alertas': typeof AuthenticatedAlertasRoute
@@ -212,6 +203,9 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/monitoramento': typeof AuthenticatedMonitoramentoRoute
   '/_authenticated/relatorios': typeof AuthenticatedRelatoriosRoute
+  '/_authenticated/analise': typeof AuthenticatedAnaliseRoute
+  '/_authenticated/inventario': typeof AuthenticatedInventarioRoute
+  '/_authenticated/plano-acao': typeof AuthenticatedPlanoAcaoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -220,14 +214,10 @@ export interface FileRouteTypes {
     | '/administrador'
     | '/analise'
     | '/auth'
-<<<<<<< HEAD
-    | '/login'
-=======
     | '/empresas'
     | '/login'
     | '/nova-empresa'
     | '/politicas'
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
     | '/simulacao'
     | '/administracao'
     | '/alertas'
@@ -237,20 +227,18 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/monitoramento'
     | '/relatorios'
+    | '/inventario'
+    | '/plano-acao'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/administrador'
     | '/analise'
     | '/auth'
-<<<<<<< HEAD
-    | '/login'
-=======
     | '/empresas'
     | '/login'
     | '/nova-empresa'
     | '/politicas'
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
     | '/simulacao'
     | '/administracao'
     | '/alertas'
@@ -260,6 +248,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/monitoramento'
     | '/relatorios'
+    | '/inventario'
+    | '/plano-acao'
   id:
     | '__root__'
     | '/'
@@ -267,14 +257,10 @@ export interface FileRouteTypes {
     | '/administrador'
     | '/analise'
     | '/auth'
-<<<<<<< HEAD
-    | '/login'
-=======
     | '/empresas'
     | '/login'
     | '/nova-empresa'
     | '/politicas'
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
     | '/simulacao'
     | '/_authenticated/administracao'
     | '/_authenticated/alertas'
@@ -284,6 +270,9 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/monitoramento'
     | '/_authenticated/relatorios'
+    | '/_authenticated/analise'
+    | '/_authenticated/inventario'
+    | '/_authenticated/plano-acao'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -292,14 +281,10 @@ export interface RootRouteChildren {
   AdministradorRoute: typeof AdministradorRoute
   AnaliseRoute: typeof AnaliseRoute
   AuthRoute: typeof AuthRoute
-<<<<<<< HEAD
-  LoginRoute: typeof LoginRoute
-=======
   EmpresasRoute: typeof EmpresasRoute
   LoginRoute: typeof LoginRoute
   NovaEmpresaRoute: typeof NovaEmpresaRoute
   PoliticasRoute: typeof PoliticasRoute
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
   SimulacaoRoute: typeof SimulacaoRoute
 }
 
@@ -340,8 +325,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-<<<<<<< HEAD
-=======
     '/empresas': {
       id: '/empresas'
       path: '/empresas'
@@ -349,7 +332,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmpresasRouteImport
       parentRoute: typeof rootRouteImport
     }
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
     '/login': {
       id: '/login'
       path: '/login'
@@ -357,8 +339,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-<<<<<<< HEAD
-=======
     '/nova-empresa': {
       id: '/nova-empresa'
       path: '/nova-empresa'
@@ -373,7 +353,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PoliticasRouteImport
       parentRoute: typeof rootRouteImport
     }
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
     '/simulacao': {
       id: '/simulacao'
       path: '/simulacao'
@@ -437,6 +416,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRelatoriosRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/analise': {
+      id: '/_authenticated/analise'
+      path: '/analise'
+      fullPath: '/analise'
+      preLoaderRoute: typeof AuthenticatedAnaliseRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/inventario': {
+      id: '/_authenticated/inventario'
+      path: '/inventario'
+      fullPath: '/inventario'
+      preLoaderRoute: typeof AuthenticatedInventarioRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/plano-acao': {
+      id: '/_authenticated/plano-acao'
+      path: '/plano-acao'
+      fullPath: '/plano-acao'
+      preLoaderRoute: typeof AuthenticatedPlanoAcaoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -449,6 +449,9 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedMonitoramentoRoute: typeof AuthenticatedMonitoramentoRoute
   AuthenticatedRelatoriosRoute: typeof AuthenticatedRelatoriosRoute
+  AuthenticatedAnaliseRoute: typeof AuthenticatedAnaliseRoute
+  AuthenticatedInventarioRoute: typeof AuthenticatedInventarioRoute
+  AuthenticatedPlanoAcaoRoute: typeof AuthenticatedPlanoAcaoRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -460,6 +463,9 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedMonitoramentoRoute: AuthenticatedMonitoramentoRoute,
   AuthenticatedRelatoriosRoute: AuthenticatedRelatoriosRoute,
+  AuthenticatedAnaliseRoute: AuthenticatedAnaliseRoute,
+  AuthenticatedInventarioRoute: AuthenticatedInventarioRoute,
+  AuthenticatedPlanoAcaoRoute: AuthenticatedPlanoAcaoRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -471,14 +477,10 @@ const rootRouteChildren: RootRouteChildren = {
   AdministradorRoute: AdministradorRoute,
   AnaliseRoute: AnaliseRoute,
   AuthRoute: AuthRoute,
-<<<<<<< HEAD
-  LoginRoute: LoginRoute,
-=======
   EmpresasRoute: EmpresasRoute,
   LoginRoute: LoginRoute,
   NovaEmpresaRoute: NovaEmpresaRoute,
   PoliticasRoute: PoliticasRoute,
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
   SimulacaoRoute: SimulacaoRoute,
 }
 export const routeTree = rootRouteImport

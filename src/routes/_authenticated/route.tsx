@@ -1,16 +1,10 @@
-<<<<<<< HEAD
 import { useState } from "react";
 import { createFileRoute, Outlet, redirect, useNavigate, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Bell, HelpCircle, LogOut, ShieldCheck, AlertTriangle, ExternalLink } from "lucide-react";
-=======
-import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
-import { Bell, HelpCircle, LogOut } from "lucide-react";
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
+import { Bell, HelpCircle, LogOut, ShieldCheck, AlertTriangle } from "lucide-react";
 
 import { AppSidebar } from "@/components/prisma/AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-<<<<<<< HEAD
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
@@ -20,6 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { supabase } from "@/integrations/supabase/client";
 import { alerts } from "@/lib/prisma-data";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -31,19 +26,13 @@ export const Route = createFileRoute("/_authenticated")({
     }
     return { user: data.user };
   },
-=======
-import { useEffect } from "react";
-
-export const Route = createFileRoute("/_authenticated")({
-  ssr: false,
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
   component: AuthenticatedLayout,
 });
 
 function AuthenticatedLayout() {
   const navigate = useNavigate();
-<<<<<<< HEAD
   const queryClient = useQueryClient();
+  const { user } = Route.useRouteContext();
   const [helpOpen, setHelpOpen] = useState(false);
 
   // Buscar perfil da empresa no Supabase
@@ -65,26 +54,11 @@ function AuthenticatedLayout() {
 
   const initials = company.slice(0, 2).toUpperCase();
   const pendingAlerts = alerts.filter((a) => a.status === "pendente");
-=======
 
-  const userCompany = typeof window !== "undefined" ? localStorage.getItem("userCompany") || "Empresa" : "Empresa";
-  const initials = userCompany.slice(0, 2).toUpperCase();
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
-      if (!isAuthenticated) navigate({ to: "/auth" as any, replace: true });
-    }
-  }, [navigate]);
-
-  function handleSignOut() {
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("isAuthenticated");
-      localStorage.removeItem("userCompany");
-      localStorage.removeItem("userEmail");
-    }
-    navigate({ to: "/auth" as any, replace: true });
+  async function handleSignOut() {
+    await supabase.auth.signOut();
+    queryClient.clear();
+    navigate({ to: "/auth", replace: true });
   }
 
   return (
@@ -95,7 +69,7 @@ function AuthenticatedLayout() {
           {/* Header */}
           <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-3 border-b border-border bg-background/85 px-4 backdrop-blur-md">
             <div className="flex items-center gap-3">
-              <SidebarTrigger />
+              <SidebarTrigger aria-label="Alternar menu lateral" />
               <span className="hidden md:inline-block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Painel Corporativo
               </span>
@@ -107,8 +81,8 @@ function AuthenticatedLayout() {
                 <PopoverTrigger asChild>
                   <button
                     type="button"
-                    aria-label="Alertas e Notificações"
-                    className="relative grid size-9 place-items-center rounded-lg border border-border/60 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                    aria-label={`Alertas e Notificações — ${pendingAlerts.length} pendentes`}
+                    className="relative grid size-9 place-items-center rounded-lg border border-border/60 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
                   >
                     <Bell className="size-4" />
                     {pendingAlerts.length > 0 && (
@@ -124,32 +98,38 @@ function AuthenticatedLayout() {
                       Alertas Recentes ({pendingAlerts.length})
                     </p>
                     <Link
-                      to="/alertas"
+                      to="/_authenticated/alertas"
                       className="text-xs font-medium text-primary hover:underline"
                     >
                       Ver todos
                     </Link>
                   </div>
                   <ul className="divide-y divide-border/60 max-h-64 overflow-y-auto">
-                    {pendingAlerts.slice(0, 3).map((alert) => (
-                      <li key={alert.id} className="p-3 text-xs hover:bg-secondary/40">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="font-semibold text-foreground truncate">
-                            {alert.title}
-                          </span>
-                          <span
-                            className={`text-[9px] font-bold uppercase rounded px-1.5 py-0.5 ${
-                              alert.severity === "alto"
-                                ? "bg-destructive/20 text-destructive"
-                                : "bg-warning/20 text-warning"
-                            }`}
-                          >
-                            {alert.severity}
-                          </span>
-                        </div>
-                        <p className="mt-1 text-muted-foreground">{alert.context}</p>
+                    {pendingAlerts.length === 0 ? (
+                      <li className="p-4 text-xs text-center text-muted-foreground">
+                        Nenhum alerta pendente no momento.
                       </li>
-                    ))}
+                    ) : (
+                      pendingAlerts.slice(0, 3).map((alert) => (
+                        <li key={alert.id} className="p-3 text-xs hover:bg-secondary/40">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="font-semibold text-foreground truncate">
+                              {alert.title}
+                            </span>
+                            <span
+                              className={`text-[9px] font-bold uppercase rounded px-1.5 py-0.5 ${
+                                alert.severity === "alto"
+                                  ? "bg-destructive/20 text-destructive"
+                                  : "bg-warning/20 text-warning"
+                              }`}
+                            >
+                              {alert.severity}
+                            </span>
+                          </div>
+                          <p className="mt-1 text-muted-foreground">{alert.context}</p>
+                        </li>
+                      ))
+                    )}
                   </ul>
                 </PopoverContent>
               </Popover>
@@ -159,7 +139,7 @@ function AuthenticatedLayout() {
                 type="button"
                 onClick={() => setHelpOpen(true)}
                 aria-label="Central de Ajuda e Suporte LGPD"
-                className="grid size-9 place-items-center rounded-lg border border-border/60 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                className="grid size-9 place-items-center rounded-lg border border-border/60 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
               >
                 <HelpCircle className="size-4" />
               </button>
@@ -169,19 +149,13 @@ function AuthenticatedLayout() {
                 <div
                   className="flex size-8 shrink-0 items-center justify-center rounded-lg text-xs font-bold text-primary-foreground shadow-xs"
                   style={{ backgroundImage: "var(--gradient-primary)" }}
+                  aria-hidden="true"
                 >
                   {initials}
                 </div>
-<<<<<<< HEAD
                 <div className="hidden leading-tight sm:block text-left">
                   <p className="max-w-[160px] truncate text-xs font-semibold text-foreground">
                     {company}
-=======
-                <div className="hidden leading-tight sm:block">
-                  <p className="max-w-[180px] truncate text-sm font-medium">{userCompany}</p>
-                  <p className="text-[11px] text-muted-foreground">
-                    Responsável pela Privacidade
->>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
                   </p>
                   <p className="text-[10px] text-muted-foreground">Responsável LGPD / DPO</p>
                 </div>
@@ -193,6 +167,7 @@ function AuthenticatedLayout() {
                 size="sm"
                 onClick={handleSignOut}
                 className="h-8 gap-1.5 text-xs text-muted-foreground hover:text-destructive hover:border-destructive/40"
+                aria-label="Sair da plataforma"
               >
                 <LogOut className="size-3.5" />
                 <span className="hidden sm:inline">Sair</span>
