@@ -39,16 +39,12 @@ export function Panel({
   className?: string;
 }) {
   return (
-    <section
-      className={`surface-card rounded-2xl border border-border p-5 ${className}`}
-    >
+    <section className={`surface-card rounded-2xl border border-border p-5 ${className}`}>
       {(title || action) && (
         <div className="mb-4 flex items-start justify-between gap-4">
           <div>
             {title && <h2 className="text-base font-semibold">{title}</h2>}
-            {description && (
-              <p className="mt-1 text-xs text-muted-foreground">{description}</p>
-            )}
+            {description && <p className="mt-1 text-xs text-muted-foreground">{description}</p>}
           </div>
           {action}
         </div>

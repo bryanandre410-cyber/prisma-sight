@@ -103,7 +103,12 @@ export const alerts: {
 export const policies = [
   { name: "Política de Dados Pessoais", updated: "12/05/2024", version: "v4.2", status: "Vigente" },
   { name: "Política de IA Responsável", updated: "08/05/2024", version: "v2.0", status: "Vigente" },
-  { name: "Política de Retenção de Dados", updated: "01/05/2024", version: "v3.1", status: "Vigente" },
+  {
+    name: "Política de Retenção de Dados",
+    updated: "01/05/2024",
+    version: "v3.1",
+    status: "Vigente",
+  },
   {
     name: "Política de Compartilhamento",
     updated: "28/04/2024",
@@ -126,7 +131,12 @@ export const dataFlows = [
   { source: "ERP Financeiro", category: "Dados financeiros", access: 64, risk: "Alto" },
   { source: "RH Cloud", category: "Dados sensíveis", access: 41, risk: "Médio" },
   { source: "Data Lake Analytics", category: "Comportamental", access: 302, risk: "Médio" },
-  { source: "Chatbot de Atendimento", category: "Conversas de clientes", access: 517, risk: "Alto" },
+  {
+    source: "Chatbot de Atendimento",
+    category: "Conversas de clientes",
+    access: 517,
+    risk: "Alto",
+  },
 ];
 
 export const aiModels = [

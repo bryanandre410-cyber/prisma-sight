@@ -1,28 +1,37 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Play, ScanSearch } from "lucide-react";
+import {
+  Loader2,
+  Play,
+  ScanSearch,
+  ShieldCheck,
+  AlertTriangle,
+  CheckCircle2,
+  History,
+} from "lucide-react";
 import { toast } from "sonner";
 
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell, Panel, SeverityPill } from "@/components/prisma/PageShell";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { runSimulation, type Finding, type SimulationResult } from "@/lib/analysis-simulator";
 
 export const Route = createFileRoute("/_authenticated/analise")({
   head: () => ({
     meta: [
-      { title: "Simulação de análise de dados — Prisma One" },
+      { title: "Varredura & Simulação de Dados — PRISMA ONE" },
       {
         name: "description",
         content:
-          "Execute uma simulação de análise dos dados da empresa e receba riscos, achados e pontuação de conformidade.",
+          "Execute uma varredura de conformidade e auditoria de IA nas fontes de dados corporativas da empresa.",
       },
-      { property: "og:title", content: "Simulação de análise de dados — Prisma One" },
+      { property: "og:title", content: "Varredura & Simulação de Dados — PRISMA ONE" },
       {
         property: "og:description",
-        content: "Varredura simulada de fontes de dados com riscos e score de conformidade LGPD.",
+        content: "Mapeamento em tempo real de dados pessoais, riscos de vazamento e score LGPD.",
       },
     ],
   }),
@@ -30,25 +39,25 @@ export const Route = createFileRoute("/_authenticated/analise")({
 });
 
 const sources = [
-  "CRM Comercial",
-  "ERP Financeiro",
-  "RH Cloud",
-  "Data Lake Analytics",
-  "Chatbot de Atendimento",
+  "CRM Comercial (HubSpot / Salesforce)",
+  "ERP Financeiro (SAP / TOTVS)",
+  "RH Cloud Storage & Currículos",
+  "Data Lake & Snowflake Analytics",
+  "Chatbot de Atendimento & LLM Gateway",
 ];
 
 const scopes = [
-  { value: "completo", label: "Completo" },
-  { value: "lgpd", label: "Foco LGPD" },
-  { value: "ia", label: "Foco IA" },
+  { value: "completo", label: "Varredura Completa (LGPD + IA + Segurança)" },
+  { value: "lgpd", label: "Foco Estrito em Conformidade LGPD" },
+  { value: "ia", label: "Foco em Modelos de IA e Viés Algorítmico" },
 ];
 
 const steps = [
-  "Conectando à fonte de dados...",
-  "Mapeando dados pessoais e sensíveis...",
-  "Analisando acessos e compartilhamentos...",
-  "Avaliando uso por modelos de IA...",
-  "Calculando conformidade e gerando achados...",
+  "Estabelecendo túnel seguro com a fonte de dados...",
+  "Mapeando campos com dados pessoais e sensíveis...",
+  "Analisando permissões de acesso e logs de compartilhamento...",
+  "Avaliando uso de dados por modelos de Inteligência Artificial...",
+  "Consolidando métricas e gerando laudo de conformidade...",
 ];
 
 type AnalysisRow = {
@@ -64,7 +73,7 @@ type AnalysisRow = {
 
 function AnalisePage() {
   const queryClient = useQueryClient();
-  const [source, setSource] = useState(sources[0] ?? "");
+  const [source, setSource] = useState(sources[0]);
   const [scope, setScope] = useState("completo");
   const [progress, setProgress] = useState(0);
   const [step, setStep] = useState(0);
@@ -72,7 +81,12 @@ function AnalisePage() {
   const [result, setResult] = useState<SimulationResult | null>(null);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  useEffect(() => () => { if (timer.current) clearInterval(timer.current); }, []);
+  useEffect(
+    () => () => {
+      if (timer.current) clearInterval(timer.current);
+    },
+    [],
+  );
 
   const history = useQuery({
     queryKey: ["analyses"],
@@ -91,7 +105,8 @@ function AnalisePage() {
     mutationFn: async (payload: SimulationResult) => {
       const { data: userData } = await supabase.auth.getUser();
       const userId = userData.user?.id;
-      if (!userId) throw new Error("Sessão expirada");
+      if (!userId) throw new Error("Sessão expirada. Por favor, faça login novamente.");
+
       const { error } = await supabase.from("analyses").insert({
         user_id: userId,
         source: payload.source,
@@ -106,9 +121,10 @@ function AnalisePage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["analyses"] });
-      toast.success("Análise concluída e registrada");
+      queryClient.invalidateQueries({ queryKey: ["dashboard-analyses"] });
+      toast.success("Varredura concluída e persistida com sucesso!");
     },
-    onError: (e) => toast.error(e instanceof Error ? e.message : "Erro ao salvar a análise"),
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Erro ao registrar varredura."),
   });
 
   function startAnalysis() {
@@ -120,7 +136,7 @@ function AnalisePage() {
 
     timer.current = setInterval(() => {
       setProgress((prev) => {
-        const next = Math.min(100, prev + Math.random() * 9 + 4);
+        const next = Math.min(100, prev + Math.random() * 11 + 6);
         setStep(Math.min(steps.length - 1, Math.floor((next / 100) * steps.length)));
         if (next >= 100) {
           if (timer.current) clearInterval(timer.current);
@@ -131,25 +147,29 @@ function AnalisePage() {
         }
         return next;
       });
-    }, 320);
+    }, 280);
   }
 
   return (
     <PageShell
-      title="Simulação de Análise de Dados"
-      subtitle="Execute uma varredura simulada nas fontes de dados da empresa e veja riscos, achados e conformidade."
+      title="Varredura & Simulação de Dados"
+      subtitle="Execute diagnósticos de conformidade e auditoria de IA nas fontes corporativas da sua empresa."
     >
-      <div className="grid gap-4 lg:grid-cols-[380px_1fr]">
-        <Panel title="Configurar análise" description="Escolha a fonte e o escopo da varredura.">
-          <div className="space-y-4">
+      <div className="grid gap-5 lg:grid-cols-[380px_1fr] text-left">
+        {/* Configuration Panel */}
+        <Panel
+          title="Configurar Varredura"
+          description="Selecione a fonte e o escopo do diagnóstico."
+        >
+          <div className="space-y-4 text-xs">
             <div className="space-y-1.5">
-              <Label htmlFor="fonte">Fonte de dados</Label>
+              <Label htmlFor="fonte">Fonte de Dados Corporativa</Label>
               <select
                 id="fonte"
                 value={source}
                 onChange={(e) => setSource(e.target.value)}
                 disabled={running}
-                className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                className="w-full h-10 rounded-md border border-input bg-background px-3 text-xs focus-visible:ring-2 focus-visible:ring-ring"
               >
                 {sources.map((s) => (
                   <option key={s} value={s}>
@@ -158,14 +178,15 @@ function AnalisePage() {
                 ))}
               </select>
             </div>
+
             <div className="space-y-1.5">
-              <Label htmlFor="escopo">Escopo</Label>
+              <Label htmlFor="escopo">Escopo da Análise</Label>
               <select
                 id="escopo"
                 value={scope}
                 onChange={(e) => setScope(e.target.value)}
                 disabled={running}
-                className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                className="w-full h-10 rounded-md border border-input bg-background px-3 text-xs focus-visible:ring-2 focus-visible:ring-ring"
               >
                 {scopes.map((s) => (
                   <option key={s.value} value={s.value}>
@@ -174,96 +195,141 @@ function AnalisePage() {
                 ))}
               </select>
             </div>
-            <Button onClick={startAnalysis} disabled={running} className="w-full">
-              {running ? (
-                <Loader2 className="mr-2 size-4 animate-spin" />
-              ) : (
-                <Play className="mr-2 size-4" />
-              )}
-              {running ? "Analisando..." : "Iniciar análise"}
+
+            <Button
+              onClick={startAnalysis}
+              disabled={running}
+              className="w-full h-10 font-semibold gap-2 shadow-xs"
+            >
+              {running ? <Loader2 className="size-4 animate-spin" /> : <Play className="size-4" />}
+              {running ? "Executando Varredura..." : "Iniciar Varredura"}
             </Button>
 
             {(running || progress > 0) && (
-              <div className="pt-2">
+              <div className="pt-2 space-y-1.5">
                 <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
                   <div
-                    className="h-full rounded-full transition-all"
+                    className="h-full rounded-full transition-all duration-300"
                     style={{
                       width: `${progress}%`,
                       backgroundImage: "var(--gradient-primary)",
                     }}
                   />
                 </div>
-                <p className="mt-2 text-xs text-muted-foreground">
-                  {running ? steps[step] : "Varredura finalizada."} {Math.round(progress)}%
+                <p className="text-[11px] text-muted-foreground font-medium">
+                  {running ? steps[step] : "Varredura concluída com sucesso."} (
+                  {Math.round(progress)}%)
                 </p>
               </div>
             )}
           </div>
         </Panel>
 
+        {/* Results Panel */}
         <Panel
-          title="Resultado da análise"
-          description="Achados simulados a partir do comportamento dos dados na fonte selecionada."
+          title="Resultado da Varredura"
+          description="Achados técnicos e classificação de riscos identificados no ambiente analisado."
         >
           {!result ? (
-            <div className="flex flex-col items-center justify-center gap-3 py-14 text-center text-muted-foreground">
-              <ScanSearch className="size-8" />
-              <p className="text-sm">Nenhuma análise executada ainda nesta sessão.</p>
+            <div className="flex flex-col items-center justify-center gap-3 py-16 text-center text-muted-foreground text-xs">
+              <ScanSearch className="size-10 text-muted-foreground/60" />
+              <p className="font-medium text-foreground">Nenhuma análise executada nesta sessão.</p>
+              <p>Configure a fonte de dados e clique em "Iniciar Varredura" para gerar o laudo.</p>
             </div>
           ) : (
-            <div className="space-y-5">
+            <div className="space-y-5 text-left">
               <div className="grid gap-3 sm:grid-cols-3">
-                <Metric label="Registros analisados" value={result.recordsScanned.toLocaleString("pt-BR")} />
-                <Metric label="Conformidade LGPD" value={`${result.complianceScore}%`} />
-                <Metric label="Riscos encontrados" value={String(result.findings.length)} />
+                <div className="rounded-xl border border-border bg-secondary/30 p-3.5">
+                  <p className="text-[11px] text-muted-foreground">Registros Analisados</p>
+                  <p className="text-2xl font-bold text-foreground mt-1">
+                    {result.recordsScanned.toLocaleString("pt-BR")}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-border bg-secondary/30 p-3.5">
+                  <p className="text-[11px] text-muted-foreground">Score de Conformidade</p>
+                  <p className="text-2xl font-bold text-success mt-1">{result.complianceScore}%</p>
+                </div>
+
+                <div className="rounded-xl border border-border bg-secondary/30 p-3.5">
+                  <p className="text-[11px] text-muted-foreground">Riscos Identificados</p>
+                  <p className="text-2xl font-bold text-destructive mt-1">
+                    {result.findings.length}
+                  </p>
+                </div>
               </div>
-              <ul className="space-y-3">
-                {result.findings.map((f) => (
-                  <li key={f.id} className="rounded-xl border border-border p-4">
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <p className="text-sm font-medium">{f.title}</p>
-                        <p className="mt-1 text-xs text-muted-foreground">{f.detail}</p>
+
+              <div className="space-y-3">
+                <p className="text-xs font-bold uppercase tracking-wider text-foreground">
+                  Achados e Recomendações:
+                </p>
+                <ul className="space-y-3">
+                  {result.findings.map((f) => (
+                    <li
+                      key={f.id}
+                      className="rounded-xl border border-border/80 bg-background/50 p-4 space-y-2"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <p className="text-xs font-bold text-foreground">{f.title}</p>
+                          <p className="mt-0.5 text-[11px] text-muted-foreground">{f.detail}</p>
+                        </div>
+                        <SeverityPill severity={f.severity} />
                       </div>
-                      <SeverityPill severity={f.severity} />
-                    </div>
-                    <p className="mt-3 text-xs text-primary-glow">Ação recomendada: {f.action}</p>
-                  </li>
-                ))}
-              </ul>
+                      <p className="rounded-md bg-primary/5 border border-primary/20 p-2 text-[11px] text-primary">
+                        <strong>Ação recomendada pelo PRISMA ONE:</strong> {f.action}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           )}
         </Panel>
       </div>
 
-      <Panel className="mt-4" title="Histórico de análises" description="Últimas varreduras registradas para a sua empresa.">
+      {/* History Table from Supabase */}
+      <Panel
+        className="mt-6 text-left"
+        title="Histórico de Varreduras da Empresa"
+        description="Registros persistidos no banco de dados isolado do seu tenant."
+      >
         {history.isLoading ? (
-          <p className="text-sm text-muted-foreground">Carregando...</p>
+          <p className="text-xs text-muted-foreground py-6 text-center">
+            Carregando histórico do banco...
+          </p>
         ) : !history.data?.length ? (
-          <p className="text-sm text-muted-foreground">Nenhuma análise registrada até o momento.</p>
+          <p className="text-xs text-muted-foreground py-6 text-center">
+            Nenhuma varredura registrada ainda para a sua organização.
+          </p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="text-xs uppercase tracking-wide text-muted-foreground">
-                <tr>
-                  <th className="py-2 text-left font-medium">Fonte</th>
-                  <th className="py-2 text-left font-medium">Escopo</th>
-                  <th className="py-2 text-right font-medium">Registros</th>
-                  <th className="py-2 text-right font-medium">Riscos</th>
-                  <th className="py-2 text-right font-medium">Conformidade</th>
-                  <th className="py-2 text-right font-medium">Data</th>
+            <table className="w-full text-xs text-left">
+              <thead>
+                <tr className="border-b border-border/80 uppercase tracking-wider text-muted-foreground font-semibold">
+                  <th className="pb-3 pr-4">Fonte de Dados</th>
+                  <th className="pb-3 px-4">Escopo</th>
+                  <th className="pb-3 px-4 text-right">Registros</th>
+                  <th className="pb-3 px-4 text-right">Riscos</th>
+                  <th className="pb-3 px-4 text-right">Conformidade</th>
+                  <th className="pb-3 pl-4 text-right">Data / Hora</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-border/60">
                 {history.data.map((row) => (
-                  <tr key={row.id} className="border-t border-border/70">
-                    <td className="py-2.5">{row.source}</td>
-                    <td className="py-2.5 capitalize text-muted-foreground">{row.scope}</td>
-                    <td className="py-2.5 text-right">{row.records_scanned.toLocaleString("pt-BR")}</td>
-                    <td className="py-2.5 text-right">{row.risks_found}</td>
-                    <td className="py-2.5 text-right">{row.compliance_score}%</td>
-                    <td className="py-2.5 text-right text-muted-foreground">
+                  <tr key={row.id} className="hover:bg-secondary/30 transition-colors">
+                    <td className="py-3 pr-4 font-semibold text-foreground">{row.source}</td>
+                    <td className="py-3 px-4 capitalize text-muted-foreground">{row.scope}</td>
+                    <td className="py-3 px-4 text-right font-mono">
+                      {row.records_scanned.toLocaleString("pt-BR")}
+                    </td>
+                    <td className="py-3 px-4 text-right">
+                      <span className="font-bold text-destructive">{row.risks_found}</span>
+                    </td>
+                    <td className="py-3 px-4 text-right font-bold text-success">
+                      {row.compliance_score}%
+                    </td>
+                    <td className="py-3 pl-4 text-right text-muted-foreground">
                       {new Date(row.created_at).toLocaleString("pt-BR")}
                     </td>
                   </tr>
@@ -274,14 +340,5 @@ function AnalisePage() {
         )}
       </Panel>
     </PageShell>
-  );
-}
-
-function Metric({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-xl border border-border p-4">
-      <p className="text-xs text-muted-foreground">{label}</p>
-      <p className="mt-1 text-2xl font-semibold tracking-tight">{value}</p>
-    </div>
   );
 }

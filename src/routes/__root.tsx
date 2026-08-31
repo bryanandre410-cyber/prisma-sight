@@ -78,13 +78,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Prisma One — Privacidade, LGPD e auditoria de IA" },
+      { title: "PRISMA ONE — Centro de Controle de Privacidade, LGPD e Auditoria de IA" },
       {
         name: "description",
         content:
-          "Plataforma de privacidade, conformidade LGPD, segurança de dados e auditoria de inteligência artificial para empresas.",
+          "Plataforma SaaS corporativa de privacidade, conformidade LGPD, segurança de dados e governança de Inteligência Artificial.",
       },
-      { name: "author", content: "Prisma One" },
+      { name: "author", content: "PRISMA ONE" },
+      { property: "og:title", content: "PRISMA ONE — Privacidade, LGPD e Auditoria de IA" },
+      {
+        property: "og:description",
+        content:
+          "Centro de controle corporativo para monitoramento contínuo de dados, conformidade LGPD e auditoria ética de IA.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

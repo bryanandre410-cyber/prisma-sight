@@ -1,6 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { UserPlus, Trash2, Edit, ShieldCheck, ShieldAlert, Shield } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { UserPlus, Trash2, Edit, ShieldCheck, ShieldAlert, Shield, Search } from "lucide-react";
+import { toast } from "sonner";
 
 import { PageShell, Panel } from "@/components/prisma/PageShell";
 import { Button } from "@/components/ui/button";
@@ -47,7 +48,7 @@ const defaultUsers: User[] = [
   {
     id: "1",
     name: "Carlos Silva",
-    email: "carlos.silva@empresa.com",
+    email: "carlos.silva@empresa.com.br",
     role: "Administrador",
     status: "ativo",
     lastAccess: "Há 5 minutos",
@@ -55,7 +56,7 @@ const defaultUsers: User[] = [
   {
     id: "2",
     name: "Ana Rodrigues",
-    email: "ana.rodrigues@empresa.com",
+    email: "ana.rodrigues@empresa.com.br",
     role: "DPO",
     status: "ativo",
     lastAccess: "Há 1 hora",
@@ -63,7 +64,7 @@ const defaultUsers: User[] = [
   {
     id: "3",
     name: "Roberto Costa",
-    email: "roberto.costa@empresa.com",
+    email: "roberto.costa@empresa.com.br",
     role: "Segurança",
     status: "ativo",
     lastAccess: "Há 30 minutos",
@@ -71,7 +72,7 @@ const defaultUsers: User[] = [
   {
     id: "4",
     name: "Marina Santos",
-    email: "marina.santos@empresa.com",
+    email: "marina.santos@empresa.com.br",
     role: "Auditoria",
     status: "ativo",
     lastAccess: "Há 2 horas",
@@ -79,7 +80,7 @@ const defaultUsers: User[] = [
   {
     id: "5",
     name: "Pedro Oliveira",
-    email: "pedro.oliveira@empresa.com",
+    email: "pedro.oliveira@empresa.com.br",
     role: "Visualizador",
     status: "inativo",
     lastAccess: "Há 3 dias",
@@ -89,15 +90,16 @@ const defaultUsers: User[] = [
 export const Route = createFileRoute("/_authenticated/administracao")({
   head: () => ({
     meta: [
-      { title: "Administração — Prisma One" },
+      { title: "Administração e Acessos — PRISMA ONE" },
       {
         name: "description",
-        content: "Gerencie usuários, permissões e configurações de acesso à plataforma.",
+        content:
+          "Gerencie membros de equipe, perfis de permissão e credenciais de acesso à plataforma.",
       },
-      { property: "og:title", content: "Administração — Prisma One" },
+      { property: "og:title", content: "Administração e Acessos — PRISMA ONE" },
       {
         property: "og:description",
-        content: "Controle completo de acesso e permissões do sistema.",
+        content: "Controle de acesso granular e gestão de equipe corporativa.",
       },
     ],
   }),
@@ -106,6 +108,7 @@ export const Route = createFileRoute("/_authenticated/administracao")({
 
 function AdministracaoPage() {
   const [users, setUsers] = useState<User[]>(defaultUsers);
+  const [search, setSearch] = useState("");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
@@ -115,13 +118,27 @@ function AdministracaoPage() {
     role: "Visualizador" as UserRole,
   });
 
+  const filteredUsers = users.filter(
+    (u) =>
+      u.name.toLowerCase().includes(search.toLowerCase()) ||
+      u.email.toLowerCase().includes(search.toLowerCase()) ||
+      u.role.toLowerCase().includes(search.toLowerCase()),
+  );
+
   const handleAddUser = () => {
-    if (!newUser.name || !newUser.email) return;
+    if (!newUser.name.trim() || !newUser.email.trim()) {
+      toast.error("Preencha o nome e o e-mail do usuário.");
+      return;
+    }
+    if (!newUser.email.includes("@")) {
+      toast.error("Informe um e-mail válido.");
+      return;
+    }
 
     const user: User = {
-      id: String(users.length + 1),
-      name: newUser.name,
-      email: newUser.email,
+      id: String(Date.now()),
+      name: newUser.name.trim(),
+      email: newUser.email.trim(),
       role: newUser.role,
       status: "ativo",
       lastAccess: "Nunca",
@@ -130,25 +147,37 @@ function AdministracaoPage() {
     setUsers([...users, user]);
     setNewUser({ name: "", email: "", role: "Visualizador" });
     setIsAddDialogOpen(false);
+    toast.success(`Usuário ${user.name} adicionado com sucesso com perfil ${user.role}!`);
   };
 
   const handleEditUser = () => {
     if (!editingUser) return;
+    if (!editingUser.name.trim() || !editingUser.email.trim()) {
+      toast.error("Preencha todos os campos obrigatórios.");
+      return;
+    }
 
     setUsers(users.map((u) => (u.id === editingUser.id ? editingUser : u)));
     setIsEditDialogOpen(false);
     setEditingUser(null);
+    toast.success("Dados do usuário atualizados.");
   };
 
   const handleDeleteUser = (id: string) => {
     setUsers(users.filter((u) => u.id !== id));
+    toast.info("Acesso do usuário revogado.");
   };
 
   const handleToggleStatus = (id: string) => {
     setUsers(
-      users.map((u) =>
-        u.id === id ? { ...u, status: u.status === "ativo" ? "inativo" : "ativo" } : u
-      )
+      users.map((u) => {
+        if (u.id === id) {
+          const newStatus = u.status === "ativo" ? "inativo" : "ativo";
+          toast.info(`Status do usuário alterado para ${newStatus}.`);
+          return { ...u, status: newStatus };
+        }
+        return u;
+      }),
     );
   };
 
@@ -188,44 +217,44 @@ function AdministracaoPage() {
 
   return (
     <PageShell
-      title="Administração"
-      subtitle="Gerencie usuários e permissões de acesso à plataforma."
+      title="Administração e Acessos"
+      subtitle="Gerencie usuários corporativos, permissões e papéis de conformidade."
       actions={
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="gap-2">
+            <Button className="gap-2 font-semibold shadow-xs">
               <UserPlus className="size-4" /> Adicionar Usuário
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="text-left max-w-md">
             <DialogHeader>
-              <DialogTitle>Adicionar Novo Usuário</DialogTitle>
+              <DialogTitle>Convidar Novo Membro para o PRISMA ONE</DialogTitle>
               <DialogDescription>
-                Preencha os dados para criar um novo usuário no sistema.
+                Cadastre o profissional e atribua o nível de acesso à plataforma.
               </DialogDescription>
             </DialogHeader>
-            <div className="space-y-4 py-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Nome completo</Label>
+            <div className="space-y-4 py-2 text-xs">
+              <div className="space-y-1.5">
+                <Label htmlFor="name">Nome Completo</Label>
                 <Input
                   id="name"
                   value={newUser.name}
                   onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
-                  placeholder="Ex: João Silva"
+                  placeholder="Ex: João da Silva"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">E-mail</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="email">E-mail Corporativo</Label>
                 <Input
                   id="email"
                   type="email"
                   value={newUser.email}
                   onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                  placeholder="Ex: joao.silva@empresa.com"
+                  placeholder="Ex: joao.silva@empresa.com.br"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="role">Função</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="role">Função / Perfil</Label>
                 <Select
                   value={newUser.role}
                   onValueChange={(value: UserRole) => setNewUser({ ...newUser, role: value })}
@@ -235,55 +264,77 @@ function AdministracaoPage() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="Administrador">Administrador</SelectItem>
-                    <SelectItem value="DPO">DPO</SelectItem>
-                    <SelectItem value="Segurança">Segurança</SelectItem>
+                    <SelectItem value="DPO">DPO (Encarregado de Dados)</SelectItem>
+                    <SelectItem value="Segurança">Segurança da Informação</SelectItem>
                     <SelectItem value="Auditoria">Auditoria</SelectItem>
-                    <SelectItem value="Visualizador">Visualizador</SelectItem>
+                    <SelectItem value="Visualizador">Visualizador (Somente Leitura)</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
-            <DialogFooter>
+            <DialogFooter className="gap-2">
               <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
                 Cancelar
               </Button>
-              <Button onClick={handleAddUser}>Adicionar</Button>
+              <Button onClick={handleAddUser}>Adicionar Membro</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
       }
     >
-      <div className="grid gap-5 md:grid-cols-3">
-        <Panel>
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">Total de Usuários</p>
-          <p className="mt-2 text-3xl font-semibold">{userCounts.total}</p>
+      <div className="grid gap-4 sm:grid-cols-3">
+        <Panel className="text-center">
+          <p className="text-xs uppercase tracking-wide text-muted-foreground font-medium">
+            Total de Membros
+          </p>
+          <p className="mt-2 text-3xl font-bold text-foreground">{userCounts.total}</p>
         </Panel>
-        <Panel>
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">Usuários Ativos</p>
-          <p className="mt-2 text-3xl font-semibold text-success">{userCounts.ativos}</p>
+        <Panel className="text-center">
+          <p className="text-xs uppercase tracking-wide text-muted-foreground font-medium">
+            Membros Ativos
+          </p>
+          <p className="mt-2 text-3xl font-bold text-success">{userCounts.ativos}</p>
         </Panel>
-        <Panel>
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">Usuários Inativos</p>
-          <p className="mt-2 text-3xl font-semibold text-muted-foreground">{userCounts.inativos}</p>
+        <Panel className="text-center">
+          <p className="text-xs uppercase tracking-wide text-muted-foreground font-medium">
+            Membros Inativos
+          </p>
+          <p className="mt-2 text-3xl font-bold text-muted-foreground">{userCounts.inativos}</p>
         </Panel>
       </div>
 
-      <Panel className="mt-5" title="Usuários do Sistema" description="Gerencie permissões e status de acesso.">
+      <Panel
+        className="mt-5 text-left"
+        title="Usuários da Organização"
+        description="Controle de acesso baseado em funções (RBAC)."
+      >
+        <div className="mb-4">
+          <div className="relative max-w-sm">
+            <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              placeholder="Filtrar por nome, e-mail ou cargo..."
+              className="pl-9 h-9 text-xs"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+        </div>
+
         <div className="space-y-3">
-          {users.map((user) => {
+          {filteredUsers.map((user) => {
             const RoleIcon = getRoleIcon(user.role);
             return (
               <div
                 key={user.id}
-                className="rounded-xl border border-border/70 bg-background/40 p-4 transition-colors hover:border-primary/50"
+                className="rounded-xl border border-border/80 bg-background/50 p-4 transition-all hover:border-primary/50 text-left space-y-3"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="flex items-start gap-3">
-                    <div className="flex size-10 items-center justify-center rounded-xl bg-accent">
-                      <RoleIcon className="size-5 text-primary-glow" />
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-primary">
+                      <RoleIcon className="size-5" />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold">{user.name}</p>
+                      <p className="text-sm font-bold text-foreground">{user.name}</p>
                       <p className="text-xs text-muted-foreground">{user.email}</p>
                       <div className="mt-1 flex items-center gap-2">
                         <Badge className={getRoleBadgeColor(user.role)} variant="outline">
@@ -293,8 +344,8 @@ function AdministracaoPage() {
                           variant="outline"
                           className={
                             user.status === "ativo"
-                              ? "bg-success/15 text-success border-success/40"
-                              : "bg-muted/15 text-muted-foreground border-muted/40"
+                              ? "bg-success/15 text-success border-success/40 text-[10px]"
+                              : "bg-muted/15 text-muted-foreground border-muted/40 text-[10px]"
                           }
                         >
                           {user.status === "ativo" ? "Ativo" : "Inativo"}
@@ -302,12 +353,13 @@ function AdministracaoPage() {
                       </div>
                     </div>
                   </div>
+
                   <div className="flex items-center gap-2">
                     <Button
-                      variant="ghost"
+                      variant="outline"
                       size="sm"
                       onClick={() => handleToggleStatus(user.id)}
-                      className="text-xs"
+                      className="text-xs h-8"
                     >
                       {user.status === "ativo" ? "Desativar" : "Ativar"}
                     </Button>
@@ -323,42 +375,46 @@ function AdministracaoPage() {
                           variant="ghost"
                           size="sm"
                           onClick={() => setEditingUser(user)}
-                          className="text-xs"
+                          className="text-xs h-8"
                         >
-                          <Edit className="size-3 mr-1" /> Editar
+                          <Edit className="size-3.5 mr-1" /> Editar
                         </Button>
                       </DialogTrigger>
-                      <DialogContent>
+                      <DialogContent className="text-left max-w-md">
                         <DialogHeader>
-                          <DialogTitle>Editar Usuário</DialogTitle>
+                          <DialogTitle>Editar Membro</DialogTitle>
                           <DialogDescription>
-                            Altere as permissões e status do usuário.
+                            Altere os dados cadastrais e as permissões de acesso.
                           </DialogDescription>
                         </DialogHeader>
-                        <div className="space-y-4 py-4">
-                          <div className="space-y-2">
-                            <Label htmlFor="edit-name">Nome completo</Label>
+                        <div className="space-y-4 py-2 text-xs">
+                          <div className="space-y-1.5">
+                            <Label htmlFor="edit-name">Nome Completo</Label>
                             <Input
                               id="edit-name"
                               value={editingUser?.name || ""}
                               onChange={(e) =>
-                                setEditingUser(editingUser ? { ...editingUser, name: e.target.value } : null)
+                                setEditingUser(
+                                  editingUser ? { ...editingUser, name: e.target.value } : null,
+                                )
                               }
                             />
                           </div>
-                          <div className="space-y-2">
+                          <div className="space-y-1.5">
                             <Label htmlFor="edit-email">E-mail</Label>
                             <Input
                               id="edit-email"
                               type="email"
                               value={editingUser?.email || ""}
                               onChange={(e) =>
-                                setEditingUser(editingUser ? { ...editingUser, email: e.target.value } : null)
+                                setEditingUser(
+                                  editingUser ? { ...editingUser, email: e.target.value } : null,
+                                )
                               }
                             />
                           </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="edit-role">Função</Label>
+                          <div className="space-y-1.5">
+                            <Label htmlFor="edit-role">Função / Perfil</Label>
                             <Select
                               value={editingUser?.role || "Visualizador"}
                               onValueChange={(value: UserRole) =>
@@ -378,11 +434,11 @@ function AdministracaoPage() {
                             </Select>
                           </div>
                         </div>
-                        <DialogFooter>
+                        <DialogFooter className="gap-2">
                           <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
                             Cancelar
                           </Button>
-                          <Button onClick={handleEditUser}>Salvar</Button>
+                          <Button onClick={handleEditUser}>Salvar Alterações</Button>
                         </DialogFooter>
                       </DialogContent>
                     </Dialog>
@@ -390,27 +446,25 @@ function AdministracaoPage() {
                       variant="ghost"
                       size="sm"
                       onClick={() => handleDeleteUser(user.id)}
-                      className="text-xs text-destructive hover:text-destructive"
+                      className="text-xs h-8 text-destructive hover:text-destructive hover:bg-destructive/10"
                     >
-                      <Trash2 className="size-3 mr-1" /> Excluir
+                      <Trash2 className="size-3.5" />
                     </Button>
                   </div>
                 </div>
-                <div className="mt-3 rounded-lg bg-muted/50 p-3">
-                  <p className="text-xs font-medium text-muted-foreground mb-1">Permissões:</p>
-                  <div className="flex flex-wrap gap-1">
+
+                <div className="rounded-lg bg-secondary/40 p-2.5 text-xs text-muted-foreground">
+                  <span className="font-semibold text-foreground mr-1.5">Permissões ativas:</span>
+                  <div className="mt-1 flex flex-wrap gap-1.5">
                     {rolePermissions[user.role].map((perm) => (
                       <span
                         key={perm}
-                        className="text-[10px] rounded bg-background px-2 py-0.5 text-muted-foreground"
+                        className="rounded bg-background border border-border/60 px-2 py-0.5 text-[10px] text-foreground"
                       >
                         {perm}
                       </span>
                     ))}
                   </div>
-                  <p className="mt-2 text-xs text-muted-foreground">
-                    Último acesso: {user.lastAccess}
-                  </p>
                 </div>
               </div>
             );

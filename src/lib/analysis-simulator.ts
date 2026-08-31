@@ -39,7 +39,8 @@ const commonFindings: Template[] = [
   },
   {
     title: "Compartilhamento com terceiros sem contrato atualizado",
-    detail: "Integrações enviam dados pessoais para fornecedores sem cláusula de tratamento vigente.",
+    detail:
+      "Integrações enviam dados pessoais para fornecedores sem cláusula de tratamento vigente.",
     severity: "alto",
     action: "Atualizar os contratos de operador e limitar o escopo das integrações.",
   },

@@ -1,6 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Play, RefreshCw, TrendingUp, AlertTriangle, ShieldCheck, Database } from "lucide-react";
+import {
+  Play,
+  RefreshCw,
+  TrendingUp,
+  AlertTriangle,
+  ShieldCheck,
+  Database,
+  ArrowRight,
+} from "lucide-react";
 
 import { PageShell, Panel } from "@/components/prisma/PageShell";
 import { Button } from "@/components/ui/button";
@@ -41,58 +49,51 @@ type SimulationResult = {
 const scenarios: SimulationScenario[] = [
   {
     id: "sim-001",
-    name: "Teste de Conformidade LGPD",
-    description: "Simula uma auditoria completa de conformidade com a LGPD",
+    name: "Teste de Conformidade LGPD & Bases Legais",
+    description: "Simula uma auditoria completa de conformidade com os 26 controles da LGPD.",
     type: "compliance",
-    duration: 30,
+    duration: 15,
     complexity: "alta",
   },
   {
     id: "sim-002",
-    name: "Simulação de Ataque de Dados",
-    description: "Testa a resposta do sistema a tentativas de acesso não autorizado",
+    name: "Simulação de Tentativa de Exfiltração de Dados",
+    description: "Testa a resposta dos algoritmos de contenção a vazamento de dados sensíveis.",
     type: "security",
-    duration: 15,
+    duration: 10,
     complexity: "media",
   },
   {
     id: "sim-003",
-    name: "Análise de Viés em IA",
-    description: "Detecta possíveis vieses em modelos de IA treinados",
+    name: "Auditoria de Viés Algorítmico em Modelo de IA",
+    description: "Avalia a distribuição de decisões automatizadas entre grupos protegidos.",
     type: "compliance",
-    duration: 45,
+    duration: 20,
     complexity: "alta",
   },
   {
     id: "sim-004",
-    name: "Teste de Performance de Monitoramento",
-    description: "Avalia a capacidade do sistema em tempo real",
+    name: "Teste de Performance de Monitoramento 24/7",
+    description: "Avalia a capacidade de processamento de fluxos de dados em tempo real.",
     type: "performance",
-    duration: 20,
+    duration: 8,
     complexity: "baixa",
-  },
-  {
-    id: "sim-005",
-    name: "Simulação de Vazamento de Dados",
-    description: "Testa detecção de vazamentos de dados sensíveis",
-    type: "security",
-    duration: 25,
-    complexity: "media",
   },
 ];
 
 export const Route = createFileRoute("/simulacao")({
   head: () => ({
     meta: [
-      { title: "Simulação — Prisma One" },
+      { title: "Simulação de Diagnóstico — PRISMA ONE" },
       {
         name: "description",
-        content: "Execute simulações e testes para análise de dados e conformidade.",
+        content:
+          "Ambiente de teste e demonstração do motor analítico de conformidade e auditoria de IA do PRISMA ONE.",
       },
-      { property: "og:title", content: "Simulação — Prisma One" },
+      { property: "og:title", content: "Simulação de Diagnóstico — PRISMA ONE" },
       {
         property: "og:description",
-        content: "Ambiente de teste para validar políticas e segurança de dados.",
+        content: "Valide políticas de segurança e conformidade LGPD em ambiente de teste.",
       },
     ],
   }),
@@ -100,26 +101,25 @@ export const Route = createFileRoute("/simulacao")({
 });
 
 function SimulacaoPage() {
-  const [selectedScenario, setSelectedScenario] = useState<string>("");
+  const [selectedScenario, setSelectedScenario] = useState<string>("sim-001");
   const [isRunning, setIsRunning] = useState(false);
   const [results, setResults] = useState<SimulationResult[]>([]);
   const [currentSimulation, setCurrentSimulation] = useState<SimulationResult | null>(null);
 
   const runSimulation = () => {
     if (!selectedScenario) return;
-
     const scenario = scenarios.find((s) => s.id === selectedScenario);
     if (!scenario) return;
 
     setIsRunning(true);
-    
+
     const newSimulation: SimulationResult = {
       scenario: scenario.name,
       status: "executando",
       progress: 0,
       metrics: {
         complianceScore: 0,
-        riskLevel: "Calculando...",
+        riskLevel: "Analisando...",
         dataVolume: "0 TB",
         processingTime: "0s",
       },
@@ -128,251 +128,170 @@ function SimulacaoPage() {
 
     setCurrentSimulation(newSimulation);
 
-    // Simular progresso
     let progress = 0;
     const interval = setInterval(() => {
-      progress += Math.random() * 15;
+      progress += Math.random() * 20 + 10;
       if (progress >= 100) {
         progress = 100;
         clearInterval(interval);
-        
-        const completedSimulation: SimulationResult = {
+
+        const completed: SimulationResult = {
           ...newSimulation,
           status: "concluido",
           progress: 100,
           metrics: {
-            complianceScore: Math.floor(Math.random() * 20) + 80,
+            complianceScore: Math.floor(Math.random() * 10) + 90,
             riskLevel: Math.random() > 0.5 ? "Baixo" : "Médio",
-            dataVolume: (Math.random() * 5 + 1).toFixed(2) + " TB",
-            processingTime: (Math.random() * 30 + 10).toFixed(1) + "s",
+            dataVolume: (Math.random() * 4 + 1).toFixed(2) + " TB",
+            processingTime: (Math.random() * 15 + 5).toFixed(1) + "s",
           },
           findings: [
-            "Conformidade LGPD: 98% alinhada",
-            "Detectados 2 pontos de atenção menores",
-            "Sistema de monitoramento operacional",
-            "Políticas de retenção ativas",
+            "Conformidade com os artigos 7º e 11 da LGPD validada.",
+            "Detecção de dados não mascarados em pipeline secundário.",
+            "Políticas de retenção e expurgo ativas.",
+            "Modelo de IA com paridade estatística de 98.4%.",
           ],
         };
 
-        setCurrentSimulation(completedSimulation);
-        setResults([completedSimulation, ...results]);
+        setCurrentSimulation(completed);
+        setResults([completed, ...results]);
         setIsRunning(false);
       } else {
         setCurrentSimulation({ ...newSimulation, progress });
       }
-    }, 500);
-  };
-
-  const resetSimulation = () => {
-    setCurrentSimulation(null);
-    setIsRunning(false);
-  };
-
-  const getComplexityColor = (complexity: string) => {
-    switch (complexity) {
-      case "alta":
-        return "bg-destructive/15 text-destructive border-destructive/40";
-      case "media":
-        return "bg-warning/15 text-warning border-warning/40";
-      default:
-        return "bg-success/15 text-success border-success/40";
-    }
-  };
-
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case "compliance":
-        return ShieldCheck;
-      case "security":
-        return AlertTriangle;
-      default:
-        return TrendingUp;
-    }
+    }, 350);
   };
 
   return (
     <PageShell
-      title="Simulação e Análise"
-      subtitle="Execute testes e simulações para validar conformidade e segurança."
+      title="Ambiente de Simulação e Testes"
+      subtitle="Valide cenários de privacidade, auditoria de IA e monitoramento contínuo no motor do PRISMA ONE."
+      actions={
+        <Button asChild className="gap-1.5 font-semibold">
+          <Link to="/auth">
+            Acessar Painel Corporativo <ArrowRight className="size-4" />
+          </Link>
+        </Button>
+      }
     >
-      <Tabs defaultValue="scenarios" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
+      <Tabs defaultValue="scenarios" className="w-full text-left">
+        <TabsList className="grid w-full grid-cols-2 mb-6">
           <TabsTrigger value="scenarios">Cenários de Teste</TabsTrigger>
-          <TabsTrigger value="results">Resultados</TabsTrigger>
+          <TabsTrigger value="results">Resultados Anteriores ({results.length})</TabsTrigger>
         </TabsList>
 
         <TabsContent value="scenarios" className="space-y-5">
-          <Panel title="Configurar Simulação" description="Selecione um cenário para executar.">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Cenário de Teste</label>
+          <Panel
+            title="Configurar Simulação"
+            description="Selecione um cenário para disparar o diagnóstico."
+          >
+            <div className="space-y-4 text-xs">
+              <div className="space-y-1.5">
+                <label className="font-semibold text-foreground">Cenário de Diagnóstico</label>
                 <Select value={selectedScenario} onValueChange={setSelectedScenario}>
-                  <SelectTrigger>
+                  <SelectTrigger className="h-10 text-xs">
                     <SelectValue placeholder="Selecione um cenário" />
                   </SelectTrigger>
                   <SelectContent>
-                    {scenarios.map((scenario) => {
-                      const TypeIcon = getTypeIcon(scenario.type);
-                      return (
-                        <SelectItem key={scenario.id} value={scenario.id}>
-                          <div className="flex items-center gap-2">
-                            <TypeIcon className="size-4" />
-                            <span>{scenario.name}</span>
-                          </div>
-                        </SelectItem>
-                      );
-                    })}
+                    {scenarios.map((s) => (
+                      <SelectItem key={s.id} value={s.id} className="text-xs">
+                        {s.name} ({s.type})
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
 
               {selectedScenario && (
-                <Card className="bg-muted/30">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-base">
+                <Card className="bg-secondary/40 border-border/80">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm text-foreground font-bold">
                       {scenarios.find((s) => s.id === selectedScenario)?.name}
                     </CardTitle>
                     <CardDescription className="text-xs">
                       {scenarios.find((s) => s.id === selectedScenario)?.description}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex items-center justify-between text-sm">
+                  <CardContent className="space-y-2 text-xs">
+                    <div className="flex justify-between">
                       <span className="text-muted-foreground">Duração estimada:</span>
-                      <span className="font-medium">
+                      <span className="font-semibold">
                         {scenarios.find((s) => s.id === selectedScenario)?.duration} segundos
                       </span>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
+                    <div className="flex justify-between">
                       <span className="text-muted-foreground">Complexidade:</span>
-                      <Badge
-                        variant="outline"
-                        className={
-                          getComplexityColor(
-                            scenarios.find((s) => s.id === selectedScenario)?.complexity || "baixa"
-                          )
-                        }
-                      >
+                      <Badge variant="outline" className="text-[10px] capitalize">
                         {scenarios.find((s) => s.id === selectedScenario)?.complexity}
                       </Badge>
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Tipo:</span>
-                      <span className="font-medium capitalize">
-                        {scenarios.find((s) => s.id === selectedScenario)?.type}
-                      </span>
                     </div>
                   </CardContent>
                 </Card>
               )}
 
-              <div className="flex gap-2">
+              <div className="flex gap-2 pt-2">
                 <Button
                   onClick={runSimulation}
-                  disabled={!selectedScenario || isRunning}
-                  className="flex-1 gap-2"
+                  disabled={isRunning}
+                  className="flex-1 font-semibold gap-2"
                 >
                   <Play className="size-4" />
-                  {isRunning ? "Executando..." : "Executar Simulação"}
+                  {isRunning ? "Simulando..." : "Executar Simulação"}
                 </Button>
-                {currentSimulation && (
-                  <Button onClick={resetSimulation} variant="outline" className="gap-2">
-                    <RefreshCw className="size-4" />
-                    Limpar
-                  </Button>
-                )}
               </div>
             </div>
           </Panel>
 
           {currentSimulation && (
-            <Panel title="Progresso da Simulação" description="Acompanhe a execução em tempo real.">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">{currentSimulation.scenario}</span>
+            <Panel
+              title="Progresso da Simulação"
+              description="Acompanhe a varredura em tempo real."
+            >
+              <div className="space-y-4 text-xs">
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-foreground">
+                    {currentSimulation.scenario}
+                  </span>
                   <Badge
                     variant="outline"
                     className={
                       currentSimulation.status === "concluido"
                         ? "bg-success/15 text-success border-success/40"
-                        : currentSimulation.status === "executando"
-                          ? "bg-primary/15 text-primary border-primary/40"
-                          : "bg-destructive/15 text-destructive border-destructive/40"
+                        : "bg-primary/15 text-primary border-primary/40"
                     }
                   >
-                    {currentSimulation.status === "executando"
-                      ? "Executando"
-                      : currentSimulation.status === "concluido"
-                        ? "Concluído"
-                        : "Falhou"}
+                    {currentSimulation.status === "concluido" ? "Concluído" : "Executando"}
                   </Badge>
                 </div>
 
                 <Progress value={currentSimulation.progress} className="h-2" />
 
-                <div className="grid gap-4 md:grid-cols-2">
-                  <Card className="bg-muted/30">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm flex items-center gap-2">
-                        <ShieldCheck className="size-4" />
-                        Pontuação de Conformidade
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-2xl font-bold">
+                {currentSimulation.status === "concluido" && (
+                  <div className="grid gap-3 sm:grid-cols-4 pt-2">
+                    <div className="rounded-xl border border-border p-3 bg-secondary/30 text-center">
+                      <p className="text-muted-foreground text-[10px]">Conformidade</p>
+                      <p className="text-xl font-bold text-success mt-1">
                         {currentSimulation.metrics.complianceScore}%
                       </p>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="bg-muted/30">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm flex items-center gap-2">
-                        <AlertTriangle className="size-4" />
-                        Nível de Risco
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-2xl font-bold">{currentSimulation.metrics.riskLevel}</p>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="bg-muted/30">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm flex items-center gap-2">
-                        <Database className="size-4" />
-                        Volume de Dados
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-2xl font-bold">{currentSimulation.metrics.dataVolume}</p>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="bg-muted/30">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm flex items-center gap-2">
-                        <TrendingUp className="size-4" />
-                        Tempo de Processamento
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-2xl font-bold">{currentSimulation.metrics.processingTime}</p>
-                    </CardContent>
-                  </Card>
-                </div>
-
-                {currentSimulation.status === "concluido" && currentSimulation.findings.length > 0 && (
-                  <div className="space-y-2">
-                    <h4 className="text-sm font-medium">Descobertas:</h4>
-                    <ul className="space-y-1">
-                      {currentSimulation.findings.map((finding, index) => (
-                        <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
-                          <span className="mt-1.5 size-1.5 rounded-full bg-primary" />
-                          {finding}
-                        </li>
-                      ))}
-                    </ul>
+                    </div>
+                    <div className="rounded-xl border border-border p-3 bg-secondary/30 text-center">
+                      <p className="text-muted-foreground text-[10px]">Nível de Risco</p>
+                      <p className="text-xl font-bold text-foreground mt-1">
+                        {currentSimulation.metrics.riskLevel}
+                      </p>
+                    </div>
+                    <div className="rounded-xl border border-border p-3 bg-secondary/30 text-center">
+                      <p className="text-muted-foreground text-[10px]">Volume de Dados</p>
+                      <p className="text-xl font-bold text-foreground mt-1">
+                        {currentSimulation.metrics.dataVolume}
+                      </p>
+                    </div>
+                    <div className="rounded-xl border border-border p-3 bg-secondary/30 text-center">
+                      <p className="text-muted-foreground text-[10px]">Tempo</p>
+                      <p className="text-xl font-bold text-foreground mt-1">
+                        {currentSimulation.metrics.processingTime}
+                      </p>
+                    </div>
                   </div>
                 )}
               </div>
@@ -380,58 +299,30 @@ function SimulacaoPage() {
           )}
         </TabsContent>
 
-        <TabsContent value="results" className="space-y-5">
-          <Panel title="Histórico de Simulações" description="Resultados das simulações executadas.">
+        <TabsContent value="results" className="space-y-4">
+          <Panel title="Histórico de Simulações">
             {results.length === 0 ? (
-              <div className="text-center py-12">
-                <Play className="mx-auto size-12 text-muted-foreground mb-4" />
-                <p className="text-sm text-muted-foreground">
-                  Nenhuma simulação executada ainda. Selecione um cenário para começar.
-                </p>
-              </div>
+              <p className="text-xs text-muted-foreground text-center py-8">
+                Nenhuma simulação executada ainda. Selecione um cenário para começar.
+              </p>
             ) : (
               <div className="space-y-3">
-                {results.map((result, index) => (
-                  <Card key={index} className="bg-muted/30">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center justify-between">
-                        <CardTitle className="text-base">{result.scenario}</CardTitle>
-                        <Badge
-                          variant="outline"
-                          className="bg-success/15 text-success border-success/40"
-                        >
-                          Concluído
-                        </Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                        <div>
-                          <p className="text-muted-foreground text-xs">Conformidade</p>
-                          <p className="font-semibold">{result.metrics.complianceScore}%</p>
-                        </div>
-                        <div>
-                          <p className="text-muted-foreground text-xs">Risco</p>
-                          <p className="font-semibold">{result.metrics.riskLevel}</p>
-                        </div>
-                        <div>
-                          <p className="text-muted-foreground text-xs">Dados</p>
-                          <p className="font-semibold">{result.metrics.dataVolume}</p>
-                        </div>
-                        <div>
-                          <p className="text-muted-foreground text-xs">Tempo</p>
-                          <p className="font-semibold">{result.metrics.processingTime}</p>
-                        </div>
-                      </div>
-                      <div className="space-y-1">
-                        {result.findings.slice(0, 2).map((finding, fIndex) => (
-                          <p key={fIndex} className="text-xs text-muted-foreground">
-                            • {finding}
-                          </p>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
+                {results.map((res, i) => (
+                  <div
+                    key={i}
+                    className="rounded-xl border border-border/80 bg-background/50 p-4 space-y-2 text-xs"
+                  >
+                    <div className="flex justify-between items-center">
+                      <span className="font-bold text-foreground">{res.scenario}</span>
+                      <span className="text-success font-bold">
+                        {res.metrics.complianceScore}% Score
+                      </span>
+                    </div>
+                    <p className="text-muted-foreground">
+                      Volume: {res.metrics.dataVolume} · Processamento: {res.metrics.processingTime}{" "}
+                      · Risco: {res.metrics.riskLevel}
+                    </p>
+                  </div>
                 ))}
               </div>
             )}
