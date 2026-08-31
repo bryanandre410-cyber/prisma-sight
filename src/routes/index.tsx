@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import {
@@ -25,6 +26,11 @@ import {
   Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+=======
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Activity, BarChart3, Bot, ShieldCheck } from "lucide-react";
+import { useEffect } from "react";
+>>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -40,18 +46,42 @@ export const Route = createFileRoute("/")({
         content: "PRISMA ONE — Privacidade, LGPD e Governança de IA",
       },
       {
+<<<<<<< HEAD
         property: "og:description",
         content:
           "Monitoramento 24/7 de fluxos de dados, gestão de riscos, conformidade LGPD e auditoria ética de IA para empresas.",
       },
+=======
+        property: "og:description", content: "Monitoramento contínuo, LGPD e auditoria de IA em um único painel corporativo." },
+>>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: Landing,
+  component: RootComponent,
 });
 
+<<<<<<< HEAD
 const features = [
+=======
+function RootComponent() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+      if (isAuthenticated) {
+        // Redirect to dashboard if authenticated
+        window.location.href = "/_authenticated/dashboard";
+      }
+    }
+  }, [navigate]);
+
+  return <Landing />;
+}
+
+const highlights = [
+>>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
   {
     icon: Activity,
     title: "Monitoramento Contínuo 24/7",

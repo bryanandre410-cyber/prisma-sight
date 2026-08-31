@@ -1,11 +1,16 @@
+<<<<<<< HEAD
 import { useState } from "react";
 import { createFileRoute, Outlet, redirect, useNavigate, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Bell, HelpCircle, LogOut, ShieldCheck, AlertTriangle, ExternalLink } from "lucide-react";
+=======
+import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
+import { Bell, HelpCircle, LogOut } from "lucide-react";
+>>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
 
-import { supabase } from "@/integrations/supabase/client";
 import { AppSidebar } from "@/components/prisma/AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+<<<<<<< HEAD
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
@@ -26,12 +31,18 @@ export const Route = createFileRoute("/_authenticated")({
     }
     return { user: data.user };
   },
+=======
+import { useEffect } from "react";
+
+export const Route = createFileRoute("/_authenticated")({
+  ssr: false,
+>>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
   component: AuthenticatedLayout,
 });
 
 function AuthenticatedLayout() {
-  const { user } = Route.useRouteContext();
   const navigate = useNavigate();
+<<<<<<< HEAD
   const queryClient = useQueryClient();
   const [helpOpen, setHelpOpen] = useState(false);
 
@@ -54,12 +65,26 @@ function AuthenticatedLayout() {
 
   const initials = company.slice(0, 2).toUpperCase();
   const pendingAlerts = alerts.filter((a) => a.status === "pendente");
+=======
 
-  async function handleSignOut() {
-    await queryClient.cancelQueries();
-    queryClient.clear();
-    await supabase.auth.signOut();
-    navigate({ to: "/auth", replace: true });
+  const userCompany = typeof window !== "undefined" ? localStorage.getItem("userCompany") || "Empresa" : "Empresa";
+  const initials = userCompany.slice(0, 2).toUpperCase();
+>>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+      if (!isAuthenticated) navigate({ to: "/auth" as any, replace: true });
+    }
+  }, [navigate]);
+
+  function handleSignOut() {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("isAuthenticated");
+      localStorage.removeItem("userCompany");
+      localStorage.removeItem("userEmail");
+    }
+    navigate({ to: "/auth" as any, replace: true });
   }
 
   return (
@@ -147,9 +172,16 @@ function AuthenticatedLayout() {
                 >
                   {initials}
                 </div>
+<<<<<<< HEAD
                 <div className="hidden leading-tight sm:block text-left">
                   <p className="max-w-[160px] truncate text-xs font-semibold text-foreground">
                     {company}
+=======
+                <div className="hidden leading-tight sm:block">
+                  <p className="max-w-[180px] truncate text-sm font-medium">{userCompany}</p>
+                  <p className="text-[11px] text-muted-foreground">
+                    Responsável pela Privacidade
+>>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
                   </p>
                   <p className="text-[10px] text-muted-foreground">Responsável LGPD / DPO</p>
                 </div>

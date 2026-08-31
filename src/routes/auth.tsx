@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
@@ -12,9 +13,12 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+<<<<<<< HEAD
 import { supabase } from "@/integrations/supabase/client";
 import { formatCnpj, isValidCnpj, translateAuthError } from "@/lib/utils";
 
+=======
+>>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -75,6 +79,7 @@ function AuthPage() {
   const [recoverySent, setRecoverySent] = useState(false);
 
   useEffect(() => {
+<<<<<<< HEAD
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) {
         navigate({ to: "/dashboard", replace: true });
@@ -89,6 +94,13 @@ function AuthPage() {
 
     return () => sub.subscription.unsubscribe();
   }, [navigate]);
+=======
+    if (typeof window !== "undefined") {
+      const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+      if (isAuthenticated) window.location.href = "/analise";
+    }
+  }, []);
+>>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
 
   const handleCnpjChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatCnpj(e.target.value);
@@ -115,6 +127,7 @@ function AuthPage() {
     }
 
     setLoading(true);
+<<<<<<< HEAD
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email: loginEmail.trim(),
@@ -256,6 +269,24 @@ function AuthPage() {
       toast.error(translateAuthError(error));
       setLoading(false);
     }
+=======
+
+    // Simulação de autenticação
+    setTimeout(() => {
+      if (email && password && (mode === "login" || companyName)) {
+        if (typeof window !== "undefined") {
+          localStorage.setItem("isAuthenticated", "true");
+          localStorage.setItem("userCompany", companyName || "Empresa");
+          localStorage.setItem("userEmail", email);
+        }
+        toast.success("Acesso liberado");
+        window.location.href = "/analise";
+      } else {
+        toast.error("Por favor, preencha todos os campos.");
+      }
+      setLoading(false);
+    }, 1000);
+>>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
   }
 
   return (
@@ -348,6 +379,7 @@ function AuthPage() {
                   </div>
                 </div>
 
+<<<<<<< HEAD
                 <Button
                   type="submit"
                   className="w-full h-11 text-sm font-semibold"
@@ -626,6 +658,18 @@ function AuthPage() {
               )}
             </TabsContent>
           </Tabs>
+=======
+          <p className="mt-6 text-center text-sm text-muted-foreground">
+            {mode === "login" ? "Ainda não tem acesso?" : "Já possui uma conta?"}{" "}
+            <button
+              type="button"
+              onClick={() => setMode(mode === "login" ? "signup" : "login")}
+              className="font-medium text-primary-glow hover:underline"
+            >
+              {mode === "login" ? "Cadastrar empresa" : "Entrar"}
+            </button>
+          </p>
+>>>>>>> 5f9e2333ff588a7d02e5e4203204c2791513a799
         </div>
 
         {/* Footer info */}
