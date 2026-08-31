@@ -69,55 +69,52 @@
 }
 
 :root {
-  --radius: 0.875rem;
-  --background: oklch(0.14 0.028 285);
-  --foreground: oklch(0.97 0.005 285);
-  --card: oklch(0.185 0.032 288);
-  --card-foreground: oklch(0.97 0.005 285);
-  --popover: oklch(0.185 0.032 288);
-  --popover-foreground: oklch(0.97 0.005 285);
-  --primary: oklch(0.62 0.24 300);
-  --primary-foreground: oklch(0.99 0 0);
-  --primary-glow: oklch(0.72 0.19 320);
-  --secondary: oklch(0.24 0.04 290);
-  --secondary-foreground: oklch(0.97 0.005 285);
-  --muted: oklch(0.24 0.04 290);
-  --muted-foreground: oklch(0.68 0.03 290);
-  --accent: oklch(0.28 0.07 295);
-  --accent-foreground: oklch(0.97 0.005 285);
-  --destructive: oklch(0.6 0.23 20);
-  --destructive-foreground: oklch(0.99 0 0);
-  --success: oklch(0.72 0.17 158);
-  --success-foreground: oklch(0.14 0.028 285);
-  --warning: oklch(0.78 0.16 75);
-  --warning-foreground: oklch(0.14 0.028 285);
-  --info: oklch(0.66 0.16 255);
-  --info-foreground: oklch(0.99 0 0);
-  --border: oklch(0.3 0.045 292 / 60%);
-  --input: oklch(0.3 0.045 292 / 70%);
-  --ring: oklch(0.62 0.24 300);
-  --chart-1: oklch(0.62 0.24 300);
-  --chart-2: oklch(0.72 0.19 320);
-  --chart-3: oklch(0.66 0.16 255);
-  --chart-4: oklch(0.72 0.17 158);
-  --chart-5: oklch(0.78 0.16 75);
-  --sidebar: oklch(0.165 0.03 287);
-  --sidebar-foreground: oklch(0.9 0.01 285);
-  --sidebar-primary: oklch(0.62 0.24 300);
-  --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.27 0.07 297);
-  --sidebar-accent-foreground: oklch(0.98 0.005 285);
-  --sidebar-border: oklch(0.3 0.045 292 / 50%);
-  --sidebar-ring: oklch(0.62 0.24 300);
+  --radius: 0.5rem;
+  --background: oklch(0.99 0.002 264);
+  --foreground: oklch(0.15 0.02 264);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.02 264);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.02 264);
+  --primary: oklch(0.55 0.22 264);
+  --primary-foreground: oklch(0.99 0.002 264);
+  --primary-glow: oklch(0.65 0.18 264);
+  --secondary: oklch(0.94 0.01 264);
+  --secondary-foreground: oklch(0.15 0.02 264);
+  --muted: oklch(0.96 0.008 264);
+  --muted-foreground: oklch(0.45 0.02 264);
+  --accent: oklch(0.92 0.02 264);
+  --accent-foreground: oklch(0.15 0.02 264);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.99 0.002 264);
+  --success: oklch(0.65 0.18 158);
+  --success-foreground: oklch(0.99 0.002 264);
+  --warning: oklch(0.75 0.15 75);
+  --warning-foreground: oklch(0.15 0.02 264);
+  --info: oklch(0.55 0.18 240);
+  --info-foreground: oklch(0.99 0.002 264);
+  --border: oklch(0.88 0.01 264);
+  --input: oklch(0.88 0.01 264);
+  --ring: oklch(0.55 0.22 264);
+  --chart-1: oklch(0.55 0.22 264);
+  --chart-2: oklch(0.65 0.18 264);
+  --chart-3: oklch(0.55 0.18 240);
+  --chart-4: oklch(0.65 0.18 158);
+  --chart-5: oklch(0.75 0.15 75);
+  --sidebar: oklch(0.97 0.005 264);
+  --sidebar-foreground: oklch(0.15 0.02 264);
+  --sidebar-primary: oklch(0.55 0.22 264);
+  --sidebar-primary-foreground: oklch(0.99 0.002 264);
+  --sidebar-accent: oklch(0.92 0.02 264);
+  --sidebar-accent-foreground: oklch(0.15 0.02 264);
+  --sidebar-border: oklch(0.88 0.01 264);
+  --sidebar-ring: oklch(0.55 0.22 264);
 
-  --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-glow));
-  --gradient-surface: linear-gradient(
-    160deg,
-    oklch(0.2 0.04 292) 0%,
-    oklch(0.165 0.03 287) 100%
-  );
-  --shadow-glow: 0 0 40px -12px color-mix(in oklab, var(--primary) 60%, transparent);
-  --shadow-card: 0 18px 40px -24px oklch(0 0 0 / 80%);
+  --gradient-primary: linear-gradient(135deg, oklch(0.55 0.22 264), oklch(0.65 0.18 264));
+  --gradient-surface: linear-gradient(180deg, oklch(0.99 0.002 264) 0%, oklch(0.96 0.008 264) 100%);
+  --shadow-glow: 0 4px 24px -8px color-mix(in oklab, var(--primary) 20%, transparent);
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
 @layer base {
@@ -133,7 +130,7 @@
 }
 
 @utility surface-card {
-  background-image: var(--gradient-surface);
+  background-color: var(--color-card);
   box-shadow: var(--shadow-card);
 }
 
